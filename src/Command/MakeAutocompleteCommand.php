@@ -24,6 +24,7 @@ final class MakeAutocompleteCommand extends Command
     private const array LIBRARIES = [
         Driver\Win32\Lib\Advapi32::class,
         Driver\Win32\Lib\Kernel32::class,
+        Driver\Win32\Lib\Ole32::class,
         Driver\Win32\Lib\User32::class,
     ];
 

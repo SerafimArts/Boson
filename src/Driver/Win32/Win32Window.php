@@ -112,7 +112,7 @@ final class Win32Window implements WindowInterface
     }
 
     /**
-     * @return Property<non-empty-string|null, non-empty-string|null>
+     * @return Property<non-empty-string|null, string|null>
      */
     protected function icon(): Property
     {
