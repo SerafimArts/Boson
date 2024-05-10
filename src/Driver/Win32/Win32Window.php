@@ -16,6 +16,10 @@ use Serafim\WinUI\Driver\Win32\Lib\ShowWindowCommand;
 use Serafim\WinUI\Driver\Win32\Lib\User32;
 use Serafim\WinUI\Driver\Win32\Lib\WindowMessage;
 use Serafim\WinUI\Driver\Win32\Text\Converter;
+use Serafim\WinUI\Driver\Win32\WebView2\ControllerCompletedHandler;
+use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Controller;
+use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Environment;
+use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;
 use Serafim\WinUI\Property\Property;
 use Serafim\WinUI\Property\PropertyProviderTrait;
 use Serafim\WinUI\Window\PositionInterface;
@@ -56,6 +60,7 @@ final class Win32Window implements WindowInterface
         Win32InstanceHandleFactory $modules = new Win32InstanceHandleFactory(),
         Win32ClassHandleFactory $classes = new Win32ClassHandleFactory(),
         Win32WindowHandleFactory $windows = new Win32WindowHandleFactory(),
+        WebView2Factory $webview = new WebView2Factory(),
         ?User32 $user32 = null,
         ?Converter $text = null,
     ) {
@@ -72,6 +77,19 @@ final class Win32Window implements WindowInterface
         $rect = new Win32Rect($this->user32, $this->handle);
         $this->win32Size = new Win32Size($rect);
         $this->win32Position = new Win32Position($rect);
+
+        $webview->create(function (ICoreWebView2Environment $env) {
+            $status = $env->createCoreWebView2Controller(
+                handle: $this->handle,
+                then: function (ICoreWebView2Controller $host) {
+                    dump($host);
+                },
+            );
+
+            if ($status !== 0) {
+                throw new \RuntimeException('WebView controller creation failed');
+            }
+        });
     }
 
     /**

@@ -15,7 +15,6 @@ use Serafim\WinUI\Driver\Win32\Lib\WindowClassStyle;
 use Serafim\WinUI\Driver\Win32\Text;
 use Serafim\WinUI\Driver\Win32\Text\Converter;
 use Serafim\WinUI\Exception\WindowNotCreatableException;
-use Serafim\WinUI\Memory\DestructorCallback;
 use Serafim\WinUI\Memory\MemorySet;
 use Serafim\WinUI\WindowInterface;
 
@@ -29,8 +28,7 @@ final readonly class Win32ClassHandleFactory
      * @var int-mask-of<WindowClassStyle::CS_*>
      */
     private const int DEFAULT_CLASS_STYLE = WindowClassStyle::CS_HREDRAW
-        | WindowClassStyle::CS_VREDRAW
-        | WindowClassStyle::CS_OWNDC;
+        | WindowClassStyle::CS_VREDRAW;
 
     private Converter $text;
 

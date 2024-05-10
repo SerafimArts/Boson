@@ -27,9 +27,7 @@ final class Win32WindowHandleFactory
     /**
      * @var int-mask-of<WindowStyle::WS_*>
      */
-    private const int DEFAULT_WINDOW_STYLE = WindowStyle::WS_CAPTION
-        | WindowStyle::WS_OVERLAPPEDWINDOW
-        | WindowStyle::WS_SYSMENU;
+    private const int DEFAULT_WINDOW_STYLE = WindowStyle::WS_OVERLAPPEDWINDOW;
 
     private readonly User32 $user32;
 

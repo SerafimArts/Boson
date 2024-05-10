@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace Serafim\WinUI\Driver\Win32\WebView2;
 
 use Serafim\WinUI\Driver\Win32\Lib\Advapi32;
+use Serafim\WinUI\Driver\Win32\Lib\CSIDL;
 use Serafim\WinUI\Driver\Win32\Lib\HKey;
 use Serafim\WinUI\Driver\Win32\Lib\Key;
+use Serafim\WinUI\Driver\Win32\Lib\Shell32;
+use Serafim\WinUI\Driver\Win32\Text;
+use Serafim\WinUI\Driver\Win32\Text\Converter;
 use Serafim\WinUI\Exception\WebView2NotAvailable;
 
 final readonly class InstallationDetector

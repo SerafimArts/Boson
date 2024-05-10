@@ -424,6 +424,7 @@ LONG GetWindowLongW(HWND hWnd, int nIndex);
 LONG SetWindowLongA(HWND hWnd, int nIndex, LONG dwNewLong);
 LONG SetWindowLongW(HWND hWnd, int nIndex, LONG dwNewLong);
 
+BOOL UpdateWindow(HWND hWnd);
 BOOL DestroyWindow(HWND hWnd);
 BOOL DestroyIcon(HICON hIcon);
 
@@ -438,13 +439,6 @@ LRESULT SendMessageW(HWND hWnd, UINT Msg, WPARAM wParam, LPARAM lParam);
 
 HCURSOR LoadCursorA(HINSTANCE hInstance, LPCSTR lpCursorName);
 HCURSOR LoadCursorW(HINSTANCE hInstance, LPCWSTR lpCursorName);
-
-HMENU CreatePopupMenu(void);
-HMENU CreateMenu(void);
-
-BOOL SetMenu(HWND hWnd, HMENU hMenu);
-BOOL AppendMenuA(HMENU hMenu, UINT uFlags, HMENU uIDNewItem, LPCSTR lpNewItem);
-BOOL AppendMenuW(HMENU hMenu, UINT uFlags, HMENU uIDNewItem, LPCWSTR lpNewItem);
 
 HBRUSH GetSysColorBrush(int nIndex);
 

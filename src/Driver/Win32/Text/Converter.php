@@ -58,6 +58,20 @@ final readonly class Converter implements EncodingProviderInterface
         );
     }
 
+    public function fromWide(CData $ptr, ?string $encoding = null): string
+    {
+        $buffer = '';
+        $index = 0;
+
+        while (true) {
+            $buffer .= $ptr[++$index];
+
+            if (\str_ends_with($buffer, "\0\0")) {
+                return $this->decode($buffer, $encoding);
+            }
+        }
+    }
+
     /**
      * @param non-empty-string|null $encoding
      */

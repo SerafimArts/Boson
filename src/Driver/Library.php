@@ -30,6 +30,20 @@ abstract class Library extends BaseProxy
         parent::__construct(\FFI::cdef(static::getHeader(), $library));
     }
 
+    /**
+     * @param non-empty-string $os
+     * @param non-empty-string $arch
+     * @param non-empty-string $name
+     * @return non-empty-string
+     */
+    protected function binary(string $os, string $arch, string $name): string
+    {
+        return \dirname(__DIR__, 2) . '/bin/'
+            . $os . '/'
+            . $arch. '/'
+            . $name;
+    }
+
     public static function getInstance(): static
     {
         // @phpstan-ignore-next-line

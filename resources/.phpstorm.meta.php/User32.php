@@ -1418,6 +1418,10 @@ namespace Serafim\WinUI\Driver\Win32\Lib {
         /**
          * @return int<-2147483648, 2147483647>
          */
+        public function UpdateWindow(?\FFI\CData $hWnd): int;
+        /**
+         * @return int<-2147483648, 2147483647>
+         */
         public function DestroyWindow(?\FFI\CData $hWnd): int;
         /**
          * @return int<-2147483648, 2147483647>
@@ -1463,33 +1467,6 @@ namespace Serafim\WinUI\Driver\Win32\Lib {
         public function SendMessageW(?\FFI\CData $hWnd, int $Msg, int $wParam, int $lParam): int;
         public function LoadCursorA(?\FFI\CData $hInstance, string|\FFI\CData|null $lpCursorName): ?\FFI\CData;
         public function LoadCursorW(?\FFI\CData $hInstance, string|\FFI\CData|null $lpCursorName): ?\FFI\CData;
-        /**
-         * @return int<0, max>
-         */
-        public function CreatePopupMenu(): int;
-        /**
-         * @return int<0, max>
-         */
-        public function CreateMenu(): int;
-        /**
-         * @param int<0, max> $hMenu
-         * @return int<-2147483648, 2147483647>
-         */
-        public function SetMenu(?\FFI\CData $hWnd, int $hMenu): int;
-        /**
-         * @param int<0, max> $hMenu
-         * @param int<0, 4294967296> $uFlags
-         * @param int<0, max> $uIDNewItem
-         * @return int<-2147483648, 2147483647>
-         */
-        public function AppendMenuA(int $hMenu, int $uFlags, int $uIDNewItem, string|\FFI\CData|null $lpNewItem): int;
-        /**
-         * @param int<0, max> $hMenu
-         * @param int<0, 4294967296> $uFlags
-         * @param int<0, max> $uIDNewItem
-         * @return int<-2147483648, 2147483647>
-         */
-        public function AppendMenuW(int $hMenu, int $uFlags, int $uIDNewItem, string|\FFI\CData|null $lpNewItem): int;
         /**
          * @param int<-2147483648, 2147483647> $nIndex
          */
