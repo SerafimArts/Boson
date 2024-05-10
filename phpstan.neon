@@ -7,7 +7,6 @@ parameters:
   ignoreErrors:
     # FFI proxy calls
     - '#undefined method .+?\\Lib\\[a-zA-Z0-9\_]+::[a-zA-Z0-9\_]+\(\)#'
-    - '#property \$[a-zA-Z0-9_]+ on FFI\\CData\|null#'
     - '#undefined property FFI\\CData::\$[a-zA-Z0-9_]+#'
   fileExtensions:
     - php
