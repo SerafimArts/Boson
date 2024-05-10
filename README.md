@@ -16,6 +16,11 @@ Doesn't work yet)
 | Linux   | Any   | No (TODO)             |
 | MacOS   | Any   | No (TODO)             |
 
+## Known Issues
+
+- The WebView Controller is initialized ONLY after the window has been moved, 
+  otherwise `Failed to create WebView Controller` has been thrown.
+
 ## Example
 
 ```php
