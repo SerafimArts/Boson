@@ -6,7 +6,7 @@ on:
 
 jobs:
   psalm:
-    name: Psalm
+    name: Linter
     runs-on: ${{ matrix.os }}
     strategy:
       fail-fast: false

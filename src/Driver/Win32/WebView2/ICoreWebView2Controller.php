@@ -10,7 +10,7 @@ use Serafim\WinUI\Driver\Win32\Managed\LocalManaged;
 
 final class ICoreWebView2Controller extends LocalManaged
 {
-    private readonly WebView2 $webView2;
+    public readonly WebView2 $webView2;
 
     public function __construct(
         CData $ptr,

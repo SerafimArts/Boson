@@ -37,6 +37,10 @@ final readonly class Converter implements EncodingProviderInterface
      */
     public function decode(string $text, ?string $encoding = null): string
     {
+        if ($text === '') {
+            return '';
+        }
+
         $decoded = \mb_convert_encoding(
             $text,
             $this->encoding->internal,
@@ -51,6 +55,10 @@ final readonly class Converter implements EncodingProviderInterface
      */
     public function encode(string $text, ?string $encoding = null): string
     {
+        if ($text === '') {
+            return '';
+        }
+
         return \mb_convert_encoding(
             $text,
             $encoding ?? $this->encoding->external,
@@ -58,13 +66,17 @@ final readonly class Converter implements EncodingProviderInterface
         );
     }
 
-    public function fromWide(CData $ptr, ?string $encoding = null): string
+    /**
+     * @param non-empty-string|null $encoding
+     */
+    public function fromWide(CData $text, ?string $encoding = null): string
     {
         $buffer = '';
         $index = 0;
 
         while (true) {
-            $buffer .= $ptr[++$index];
+            // @phpstan-ignore-next-line
+            $buffer .= $text[++$index];
 
             if (\str_ends_with($buffer, "\0\0")) {
                 return $this->decode($buffer, $encoding);

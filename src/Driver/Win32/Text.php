@@ -37,6 +37,15 @@ final class Text
     /**
      * @param non-empty-string|null $encoding
      */
+    public static function fromWide(CData $text, ?string $encoding = null): string
+    {
+        return self::getInstance()
+            ->fromWide($text, $encoding);
+    }
+
+    /**
+     * @param non-empty-string|null $encoding
+     */
     public static function wide(string $text, ?string $encoding = null, bool $owned = true): CData
     {
         return self::getInstance()

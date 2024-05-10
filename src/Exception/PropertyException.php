@@ -17,16 +17,20 @@ abstract class PropertyException extends UserInterfaceException
         }
     }
 
+    /**
+     * @param list<array{
+     *     line?: int,
+     *     file?: string,
+     *     ...
+     * }> $trace
+     * @return array{string, int}|null
+     */
     private function getNonInternalFileAndLine(array $trace): ?array
     {
         $directory = \dirname(__DIR__);
 
         foreach ($trace as $item) {
-            if (!isset($item['file'], $item['line'])) {
-                continue;
-            }
-
-            if (\str_starts_with($item['file'], $directory)) {
+            if (!isset($item['file'], $item['line']) || \str_starts_with($item['file'], $directory)) {
                 continue;
             }
 

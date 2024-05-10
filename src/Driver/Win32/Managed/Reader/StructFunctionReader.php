@@ -17,6 +17,9 @@ final class StructFunctionReader
      */
     private array $names = [];
 
+    /**
+     * @return array<non-empty-string, callable>
+     */
     public function read(object $ctx): array
     {
         return $this->names[$ctx::class] ??= $this->readFromObject($ctx);
@@ -39,7 +42,10 @@ final class StructFunctionReader
             }
         }
 
-        /** @var array<non-empty-string, callable> */
+        /**
+         * @var array<non-empty-string, callable>
+         * @phpstan-ignore-next-line
+         */
         return $result;
     }
 }
