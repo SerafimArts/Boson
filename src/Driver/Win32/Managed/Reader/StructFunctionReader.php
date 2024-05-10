@@ -44,6 +44,7 @@ final class StructFunctionReader
 
         /**
          * @var array<non-empty-string, callable>
+         *
          * @phpstan-ignore-next-line
          */
         return $result;

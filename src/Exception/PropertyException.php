@@ -23,6 +23,7 @@ abstract class PropertyException extends UserInterfaceException
      *     file?: string,
      *     ...
      * }> $trace
+     *
      * @return array{string, int}|null
      */
     private function getNonInternalFileAndLine(array $trace): ?array

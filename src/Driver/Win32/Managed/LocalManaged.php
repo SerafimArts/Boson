@@ -38,6 +38,7 @@ abstract class LocalManaged
     {
         /**
          * @var CData
+         *
          * @phpstan-ignore-next-line
          */
         return $this->ptr->lpVtbl->$name;
