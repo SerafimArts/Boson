@@ -15,6 +15,8 @@
 ## TLDR
 
 ```php
+require __DIR__ . '/vendor/autoload.php';
+
 // Window Factory
 $factory = new \Serafim\WinUI\Factory();
 
