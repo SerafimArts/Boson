@@ -5,6 +5,19 @@ declare(strict_types=1);
 namespace Serafim\WinUI\Memory;
 
 /**
+ * A set of objects with callbacks to desturctors.
+ *
+ * ```php
+ * $set = new MemorySet();
+ *
+ * $set->create($ref, function (object $ref) {
+ *     var_dump(vsprintf('Object %s (id #%d) has been destroyed', [
+ *         $ref::class,
+ *         \spl_object_id($ref),
+ *     ]);
+ * });
+ * ```
+ *
  * @template TReference of object
  */
 final readonly class MemorySet

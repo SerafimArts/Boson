@@ -5,6 +5,22 @@ declare(strict_types=1);
 namespace Serafim\WinUI\Memory;
 
 /**
+ * An object that allows you to add a callback to the reference destructor.
+ *
+ * ```
+ * $map = new \WeakMap();
+ *
+ * // When the [$ref] is released, the [$target] is also released,
+ * // causing the corresponding callback.
+ *
+ * $map[$ref] = DestructorCallback::create($target, function (object $target) {
+ *     var_dump(vsprintf('Reference of %s (id #%d) has been destroyed', [
+ *         $target::class,
+ *         \spl_object_id($target),
+ *     ]);
+ * });
+ * ```
+ *
  * @template TReference of object
  */
 final readonly class DestructorCallback
