@@ -10,6 +10,6 @@ namespace Serafim\WinUI\Driver\Win32\Lib;
 final readonly class ImageType
 {
     public const int IMAGE_BITMAP = 0x00;
-    public const int IMAGE_ICON   = 0x01;
+    public const int IMAGE_ICON = 0x01;
     public const int IMAGE_CURSOR = 0x02;
 }

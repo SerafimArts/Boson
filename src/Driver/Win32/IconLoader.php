@@ -53,7 +53,7 @@ final readonly class IconLoader
     public function load(string $pathname): CData
     {
         if (!\is_readable($pathname)) {
-            throw new \InvalidArgumentException('Could not load icon from "'. $pathname . '"');
+            throw new \InvalidArgumentException('Could not load icon from "' . $pathname . '"');
         }
 
         $size = $this->getIcoFileSize($pathname);

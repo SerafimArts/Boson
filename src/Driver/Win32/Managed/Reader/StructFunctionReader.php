@@ -7,7 +7,7 @@ namespace Serafim\WinUI\Driver\Win32\Managed\Reader;
 use Serafim\WinUI\Driver\Win32\Managed\ManagedFunction;
 
 /**
- * @internal This is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\WinUI\Driver\Win32\Managed
  */
 final class StructFunctionReader

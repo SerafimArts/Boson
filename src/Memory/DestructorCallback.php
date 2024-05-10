@@ -31,6 +31,7 @@ final readonly class DestructorCallback
      *
      * @param TReferenceArg $entry
      * @param callable(TReferenceArg):void $onRelease
+     *
      * @return self<TReferenceArg>
      */
     public static function create(object $entry, callable $onRelease): self

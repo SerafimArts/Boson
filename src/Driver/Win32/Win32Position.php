@@ -49,6 +49,7 @@ final class Win32Position implements PositionInterface
         return Property::new(
             get: function (): int {
                 $rect = $this->rect->get();
+
                 return $rect->left;
             },
             set: function (int $x): void {
@@ -65,6 +66,7 @@ final class Win32Position implements PositionInterface
         return Property::new(
             get: function (): int {
                 $rect = $this->rect->get();
+
                 return $rect->top;
             },
             set: function (int $y): void {

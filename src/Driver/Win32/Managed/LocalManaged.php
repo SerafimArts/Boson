@@ -28,7 +28,7 @@ abstract class LocalManaged
 
     protected function method(string $name): CData
     {
-        /** @var CData  */
+        /** @var CData */
         return $this->ptr->lpVtbl->$name;
     }
 

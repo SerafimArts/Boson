@@ -34,13 +34,14 @@ abstract class Library extends BaseProxy
      * @param non-empty-string $os
      * @param non-empty-string $arch
      * @param non-empty-string $name
+     *
      * @return non-empty-string
      */
     protected function binary(string $os, string $arch, string $name): string
     {
         return \dirname(__DIR__, 2) . '/bin/'
             . $os . '/'
-            . $arch. '/'
+            . $arch . '/'
             . $name;
     }
 

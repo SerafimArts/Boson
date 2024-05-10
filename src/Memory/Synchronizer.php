@@ -12,6 +12,7 @@ final class Synchronizer
      *
      * @param TResult|null $ptr
      * @param callable():TError $onError
+     *
      * @return TResult|TError
      */
     public static function wait(mixed &$ptr, callable $onError): mixed

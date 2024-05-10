@@ -35,6 +35,7 @@ final class Win32Size implements SizeInterface
         return Property::new(
             get: function (): int {
                 $rect = $this->rect->get();
+
                 return $rect->right;
             },
             set: function (int $width): void {
@@ -53,6 +54,7 @@ final class Win32Size implements SizeInterface
         return Property::new(
             get: function (): int {
                 $rect = $this->rect->get();
+
                 return $rect->bottom;
             },
             set: function (int $height): void {

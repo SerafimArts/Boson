@@ -1,5 +1,6 @@
 {
     "name": "serafim/winui",
+    "description": "Native PHP WebView bridge",
     "type": "library",
     "license": "MIT",
     "require": {

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\WinUI\Driver;
 
-use FFI\CData;
 use Serafim\WinUI\CreateInfo;
 use Serafim\WinUI\Driver\Win32\Handle\Win32ClassHandleFactory;
 use Serafim\WinUI\Driver\Win32\Handle\Win32InstanceHandleFactory;
@@ -49,8 +48,8 @@ final class Win32Factory implements DriverInterface
     public function __destruct()
     {
         if ($this->booted) {
-           $ole32 = Ole32::getInstance();
-           $ole32->CoUninitialize();
+            $ole32 = Ole32::getInstance();
+            $ole32->CoUninitialize();
         }
     }
 }

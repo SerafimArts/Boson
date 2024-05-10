@@ -16,7 +16,6 @@ use Serafim\WinUI\Driver\Win32\Lib\ShowWindowCommand;
 use Serafim\WinUI\Driver\Win32\Lib\User32;
 use Serafim\WinUI\Driver\Win32\Lib\WindowMessage;
 use Serafim\WinUI\Driver\Win32\Text\Converter;
-use Serafim\WinUI\Driver\Win32\WebView2\ControllerCompletedHandler;
 use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Controller;
 use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Environment;
 use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;

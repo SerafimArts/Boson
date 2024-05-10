@@ -11,6 +11,7 @@ final readonly class MemorySet
 {
     /**
      * @var \WeakMap<TReference, DestructorCallback<TReference>>
+     *
      * @phpstan-ignore-next-line
      */
     private \WeakMap $references;

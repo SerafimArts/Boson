@@ -12,9 +12,6 @@ use FFI\CData;
  */
 final readonly class Win32ClassHandle extends Win32Handle
 {
-    /**
-     * @param CData $ptr
-     */
     public function __construct(
         public Win32InstanceHandle $instance,
         public string $id,
