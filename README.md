@@ -20,6 +20,7 @@ Doesn't work yet)
 
 - The WebView Controller is initialized ONLY after the window has been moved, 
   otherwise `Failed to create WebView Controller` has been thrown.
+- TODO: The WebView is not rendering at the moment.
 
 ## Example
 
