@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace Serafim\WinUI;
 
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\WinUI\Driver\DriverInterface;
+use Symfony\Component\EventDispatcher\EventDispatcher;
 
 final class Factory implements FactoryInterface
 {
@@ -16,8 +18,10 @@ final class Factory implements FactoryInterface
     /**
      * @param iterable<mixed, DriverInterface> $drivers
      */
-    public function __construct(iterable $drivers = [])
-    {
+    public function __construct(
+        private readonly EventDispatcherInterface $events = new EventDispatcher(),
+        iterable $drivers = [],
+    ) {
         foreach ($drivers as $factory) {
             $this->drivers[] = $factory;
         }

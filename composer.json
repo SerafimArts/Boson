@@ -10,6 +10,8 @@
         "ffi/env": "^1.0",
         "ffi/location": "^1.0",
         "ffi/proxy": "^1.0",
+        "psr/event-dispatcher": "^1.0",
+        "symfony/event-dispatcher": "^5.4|^6.4|^7.0",
         "symfony/polyfill-ctype": "^1.29",
         "symfony/polyfill-mbstring": "^1.29"
     },

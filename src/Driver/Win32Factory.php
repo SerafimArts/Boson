@@ -13,28 +13,28 @@ use Serafim\WinUI\Driver\Win32\Lib\Ole32;
 use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;
 use Serafim\WinUI\Driver\Win32\Win32Window;
 
-final class Win32Factory implements DriverInterface
+final class Win32Factory extends Driver
 {
-    private bool $booted = false;
-
     public function supports(): bool
     {
         return \PHP_OS_FAMILY === 'Windows';
     }
 
-    private function bootOle32IfNotBooted(): void
+    protected function onBoot(): void
     {
-        if ($this->booted === false) {
-            $ole32 = Ole32::getInstance();
-            $ole32->CoInitializeEx(null, CoInit::COINIT_APARTMENTTHREADED);
+        $ole32 = Ole32::getInstance();
+        $ole32->CoInitializeEx(null, CoInit::COINIT_APARTMENTTHREADED);
+    }
 
-            $this->booted = true;
-        }
+    protected function onRelease(): void
+    {
+        $ole32 = Ole32::getInstance();
+        $ole32->CoUninitialize();
     }
 
     public function create(CreateInfo $info = new CreateInfo()): Win32Window
     {
-        $this->bootOle32IfNotBooted();
+        $this->bootIfNotBooted();
 
         return new Win32Window(
             info: $info,
@@ -43,13 +43,5 @@ final class Win32Factory implements DriverInterface
             windows: new Win32WindowHandleFactory(),
             webview: new WebView2Factory(),
         );
-    }
-
-    public function __destruct()
-    {
-        if ($this->booted) {
-            $ole32 = Ole32::getInstance();
-            $ole32->CoUninitialize();
-        }
     }
 }
