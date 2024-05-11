@@ -17,23 +17,25 @@ final class StructNameReader
      */
     private array $names = [];
 
-    public function read(object $ctx): string
+    public function read(string $class): string
     {
-        return $this->names[$ctx::class] ??= $this->readFromObject($ctx);
+        return $this->names[$class] ??= $this->readFromClass($class);
+    }
+
+    /**
+     * @param class-string $class
+     * @return non-empty-string
+     * @throws \ReflectionException
+     */
+    private function readFromClass(string $class): string
+    {
+        return $this->readFromReflection(new \ReflectionClass($class));
     }
 
     /**
      * @return non-empty-string
      */
-    private function readFromObject(object $ctx): string
-    {
-        return $this->readFromReflection(new \ReflectionObject($ctx));
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    private function readFromReflection(\ReflectionObject $ctx): string
+    private function readFromReflection(\ReflectionClass $ctx): string
     {
         foreach ($ctx->getAttributes(ManagedStruct::class) as $attribute) {
             /** @var ManagedStruct $instance */

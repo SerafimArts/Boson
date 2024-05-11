@@ -81,7 +81,9 @@ final class Win32Window implements WindowInterface
             $status = $env->createCoreWebView2Controller(
                 handle: $this->handle,
                 then: function (ICoreWebView2Controller $host) {
-                    dump($host);
+                    $webview = $host->getCoreWebView();
+
+                    dump($webview);
                 },
             );
 

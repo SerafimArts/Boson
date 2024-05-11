@@ -37,7 +37,7 @@ abstract class ExternalManaged
 
         $structures = self::getStructNameReader();
 
-        $name = $structures->read($this);
+        $name = $structures->read(static::class);
 
         if ($this->virtualTable === null) {
             $this->virtualTable = $ctx->new(\sprintf('%sVtbl', $name));

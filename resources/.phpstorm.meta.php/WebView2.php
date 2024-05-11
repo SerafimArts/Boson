@@ -36,6 +36,10 @@ namespace PHPSTORM_META {
         'BOOL',
         'LONG',
         'ULONG',
+        'INT',
+        'INT32',
+        'UINT',
+        'UINT32',
         'CHAR',
         'WCHAR',
         'LPCSTR',
@@ -55,9 +59,17 @@ namespace PHPSTORM_META {
         'RECT*',
         'RECT**',
         'COREWEBVIEW2_MOVE_FOCUS_REASON',
+        'COREWEBVIEW2_WEB_RESOURCE_CONTEXT',
+        'COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT',
         'EventRegistrationToken',
         'EventRegistrationToken*',
         'EventRegistrationToken**',
+        'ICoreWebView2',
+        'ICoreWebView2*',
+        'ICoreWebView2**',
+        'ICoreWebView2Vtbl',
+        'ICoreWebView2Vtbl*',
+        'ICoreWebView2Vtbl**',
         'ICoreWebView2Controller',
         'ICoreWebView2Controller*',
         'ICoreWebView2Controller**',
@@ -89,6 +101,10 @@ namespace PHPSTORM_META {
     override(\Serafim\WinUI\Driver\Win32\Lib\WebView2::new(0), map([
         // List of return type coercions
         '' => '\PHPSTORM_META\@',
+        'VARIANT' => '\PHPSTORM_META\VARIANT',
+        'VARIANT*' => '\PHPSTORM_META\VARIANT[]',
+        'VARIANT**' => '\PHPSTORM_META\VARIANT[]',
+        'VARIANT**' => '\PHPSTORM_META\VARIANT[][]',
         'GUID' => '\PHPSTORM_META\GUID',
         'GUID*' => '\PHPSTORM_META\GUID[]',
         'GUID**' => '\PHPSTORM_META\GUID[]',
@@ -105,14 +121,22 @@ namespace PHPSTORM_META {
         'IStream*' => '\PHPSTORM_META\IStream[]',
         'IStream**' => '\PHPSTORM_META\IStream[]',
         'IStream**' => '\PHPSTORM_META\IStream[][]',
-        'ICoreWebView2' => '\PHPSTORM_META\ICoreWebView2',
-        'ICoreWebView2*' => '\PHPSTORM_META\ICoreWebView2[]',
-        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[]',
-        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[][]',
+        'ICoreWebView2Settings' => '\PHPSTORM_META\ICoreWebView2Settings',
+        'ICoreWebView2Settings*' => '\PHPSTORM_META\ICoreWebView2Settings[]',
+        'ICoreWebView2Settings**' => '\PHPSTORM_META\ICoreWebView2Settings[]',
+        'ICoreWebView2Settings**' => '\PHPSTORM_META\ICoreWebView2Settings[][]',
         'ICoreWebView2WebResourceResponse' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse',
         'ICoreWebView2WebResourceResponse*' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse[]',
         'ICoreWebView2WebResourceResponse**' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse[]',
         'ICoreWebView2WebResourceResponse**' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse[][]',
+        'ICoreWebView2DocumentTitleChangedEventHandler' => '\PHPSTORM_META\ICoreWebView2DocumentTitleChangedEventHandler',
+        'ICoreWebView2DocumentTitleChangedEventHandler*' => '\PHPSTORM_META\ICoreWebView2DocumentTitleChangedEventHandler[]',
+        'ICoreWebView2DocumentTitleChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2DocumentTitleChangedEventHandler[]',
+        'ICoreWebView2DocumentTitleChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2DocumentTitleChangedEventHandler[][]',
+        'ICoreWebView2NavigationStartingEventHandler' => '\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler',
+        'ICoreWebView2NavigationStartingEventHandler*' => '\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler[]',
+        'ICoreWebView2NavigationStartingEventHandler**' => '\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler[]',
+        'ICoreWebView2NavigationStartingEventHandler**' => '\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler[][]',
         'ICoreWebView2NewBrowserVersionAvailableEventHandler' => '\PHPSTORM_META\ICoreWebView2NewBrowserVersionAvailableEventHandler',
         'ICoreWebView2NewBrowserVersionAvailableEventHandler*' => '\PHPSTORM_META\ICoreWebView2NewBrowserVersionAvailableEventHandler[]',
         'ICoreWebView2NewBrowserVersionAvailableEventHandler**' => '\PHPSTORM_META\ICoreWebView2NewBrowserVersionAvailableEventHandler[]',
@@ -133,10 +157,86 @@ namespace PHPSTORM_META {
         'ICoreWebView2ZoomFactorChangedEventHandler*' => '\PHPSTORM_META\ICoreWebView2ZoomFactorChangedEventHandler[]',
         'ICoreWebView2ZoomFactorChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ZoomFactorChangedEventHandler[]',
         'ICoreWebView2ZoomFactorChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ZoomFactorChangedEventHandler[][]',
+        'ICoreWebView2WebResourceRequestedEventHandler' => '\PHPSTORM_META\ICoreWebView2WebResourceRequestedEventHandler',
+        'ICoreWebView2WebResourceRequestedEventHandler*' => '\PHPSTORM_META\ICoreWebView2WebResourceRequestedEventHandler[]',
+        'ICoreWebView2WebResourceRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WebResourceRequestedEventHandler[]',
+        'ICoreWebView2WebResourceRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WebResourceRequestedEventHandler[][]',
+        'ICoreWebView2ContainsFullScreenElementChangedEventHandler' => '\PHPSTORM_META\ICoreWebView2ContainsFullScreenElementChangedEventHandler',
+        'ICoreWebView2ContainsFullScreenElementChangedEventHandler*' => '\PHPSTORM_META\ICoreWebView2ContainsFullScreenElementChangedEventHandler[]',
+        'ICoreWebView2ContainsFullScreenElementChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ContainsFullScreenElementChangedEventHandler[]',
+        'ICoreWebView2ContainsFullScreenElementChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ContainsFullScreenElementChangedEventHandler[][]',
+        'ICoreWebView2NewWindowRequestedEventHandler' => '\PHPSTORM_META\ICoreWebView2NewWindowRequestedEventHandler',
+        'ICoreWebView2NewWindowRequestedEventHandler*' => '\PHPSTORM_META\ICoreWebView2NewWindowRequestedEventHandler[]',
+        'ICoreWebView2NewWindowRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2NewWindowRequestedEventHandler[]',
+        'ICoreWebView2NewWindowRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2NewWindowRequestedEventHandler[][]',
+        'ICoreWebView2ContentLoadingEventHandler' => '\PHPSTORM_META\ICoreWebView2ContentLoadingEventHandler',
+        'ICoreWebView2ContentLoadingEventHandler*' => '\PHPSTORM_META\ICoreWebView2ContentLoadingEventHandler[]',
+        'ICoreWebView2ContentLoadingEventHandler**' => '\PHPSTORM_META\ICoreWebView2ContentLoadingEventHandler[]',
+        'ICoreWebView2ContentLoadingEventHandler**' => '\PHPSTORM_META\ICoreWebView2ContentLoadingEventHandler[][]',
+        'ICoreWebView2SourceChangedEventHandler' => '\PHPSTORM_META\ICoreWebView2SourceChangedEventHandler',
+        'ICoreWebView2SourceChangedEventHandler*' => '\PHPSTORM_META\ICoreWebView2SourceChangedEventHandler[]',
+        'ICoreWebView2SourceChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2SourceChangedEventHandler[]',
+        'ICoreWebView2SourceChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2SourceChangedEventHandler[][]',
+        'ICoreWebView2HistoryChangedEventHandler' => '\PHPSTORM_META\ICoreWebView2HistoryChangedEventHandler',
+        'ICoreWebView2HistoryChangedEventHandler*' => '\PHPSTORM_META\ICoreWebView2HistoryChangedEventHandler[]',
+        'ICoreWebView2HistoryChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2HistoryChangedEventHandler[]',
+        'ICoreWebView2HistoryChangedEventHandler**' => '\PHPSTORM_META\ICoreWebView2HistoryChangedEventHandler[][]',
+        'ICoreWebView2NavigationCompletedEventHandler' => '\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler',
+        'ICoreWebView2NavigationCompletedEventHandler*' => '\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler[]',
+        'ICoreWebView2NavigationCompletedEventHandler**' => '\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler[]',
+        'ICoreWebView2NavigationCompletedEventHandler**' => '\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler[][]',
+        'ICoreWebView2ScriptDialogOpeningEventHandler' => '\PHPSTORM_META\ICoreWebView2ScriptDialogOpeningEventHandler',
+        'ICoreWebView2ScriptDialogOpeningEventHandler*' => '\PHPSTORM_META\ICoreWebView2ScriptDialogOpeningEventHandler[]',
+        'ICoreWebView2ScriptDialogOpeningEventHandler**' => '\PHPSTORM_META\ICoreWebView2ScriptDialogOpeningEventHandler[]',
+        'ICoreWebView2ScriptDialogOpeningEventHandler**' => '\PHPSTORM_META\ICoreWebView2ScriptDialogOpeningEventHandler[][]',
+        'ICoreWebView2PermissionRequestedEventHandler' => '\PHPSTORM_META\ICoreWebView2PermissionRequestedEventHandler',
+        'ICoreWebView2PermissionRequestedEventHandler*' => '\PHPSTORM_META\ICoreWebView2PermissionRequestedEventHandler[]',
+        'ICoreWebView2PermissionRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2PermissionRequestedEventHandler[]',
+        'ICoreWebView2PermissionRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2PermissionRequestedEventHandler[][]',
+        'ICoreWebView2ProcessFailedEventHandler' => '\PHPSTORM_META\ICoreWebView2ProcessFailedEventHandler',
+        'ICoreWebView2ProcessFailedEventHandler*' => '\PHPSTORM_META\ICoreWebView2ProcessFailedEventHandler[]',
+        'ICoreWebView2ProcessFailedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ProcessFailedEventHandler[]',
+        'ICoreWebView2ProcessFailedEventHandler**' => '\PHPSTORM_META\ICoreWebView2ProcessFailedEventHandler[][]',
+        'ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler' => '\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler',
+        'ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler[]',
+        'ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler[]',
+        'ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler[][]',
+        'ICoreWebView2ExecuteScriptCompletedHandler' => '\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler',
+        'ICoreWebView2ExecuteScriptCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler[]',
+        'ICoreWebView2ExecuteScriptCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler[]',
+        'ICoreWebView2ExecuteScriptCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler[][]',
+        'ICoreWebView2CapturePreviewCompletedHandler' => '\PHPSTORM_META\ICoreWebView2CapturePreviewCompletedHandler',
+        'ICoreWebView2CapturePreviewCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2CapturePreviewCompletedHandler[]',
+        'ICoreWebView2CapturePreviewCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CapturePreviewCompletedHandler[]',
+        'ICoreWebView2CapturePreviewCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CapturePreviewCompletedHandler[][]',
+        'ICoreWebView2WebMessageReceivedEventHandler' => '\PHPSTORM_META\ICoreWebView2WebMessageReceivedEventHandler',
+        'ICoreWebView2WebMessageReceivedEventHandler*' => '\PHPSTORM_META\ICoreWebView2WebMessageReceivedEventHandler[]',
+        'ICoreWebView2WebMessageReceivedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WebMessageReceivedEventHandler[]',
+        'ICoreWebView2WebMessageReceivedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WebMessageReceivedEventHandler[][]',
+        'ICoreWebView2CallDevToolsProtocolMethodCompletedHandler' => '\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler',
+        'ICoreWebView2CallDevToolsProtocolMethodCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler[]',
+        'ICoreWebView2CallDevToolsProtocolMethodCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler[]',
+        'ICoreWebView2CallDevToolsProtocolMethodCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler[][]',
+        'ICoreWebView2DevToolsProtocolEventReceiver' => '\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver',
+        'ICoreWebView2DevToolsProtocolEventReceiver*' => '\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver[]',
+        'ICoreWebView2DevToolsProtocolEventReceiver**' => '\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver[]',
+        'ICoreWebView2DevToolsProtocolEventReceiver**' => '\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver[][]',
+        'ICoreWebView2WindowCloseRequestedEventHandler' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler',
+        'ICoreWebView2WindowCloseRequestedEventHandler*' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[]',
+        'ICoreWebView2WindowCloseRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[]',
+        'ICoreWebView2WindowCloseRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[][]',
         'EventRegistrationToken' => '\PHPSTORM_META\EventRegistrationToken',
         'EventRegistrationToken*' => '\PHPSTORM_META\EventRegistrationToken[]',
         'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[]',
         'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[][]',
+        'ICoreWebView2' => '\PHPSTORM_META\ICoreWebView2',
+        'ICoreWebView2*' => '\PHPSTORM_META\ICoreWebView2[]',
+        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[]',
+        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[][]',
+        'ICoreWebView2Vtbl' => '\PHPSTORM_META\ICoreWebView2Vtbl',
+        'ICoreWebView2Vtbl*' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
+        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
+        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[][]',
         'ICoreWebView2Controller' => '\PHPSTORM_META\ICoreWebView2Controller',
         'ICoreWebView2Controller*' => '\PHPSTORM_META\ICoreWebView2Controller[]',
         'ICoreWebView2Controller**' => '\PHPSTORM_META\ICoreWebView2Controller[]',
@@ -170,6 +270,21 @@ namespace PHPSTORM_META {
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl[]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl[][]',
     ]));
+    /**
+     * Generated "VARIANT" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class VARIANT extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'VARIANT' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
     /**
      * Generated "GUID" structure layout.
      *
@@ -248,15 +363,15 @@ namespace PHPSTORM_META {
         }
     }
     /**
-     * Generated "ICoreWebView2" structure layout.
+     * Generated "ICoreWebView2Settings" structure layout.
      *
      * @ignore
      * @internal Internal interface to ensure precise type inference.
      */
-    final class ICoreWebView2 extends \FFI\CData
+    final class ICoreWebView2Settings extends \FFI\CData
     {
         /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2' argument instead.
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Settings' argument instead.
          */
         private function __construct()
         {
@@ -272,6 +387,36 @@ namespace PHPSTORM_META {
     {
         /**
          * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2WebResourceResponse' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2DocumentTitleChangedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2DocumentTitleChangedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2DocumentTitleChangedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2NavigationStartingEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2NavigationStartingEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2NavigationStartingEventHandler' argument instead.
          */
         private function __construct()
         {
@@ -353,6 +498,261 @@ namespace PHPSTORM_META {
         }
     }
     /**
+     * Generated "ICoreWebView2WebResourceRequestedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2WebResourceRequestedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2WebResourceRequestedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2ContainsFullScreenElementChangedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2ContainsFullScreenElementChangedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2ContainsFullScreenElementChangedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2NewWindowRequestedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2NewWindowRequestedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2NewWindowRequestedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2ContentLoadingEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2ContentLoadingEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2ContentLoadingEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2SourceChangedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2SourceChangedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2SourceChangedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2HistoryChangedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2HistoryChangedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2HistoryChangedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2NavigationCompletedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2NavigationCompletedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2NavigationCompletedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2ScriptDialogOpeningEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2ScriptDialogOpeningEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2ScriptDialogOpeningEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2PermissionRequestedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2PermissionRequestedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2PermissionRequestedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2ProcessFailedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2ProcessFailedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2ProcessFailedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2ExecuteScriptCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2ExecuteScriptCompletedHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2ExecuteScriptCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2CapturePreviewCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2CapturePreviewCompletedHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CapturePreviewCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2WebMessageReceivedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2WebMessageReceivedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2WebMessageReceivedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2CallDevToolsProtocolMethodCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2CallDevToolsProtocolMethodCompletedHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CallDevToolsProtocolMethodCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2DevToolsProtocolEventReceiver" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2DevToolsProtocolEventReceiver extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2DevToolsProtocolEventReceiver' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2WindowCloseRequestedEventHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2WindowCloseRequestedEventHandler extends \FFI\CData
+    {
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2WindowCloseRequestedEventHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
      * Generated "EventRegistrationToken" structure layout.
      *
      * @ignore
@@ -366,6 +766,281 @@ namespace PHPSTORM_META {
         public int $value;
         /**
          * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'EventRegistrationToken' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2 extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2Vtbl" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2Vtbl extends \FFI\CData
+    {
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\GUID}, mixed):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $QueryInterface;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<0, 4294967296>)
+         */
+        public ?\Closure $AddRef;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<0, 4294967296>)
+         */
+        public ?\Closure $Release;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_Settings;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{null|\FFI\CData|object{cdata:int<0, 65536>}}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_Source;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $Navigate;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $NavigateToString;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_NavigationStarting;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_NavigationStarting;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ContentLoadingEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_ContentLoading;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_ContentLoading;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2SourceChangedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_SourceChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_SourceChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2HistoryChangedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_HistoryChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_HistoryChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_NavigationCompleted;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_NavigationCompleted;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2NavigationStartingEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_FrameNavigationStarting;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_FrameNavigationStarting;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2NavigationCompletedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_FrameNavigationCompleted;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_FrameNavigationCompleted;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ScriptDialogOpeningEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_ScriptDialogOpening;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_ScriptDialogOpening;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2PermissionRequestedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_PermissionRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_PermissionRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ProcessFailedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_ProcessFailed;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_ProcessFailed;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $AddScriptToExecuteOnDocumentCreated;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $RemoveScriptToExecuteOnDocumentCreated;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $ExecuteScript;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*, null|\FFI\CData|array{\PHPSTORM_META\IStream}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2CapturePreviewCompletedHandler}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $CapturePreview;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $Reload;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $PostWebMessageAsJson;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $PostWebMessageAsString;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2WebMessageReceivedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_WebMessageReceived;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_WebMessageReceived;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $CallDevToolsProtocolMethod;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 4294967296>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_BrowserProcessId;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_CanGoBack;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_CanGoForward;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $GoBack;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $GoForward;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver}}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $GetDevToolsProtocolEventReceiver;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $Stop;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2NewWindowRequestedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_NewWindowRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_NewWindowRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2DocumentTitleChangedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_DocumentTitleChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_DocumentTitleChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{null|\FFI\CData|object{cdata:int<0, 65536>}}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_DocumentTitle;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\VARIANT}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $AddHostObjectToScript;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $RemoveHostObjectFromScript;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $OpenDevToolsWindow;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ContainsFullScreenElementChangedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_ContainsFullScreenElementChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_ContainsFullScreenElementChanged;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_ContainsFullScreenElement;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2WebResourceRequestedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_WebResourceRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_WebResourceRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $AddWebResourceRequestedFilter;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $RemoveWebResourceRequestedFilter;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler}, null|\FFI\CData|array{\PHPSTORM_META\EventRegistrationToken}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $add_WindowCloseRequested;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, \PHPSTORM_META\EventRegistrationToken):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $remove_WindowCloseRequested;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Vtbl' argument instead.
          */
         private function __construct()
         {
@@ -669,6 +1344,33 @@ namespace PHPSTORM_META {
         \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_MOVE_FOCUS_REASON_PROGRAMMATIC,
         \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_MOVE_FOCUS_REASON_NEXT,
         \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_MOVE_FOCUS_REASON_PREVIOUS
+    );
+    registerArgumentsSet(
+        // ffi_webview2corewebview2_web_resource_context
+        'ffi_webview2corewebview2_web_resource_context',
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_ALL,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_DOCUMENT,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_STYLESHEET,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_IMAGE,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_MEDIA,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_FONT,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_SCRIPT,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_XML_HTTP_REQUEST,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_FETCH,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_TEXT_TRACK,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_EVENT_SOURCE,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_WEBSOCKET,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_MANIFEST,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_SIGNED_EXCHANGE,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_PING,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_CSP_VIOLATION_REPORT,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_WEB_RESOURCE_CONTEXT_OTHER
+    );
+    registerArgumentsSet(
+        // ffi_webview2corewebview2_capture_preview_image_format
+        'ffi_webview2corewebview2_capture_preview_image_format',
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT_PNG,
+        \Serafim\WinUI\Driver\Win32\Lib\WebView2::COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT_JPEG
     );
 }
 namespace Serafim\WinUI\Driver\Win32\Lib {
