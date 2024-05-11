@@ -35,8 +35,7 @@ typedef signed int          INT32;
 typedef unsigned int        UINT;
 typedef unsigned int        UINT32;
 typedef char                CHAR;
-typedef unsigned short      wchar_t;
-typedef wchar_t             WCHAR;
+typedef char                WCHAR; // wide string fix
 typedef const CHAR          *LPCSTR;
 typedef const WCHAR         *LPCWSTR;
 typedef WCHAR               *LPWSTR;
@@ -99,6 +98,8 @@ typedef enum COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT
 
 typedef struct IStream IStream;
 typedef struct ICoreWebView2Settings ICoreWebView2Settings;
+typedef struct ICoreWebView2 ICoreWebView2;
+typedef struct ICoreWebView2Controller ICoreWebView2Controller;
 typedef struct ICoreWebView2WebResourceResponse ICoreWebView2WebResourceResponse;
 typedef struct ICoreWebView2DocumentTitleChangedEventHandler ICoreWebView2DocumentTitleChangedEventHandler;
 typedef struct ICoreWebView2NavigationStartingEventHandler ICoreWebView2NavigationStartingEventHandler;
@@ -124,19 +125,57 @@ typedef struct ICoreWebView2WebMessageReceivedEventHandler ICoreWebView2WebMessa
 typedef struct ICoreWebView2CallDevToolsProtocolMethodCompletedHandler ICoreWebView2CallDevToolsProtocolMethodCompletedHandler;
 typedef struct ICoreWebView2DevToolsProtocolEventReceiver ICoreWebView2DevToolsProtocolEventReceiver;
 typedef struct ICoreWebView2WindowCloseRequestedEventHandler ICoreWebView2WindowCloseRequestedEventHandler;
+typedef struct ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler;
+typedef struct ICoreWebView2CreateCoreWebView2ControllerCompletedHandler ICoreWebView2CreateCoreWebView2ControllerCompletedHandler;
+typedef struct ICoreWebView2Environment ICoreWebView2Environment;
 
 typedef struct EventRegistrationToken
 {
     int64_t value;
 } EventRegistrationToken;
 
+
+/**
+ * -----------------------------------------------------------------------------
+ *  API
+ * -----------------------------------------------------------------------------
+ */
+
+typedef struct ICoreWebView2SettingsVtbl
+{
+    HRESULT ( * QueryInterface)(ICoreWebView2Settings* This, const IID* const riid, void** ppvObject);
+    ULONG ( * AddRef)(ICoreWebView2Settings* This);
+    ULONG ( * Release)(ICoreWebView2Settings* This);
+    HRESULT ( * get_IsScriptEnabled)(ICoreWebView2Settings* This, BOOL* isScriptEnabled);
+    HRESULT ( * put_IsScriptEnabled)(ICoreWebView2Settings* This, BOOL isScriptEnabled);
+    HRESULT ( * get_IsWebMessageEnabled)(ICoreWebView2Settings* This, BOOL* isWebMessageEnabled);
+    HRESULT ( * put_IsWebMessageEnabled)(ICoreWebView2Settings* This, BOOL isWebMessageEnabled);
+    HRESULT ( * get_AreDefaultScriptDialogsEnabled)(ICoreWebView2Settings* This, BOOL* areDefaultScriptDialogsEnabled);
+    HRESULT ( * put_AreDefaultScriptDialogsEnabled)(ICoreWebView2Settings* This, BOOL areDefaultScriptDialogsEnabled);
+    HRESULT ( * get_IsStatusBarEnabled)(ICoreWebView2Settings* This, BOOL* isStatusBarEnabled);
+    HRESULT ( * put_IsStatusBarEnabled)(ICoreWebView2Settings* This, BOOL isStatusBarEnabled);
+    HRESULT ( * get_AreDevToolsEnabled)(ICoreWebView2Settings* This, BOOL* areDevToolsEnabled);
+    HRESULT ( * put_AreDevToolsEnabled)(ICoreWebView2Settings* This, BOOL areDevToolsEnabled);
+    HRESULT ( * get_AreDefaultContextMenusEnabled)(ICoreWebView2Settings* This, BOOL* enabled);
+    HRESULT ( * put_AreDefaultContextMenusEnabled)(ICoreWebView2Settings* This, BOOL enabled);
+    HRESULT ( * get_AreHostObjectsAllowed)(ICoreWebView2Settings* This, BOOL* allowed);
+    HRESULT ( * put_AreHostObjectsAllowed)(ICoreWebView2Settings* This, BOOL allowed);
+    HRESULT ( * get_IsZoomControlEnabled)(ICoreWebView2Settings* This, BOOL* enabled);
+    HRESULT ( * put_IsZoomControlEnabled)(ICoreWebView2Settings* This, BOOL enabled);
+    HRESULT ( * get_IsBuiltInErrorPageEnabled)(ICoreWebView2Settings* This, BOOL* enabled);
+    HRESULT ( * put_IsBuiltInErrorPageEnabled)(ICoreWebView2Settings* This, BOOL enabled);
+} ICoreWebView2SettingsVtbl;
+
+struct ICoreWebView2Settings
+{
+    const struct ICoreWebView2SettingsVtbl* lpVtbl;
+};
+
 /**
  * -----------------------------------------------------------------------------
  *  WebView
  * -----------------------------------------------------------------------------
  */
-
-typedef struct ICoreWebView2 ICoreWebView2;
 
 typedef struct ICoreWebView2Vtbl
 {
@@ -213,8 +252,6 @@ struct ICoreWebView2
  *  WebView Controller
  * -----------------------------------------------------------------------------
  */
-
-typedef struct ICoreWebView2Controller ICoreWebView2Controller;
 
 typedef struct ICoreWebView2ControllerVtbl
 {
@@ -364,9 +401,6 @@ struct ICoreWebView2Controller
  * -----------------------------------------------------------------------------
  */
 
-typedef struct ICoreWebView2CreateCoreWebView2ControllerCompletedHandler
-    ICoreWebView2CreateCoreWebView2ControllerCompletedHandler;
-
 typedef struct ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl
 {
     HRESULT ( *QueryInterface )(
@@ -401,8 +435,6 @@ struct ICoreWebView2CreateCoreWebView2ControllerCompletedHandler
  *  WebView Environment
  * -----------------------------------------------------------------------------
  */
-
-typedef struct ICoreWebView2Environment ICoreWebView2Environment;
 
 typedef struct ICoreWebView2EnvironmentVtbl
 {
@@ -463,9 +495,6 @@ struct ICoreWebView2Environment
  * -----------------------------------------------------------------------------
  */
 
-typedef struct ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler
-    ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler;
-
 typedef struct ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl
 {
     HRESULT ( *QueryInterface )(
@@ -493,6 +522,12 @@ struct ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler
 {
     const struct ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl *lpVtbl;
 };
+
+/**
+ * -----------------------------------------------------------------------------
+ *  API
+ * -----------------------------------------------------------------------------
+ */
 
 HRESULT CreateCoreWebView2Environment(
     ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler* environmentCreatedHandler

@@ -11,15 +11,15 @@ use Serafim\WinUI\Driver\Win32\Managed\LocalManaged;
 
 final class ICoreWebView2Environment extends LocalManaged
 {
-    private readonly WebView2 $webView2;
+    private readonly WebView2 $webview2;
 
     public function __construct(
         CData $ptr,
-        ?WebView2 $webView2 = null,
+        ?WebView2 $webview2 = null,
     ) {
         parent::__construct($ptr);
 
-        $this->webView2 = $webView2 ?? WebView2::getInstance();
+        $this->webview2 = $webview2 ?? WebView2::getInstance();
     }
 
     /**
@@ -31,7 +31,7 @@ final class ICoreWebView2Environment extends LocalManaged
             $then(new ICoreWebView2Controller(
                 ptr: $host,
                 env: $this,
-                webView2: $this->webView2,
+                webview2: $this->webview2,
             ));
 
             return 0;
@@ -39,8 +39,8 @@ final class ICoreWebView2Environment extends LocalManaged
 
         return ($this->ptr->lpVtbl->CreateCoreWebView2Controller)(
             $this->ptr,
-            $this->webView2->cast('HWND', $handle->ptr),
-            \FFI::addr($handler->get($this->webView2)),
+            $this->webview2->cast('HWND', $handle->ptr),
+            \FFI::addr($handler->get($this->webview2)),
         );
     }
 }

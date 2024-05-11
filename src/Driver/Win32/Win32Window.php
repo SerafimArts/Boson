@@ -14,10 +14,11 @@ use Serafim\WinUI\Driver\Win32\Handle\Win32WindowHandleFactory;
 use Serafim\WinUI\Driver\Win32\Lib\IconSize;
 use Serafim\WinUI\Driver\Win32\Lib\ShowWindowCommand;
 use Serafim\WinUI\Driver\Win32\Lib\User32;
+use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Lib\WindowMessage;
 use Serafim\WinUI\Driver\Win32\Text\Converter;
+use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2;
 use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Controller;
-use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Environment;
 use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;
 use Serafim\WinUI\Property\Property;
 use Serafim\WinUI\Property\PropertyProviderTrait;
@@ -50,6 +51,8 @@ final class Win32Window implements WindowInterface
      */
     private ?string $currentIcon = null;
 
+    private readonly ICoreWebView2 $webview;
+
     private Win32Size $win32Size;
 
     private Win32Position $win32Position;
@@ -77,19 +80,21 @@ final class Win32Window implements WindowInterface
         $this->win32Size = new Win32Size($rect);
         $this->win32Position = new Win32Position($rect);
 
-        $webview->create(function (ICoreWebView2Environment $env) {
-            $status = $env->createCoreWebView2Controller(
-                handle: $this->handle,
-                then: function (ICoreWebView2Controller $host) {
-                    $webview = $host->getCoreWebView();
+        $webview->createController($this->handle, function (ICoreWebView2Controller $host) use ($rect) {
+            $this->webview = $host->getCoreWebView();
 
-                    dump($webview);
-                },
-            );
+            // Add a few settings for the webview
+            // The demo step is redundant since the values are the default settings
+            $settings = $this->webview->getSettings();
+            $settings->put_IsScriptEnabled(true);
+            $settings->put_AreDefaultScriptDialogsEnabled(true);
+            $settings->put_IsWebMessageEnabled(true);
 
-            if ($status !== 0) {
-                throw new \RuntimeException('WebView controller creation failed');
-            }
+            // Resize WebView to fit the bounds of the parent window
+            $bounds = $rect->get();
+            $host->put_Bounds(WebView2::getInstance()->cast('RECT', $bounds));
+
+            $this->webview->Navigate(Text::wide('https://github.com/SerafimArts/WinUI'));
         });
     }
 
@@ -181,6 +186,11 @@ final class Win32Window implements WindowInterface
     public function show(): void
     {
         $this->user32->ShowWindow($this->handle->ptr, ShowWindowCommand::SW_SHOW);
+    }
+
+    public function refresh(): void
+    {
+        $this->user32->UpdateWindow($this->handle->ptr);
     }
 
     public function hide(): void

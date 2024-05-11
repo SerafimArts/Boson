@@ -12,15 +12,32 @@ use Serafim\WinUI\Driver\Win32\Managed\ManagedStruct;
 #[ManagedStruct(name: 'ICoreWebView2')]
 final class ICoreWebView2 extends LocalCreated
 {
-    private readonly WebView2 $webView2;
+    private readonly WebView2 $webview2;
 
     public function __construct(
         CData $ptr,
         public readonly ICoreWebView2Controller $host,
-        ?WebView2 $webView2 = null,
+        ?WebView2 $webview2 = null,
     ) {
         parent::__construct($ptr);
 
-        $this->webView2 = $webView2 ?? WebView2::getInstance();
+        $this->webview2 = $webview2 ?? WebView2::getInstance();
+    }
+
+    public function getSettings(): ICoreWebView2Settings
+    {
+        $settings = ICoreWebView2Settings::allocate($this->webview2);
+
+        $result = $this->get_Settings(\FFI::addr($settings));
+
+        if ($result !== 0) {
+            throw new \RuntimeException('Could not get WebView settings');
+        }
+
+        return new ICoreWebView2Settings(
+            ptr: $settings,
+            core: $this,
+            webview2: $this->webview2,
+        );
     }
 }

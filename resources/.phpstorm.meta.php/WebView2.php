@@ -61,36 +61,42 @@ namespace PHPSTORM_META {
         'COREWEBVIEW2_MOVE_FOCUS_REASON',
         'COREWEBVIEW2_WEB_RESOURCE_CONTEXT',
         'COREWEBVIEW2_CAPTURE_PREVIEW_IMAGE_FORMAT',
-        'EventRegistrationToken',
-        'EventRegistrationToken*',
-        'EventRegistrationToken**',
+        'ICoreWebView2Settings',
+        'ICoreWebView2Settings*',
+        'ICoreWebView2Settings**',
         'ICoreWebView2',
         'ICoreWebView2*',
         'ICoreWebView2**',
-        'ICoreWebView2Vtbl',
-        'ICoreWebView2Vtbl*',
-        'ICoreWebView2Vtbl**',
         'ICoreWebView2Controller',
         'ICoreWebView2Controller*',
         'ICoreWebView2Controller**',
-        'ICoreWebView2ControllerVtbl',
-        'ICoreWebView2ControllerVtbl*',
-        'ICoreWebView2ControllerVtbl**',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler*',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl*',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**',
-        'ICoreWebView2Environment',
-        'ICoreWebView2Environment*',
-        'ICoreWebView2Environment**',
-        'ICoreWebView2EnvironmentVtbl',
-        'ICoreWebView2EnvironmentVtbl*',
-        'ICoreWebView2EnvironmentVtbl**',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler*',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler**',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler*',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**',
+        'ICoreWebView2Environment',
+        'ICoreWebView2Environment*',
+        'ICoreWebView2Environment**',
+        'EventRegistrationToken',
+        'EventRegistrationToken*',
+        'EventRegistrationToken**',
+        'ICoreWebView2SettingsVtbl',
+        'ICoreWebView2SettingsVtbl*',
+        'ICoreWebView2SettingsVtbl**',
+        'ICoreWebView2Vtbl',
+        'ICoreWebView2Vtbl*',
+        'ICoreWebView2Vtbl**',
+        'ICoreWebView2ControllerVtbl',
+        'ICoreWebView2ControllerVtbl*',
+        'ICoreWebView2ControllerVtbl**',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl*',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**',
+        'ICoreWebView2EnvironmentVtbl',
+        'ICoreWebView2EnvironmentVtbl*',
+        'ICoreWebView2EnvironmentVtbl**',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl*',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl**',
@@ -125,6 +131,14 @@ namespace PHPSTORM_META {
         'ICoreWebView2Settings*' => '\PHPSTORM_META\ICoreWebView2Settings[]',
         'ICoreWebView2Settings**' => '\PHPSTORM_META\ICoreWebView2Settings[]',
         'ICoreWebView2Settings**' => '\PHPSTORM_META\ICoreWebView2Settings[][]',
+        'ICoreWebView2' => '\PHPSTORM_META\ICoreWebView2',
+        'ICoreWebView2*' => '\PHPSTORM_META\ICoreWebView2[]',
+        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[]',
+        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[][]',
+        'ICoreWebView2Controller' => '\PHPSTORM_META\ICoreWebView2Controller',
+        'ICoreWebView2Controller*' => '\PHPSTORM_META\ICoreWebView2Controller[]',
+        'ICoreWebView2Controller**' => '\PHPSTORM_META\ICoreWebView2Controller[]',
+        'ICoreWebView2Controller**' => '\PHPSTORM_META\ICoreWebView2Controller[][]',
         'ICoreWebView2WebResourceResponse' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse',
         'ICoreWebView2WebResourceResponse*' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse[]',
         'ICoreWebView2WebResourceResponse**' => '\PHPSTORM_META\ICoreWebView2WebResourceResponse[]',
@@ -225,46 +239,42 @@ namespace PHPSTORM_META {
         'ICoreWebView2WindowCloseRequestedEventHandler*' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[]',
         'ICoreWebView2WindowCloseRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[]',
         'ICoreWebView2WindowCloseRequestedEventHandler**' => '\PHPSTORM_META\ICoreWebView2WindowCloseRequestedEventHandler[][]',
-        'EventRegistrationToken' => '\PHPSTORM_META\EventRegistrationToken',
-        'EventRegistrationToken*' => '\PHPSTORM_META\EventRegistrationToken[]',
-        'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[]',
-        'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[][]',
-        'ICoreWebView2' => '\PHPSTORM_META\ICoreWebView2',
-        'ICoreWebView2*' => '\PHPSTORM_META\ICoreWebView2[]',
-        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[]',
-        'ICoreWebView2**' => '\PHPSTORM_META\ICoreWebView2[][]',
-        'ICoreWebView2Vtbl' => '\PHPSTORM_META\ICoreWebView2Vtbl',
-        'ICoreWebView2Vtbl*' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
-        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
-        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[][]',
-        'ICoreWebView2Controller' => '\PHPSTORM_META\ICoreWebView2Controller',
-        'ICoreWebView2Controller*' => '\PHPSTORM_META\ICoreWebView2Controller[]',
-        'ICoreWebView2Controller**' => '\PHPSTORM_META\ICoreWebView2Controller[]',
-        'ICoreWebView2Controller**' => '\PHPSTORM_META\ICoreWebView2Controller[][]',
-        'ICoreWebView2ControllerVtbl' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl',
-        'ICoreWebView2ControllerVtbl*' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[]',
-        'ICoreWebView2ControllerVtbl**' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[]',
-        'ICoreWebView2ControllerVtbl**' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[][]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[][]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[]',
-        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[][]',
-        'ICoreWebView2Environment' => '\PHPSTORM_META\ICoreWebView2Environment',
-        'ICoreWebView2Environment*' => '\PHPSTORM_META\ICoreWebView2Environment[]',
-        'ICoreWebView2Environment**' => '\PHPSTORM_META\ICoreWebView2Environment[]',
-        'ICoreWebView2Environment**' => '\PHPSTORM_META\ICoreWebView2Environment[][]',
-        'ICoreWebView2EnvironmentVtbl' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl',
-        'ICoreWebView2EnvironmentVtbl*' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[]',
-        'ICoreWebView2EnvironmentVtbl**' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[]',
-        'ICoreWebView2EnvironmentVtbl**' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[][]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler[]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler[]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler[][]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandler[][]',
+        'ICoreWebView2Environment' => '\PHPSTORM_META\ICoreWebView2Environment',
+        'ICoreWebView2Environment*' => '\PHPSTORM_META\ICoreWebView2Environment[]',
+        'ICoreWebView2Environment**' => '\PHPSTORM_META\ICoreWebView2Environment[]',
+        'ICoreWebView2Environment**' => '\PHPSTORM_META\ICoreWebView2Environment[][]',
+        'EventRegistrationToken' => '\PHPSTORM_META\EventRegistrationToken',
+        'EventRegistrationToken*' => '\PHPSTORM_META\EventRegistrationToken[]',
+        'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[]',
+        'EventRegistrationToken**' => '\PHPSTORM_META\EventRegistrationToken[][]',
+        'ICoreWebView2SettingsVtbl' => '\PHPSTORM_META\ICoreWebView2SettingsVtbl',
+        'ICoreWebView2SettingsVtbl*' => '\PHPSTORM_META\ICoreWebView2SettingsVtbl[]',
+        'ICoreWebView2SettingsVtbl**' => '\PHPSTORM_META\ICoreWebView2SettingsVtbl[]',
+        'ICoreWebView2SettingsVtbl**' => '\PHPSTORM_META\ICoreWebView2SettingsVtbl[][]',
+        'ICoreWebView2Vtbl' => '\PHPSTORM_META\ICoreWebView2Vtbl',
+        'ICoreWebView2Vtbl*' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
+        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[]',
+        'ICoreWebView2Vtbl**' => '\PHPSTORM_META\ICoreWebView2Vtbl[][]',
+        'ICoreWebView2ControllerVtbl' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl',
+        'ICoreWebView2ControllerVtbl*' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[]',
+        'ICoreWebView2ControllerVtbl**' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[]',
+        'ICoreWebView2ControllerVtbl**' => '\PHPSTORM_META\ICoreWebView2ControllerVtbl[][]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[]',
+        'ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl[][]',
+        'ICoreWebView2EnvironmentVtbl' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl',
+        'ICoreWebView2EnvironmentVtbl*' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[]',
+        'ICoreWebView2EnvironmentVtbl**' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[]',
+        'ICoreWebView2EnvironmentVtbl**' => '\PHPSTORM_META\ICoreWebView2EnvironmentVtbl[][]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl*' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl[]',
         'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl**' => '\PHPSTORM_META\ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandlerVtbl[]',
@@ -370,8 +380,41 @@ namespace PHPSTORM_META {
      */
     final class ICoreWebView2Settings extends \FFI\CData
     {
+        public ?\FFI\CData $lpVtbl;
         /**
          * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Settings' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2 extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2Controller" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2Controller extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Controller' argument instead.
          */
         private function __construct()
         {
@@ -753,6 +796,54 @@ namespace PHPSTORM_META {
         }
     }
     /**
+     * Generated "ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2CreateCoreWebView2ControllerCompletedHandler" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2CreateCoreWebView2ControllerCompletedHandler extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
+     * Generated "ICoreWebView2Environment" structure layout.
+     *
+     * @ignore
+     * @internal Internal interface to ensure precise type inference.
+     */
+    final class ICoreWebView2Environment extends \FFI\CData
+    {
+        public ?\FFI\CData $lpVtbl;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Environment' argument instead.
+         */
+        private function __construct()
+        {
+        }
+    }
+    /**
      * Generated "EventRegistrationToken" structure layout.
      *
      * @ignore
@@ -772,16 +863,99 @@ namespace PHPSTORM_META {
         }
     }
     /**
-     * Generated "ICoreWebView2" structure layout.
+     * Generated "ICoreWebView2SettingsVtbl" structure layout.
      *
      * @ignore
      * @internal Internal interface to ensure precise type inference.
      */
-    final class ICoreWebView2 extends \FFI\CData
+    final class ICoreWebView2SettingsVtbl extends \FFI\CData
     {
-        public ?\FFI\CData $lpVtbl;
         /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2' argument instead.
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|array{\PHPSTORM_META\GUID}, mixed):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $QueryInterface;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}):(int<0, 4294967296>)
+         */
+        public ?\Closure $AddRef;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}):(int<0, 4294967296>)
+         */
+        public ?\Closure $Release;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_IsScriptEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_IsScriptEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_IsWebMessageEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_IsWebMessageEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_AreDefaultScriptDialogsEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_AreDefaultScriptDialogsEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_IsStatusBarEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_IsStatusBarEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_AreDevToolsEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_AreDevToolsEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_AreDefaultContextMenusEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_AreDefaultContextMenusEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_AreHostObjectsAllowed;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_AreHostObjectsAllowed;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_IsZoomControlEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_IsZoomControlEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, null|\FFI\CData|object{cdata:int<-128, 127>}):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $get_IsBuiltInErrorPageEnabled;
+        /**
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Settings}, int<-128, 127>):(int<-2147483648, 2147483647>)
+         */
+        public ?\Closure $put_IsBuiltInErrorPageEnabled;
+        /**
+         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2SettingsVtbl' argument instead.
          */
         private function __construct()
         {
@@ -812,15 +986,15 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $get_Settings;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{null|\FFI\CData|object{cdata:int<0, 65536>}}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $get_Source;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $Navigate;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $NavigateToString;
         /**
@@ -904,15 +1078,15 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $remove_ProcessFailed;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2AddScriptToExecuteOnDocumentCreatedCompletedHandler}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $AddScriptToExecuteOnDocumentCreated;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $RemoveScriptToExecuteOnDocumentCreated;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2ExecuteScriptCompletedHandler}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $ExecuteScript;
         /**
@@ -924,11 +1098,11 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $Reload;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $PostWebMessageAsJson;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $PostWebMessageAsString;
         /**
@@ -940,7 +1114,7 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $remove_WebMessageReceived;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, mixed, null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2CallDevToolsProtocolMethodCompletedHandler}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $CallDevToolsProtocolMethod;
         /**
@@ -964,7 +1138,7 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $GoForward;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver}}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2DevToolsProtocolEventReceiver}}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $GetDevToolsProtocolEventReceiver;
         /**
@@ -988,15 +1162,15 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $remove_DocumentTitleChanged;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|array{null|\FFI\CData|object{cdata:int<0, 65536>}}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $get_DocumentTitle;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{\PHPSTORM_META\VARIANT}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, null|\FFI\CData|array{\PHPSTORM_META\VARIANT}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $AddHostObjectToScript;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $RemoveHostObjectFromScript;
         /**
@@ -1024,11 +1198,11 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $remove_WebResourceRequested;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $AddWebResourceRequestedFilter;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, null|\FFI\CData|object{cdata:int<0, 65536>}, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2}, mixed, int<-2147483648, 2147483647>|\Serafim\WinUI\Driver\Win32\Lib\WebView2::*):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $RemoveWebResourceRequestedFilter;
         /**
@@ -1041,22 +1215,6 @@ namespace PHPSTORM_META {
         public ?\Closure $remove_WindowCloseRequested;
         /**
          * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Vtbl' argument instead.
-         */
-        private function __construct()
-        {
-        }
-    }
-    /**
-     * Generated "ICoreWebView2Controller" structure layout.
-     *
-     * @ignore
-     * @internal Internal interface to ensure precise type inference.
-     */
-    final class ICoreWebView2Controller extends \FFI\CData
-    {
-        public ?\FFI\CData $lpVtbl;
-        /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Controller' argument instead.
          */
         private function __construct()
         {
@@ -1182,22 +1340,6 @@ namespace PHPSTORM_META {
         }
     }
     /**
-     * Generated "ICoreWebView2CreateCoreWebView2ControllerCompletedHandler" structure layout.
-     *
-     * @ignore
-     * @internal Internal interface to ensure precise type inference.
-     */
-    final class ICoreWebView2CreateCoreWebView2ControllerCompletedHandler extends \FFI\CData
-    {
-        public ?\FFI\CData $lpVtbl;
-        /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CreateCoreWebView2ControllerCompletedHandler' argument instead.
-         */
-        private function __construct()
-        {
-        }
-    }
-    /**
      * Generated "ICoreWebView2CreateCoreWebView2ControllerCompletedHandlerVtbl" structure layout.
      *
      * @ignore
@@ -1229,22 +1371,6 @@ namespace PHPSTORM_META {
         }
     }
     /**
-     * Generated "ICoreWebView2Environment" structure layout.
-     *
-     * @ignore
-     * @internal Internal interface to ensure precise type inference.
-     */
-    final class ICoreWebView2Environment extends \FFI\CData
-    {
-        public ?\FFI\CData $lpVtbl;
-        /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2Environment' argument instead.
-         */
-        private function __construct()
-        {
-        }
-    }
-    /**
      * Generated "ICoreWebView2EnvironmentVtbl" structure layout.
      *
      * @ignore
@@ -1269,11 +1395,11 @@ namespace PHPSTORM_META {
          */
         public ?\Closure $CreateCoreWebView2Controller;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Environment}, null|\FFI\CData|array{\PHPSTORM_META\IStream}, int<-2147483648, 2147483647>, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|object{cdata:int<0, 65536>}, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2WebResourceResponse}}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Environment}, null|\FFI\CData|array{\PHPSTORM_META\IStream}, int<-2147483648, 2147483647>, mixed, mixed, null|\FFI\CData|array{null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2WebResourceResponse}}):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $CreateWebResourceResponse;
         /**
-         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Environment}, null|\FFI\CData|array{null|\FFI\CData|object{cdata:int<0, 65536>}}):(int<-2147483648, 2147483647>)
+         * @var FFI\CData|null|callable(null|\FFI\CData|array{\PHPSTORM_META\ICoreWebView2Environment}, mixed):(int<-2147483648, 2147483647>)
          */
         public ?\Closure $get_BrowserVersionString;
         /**
@@ -1286,22 +1412,6 @@ namespace PHPSTORM_META {
         public ?\Closure $remove_NewBrowserVersionAvailable;
         /**
          * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2EnvironmentVtbl' argument instead.
-         */
-        private function __construct()
-        {
-        }
-    }
-    /**
-     * Generated "ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler" structure layout.
-     *
-     * @ignore
-     * @internal Internal interface to ensure precise type inference.
-     */
-    final class ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler extends \FFI\CData
-    {
-        public ?\FFI\CData $lpVtbl;
-        /**
-         * @internal Please use {@see \Serafim\WinUI\Driver\Win32\Lib\WebView2::new()} with 'ICoreWebView2CreateCoreWebView2EnvironmentCompletedHandler' argument instead.
          */
         private function __construct()
         {
