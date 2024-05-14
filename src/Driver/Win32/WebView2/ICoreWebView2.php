@@ -9,24 +9,23 @@ use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Managed\LocalCreated;
 use Serafim\WinUI\Driver\Win32\Managed\ManagedStruct;
 
+/**
+ * @template-extends LocalCreated<WebView2>
+ */
 #[ManagedStruct(name: 'ICoreWebView2')]
 final class ICoreWebView2 extends LocalCreated
 {
-    private readonly WebView2 $webview2;
-
     public function __construct(
+        WebView2 $ffi,
         CData $ptr,
         public readonly ICoreWebView2Controller $host,
-        ?WebView2 $webview2 = null,
     ) {
-        parent::__construct($ptr);
-
-        $this->webview2 = $webview2 ?? WebView2::getInstance();
+        parent::__construct($ffi, $ptr);
     }
 
     public function getSettings(): ICoreWebView2Settings
     {
-        $settings = ICoreWebView2Settings::allocate($this->webview2);
+        $settings = ICoreWebView2Settings::allocate($this->ffi);
 
         $result = $this->get_Settings(\FFI::addr($settings));
 
@@ -35,9 +34,9 @@ final class ICoreWebView2 extends LocalCreated
         }
 
         return new ICoreWebView2Settings(
+            ffi: $this->ffi,
             ptr: $settings,
             core: $this,
-            webview2: $this->webview2,
         );
     }
 }

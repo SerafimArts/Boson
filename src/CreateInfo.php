@@ -16,5 +16,6 @@ final readonly class CreateInfo
         public int $height = 480,
         public bool $resizable = false,
         public bool $closable = true,
+        public bool $debug = false,
     ) {}
 }

@@ -26,8 +26,6 @@ use Serafim\WinUI\Window\WebViewInterface;
  * @property-read HandleInterface $handle Returns the backing Window handle to
  *                enable clients to set icon and other window properties.
  *                Returns {@see null} if the window has been destroyed.
- * @property-read WebViewInterface $webview Returns the WebView instance for the
- *                specified window.
  */
 interface WindowInterface
 {

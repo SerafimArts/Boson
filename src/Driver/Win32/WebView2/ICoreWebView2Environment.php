@@ -8,18 +8,30 @@ use FFI\CData;
 use Serafim\WinUI\Driver\Win32\Handle\Win32WindowHandle;
 use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Managed\LocalManaged;
+use Serafim\WinUI\Driver\Win32\Text;
+use Serafim\WinUI\Property\Property;
+use Serafim\WinUI\Property\PropertyProviderTrait;
 
+/**
+ * @property-read string $browserVersionString
+ *
+ * @template-extends LocalManaged<WebView2>
+ */
 final class ICoreWebView2Environment extends LocalManaged
 {
-    private readonly WebView2 $webview2;
+    use PropertyProviderTrait;
 
-    public function __construct(
-        CData $ptr,
-        ?WebView2 $webview2 = null,
-    ) {
-        parent::__construct($ptr);
-
-        $this->webview2 = $webview2 ?? WebView2::getInstance();
+    /**
+     * @return Property<string, never>
+     */
+    protected function browserVersionString(): Property
+    {
+        return Property::getter(function (): string {
+            return Text::fromWide(
+                text: $this->getManagedPropertyValue('BrowserVersionString', 'LPWSTR'),
+                encoding: 'UTF-16BE',
+            );
+        });
     }
 
     /**
@@ -29,9 +41,9 @@ final class ICoreWebView2Environment extends LocalManaged
     {
         $handler = new ControllerCompletedHandler(function (CData $host) use ($then): int {
             $then(new ICoreWebView2Controller(
+                ffi: $this->ffi,
                 ptr: $host,
                 env: $this,
-                webview2: $this->webview2,
             ));
 
             return 0;
@@ -39,8 +51,8 @@ final class ICoreWebView2Environment extends LocalManaged
 
         return ($this->ptr->lpVtbl->CreateCoreWebView2Controller)(
             $this->ptr,
-            $this->webview2->cast('HWND', $handle->ptr),
-            \FFI::addr($handler->get($this->webview2)),
+            $this->ffi->cast('HWND', $handle->ptr),
+            \FFI::addr($handler->get($this->ffi)),
         );
     }
 }

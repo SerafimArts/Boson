@@ -5,15 +5,30 @@ declare(strict_types=1);
 namespace Serafim\WinUI\Driver\Win32\Managed;
 
 use FFI\CData;
+use Serafim\WinUI\Driver\Win32\Managed\Reader\StructNameReader;
+use Serafim\WinUI\Property\Property;
 
 /**
  * @method int AddRef()
  * @method int Release()
  * @method int QueryInterface(CData $iid, CData $object)
+ *
+ * @template T of object
  */
 abstract class LocalManaged
 {
+    private static ?StructNameReader $nameReader = null;
+
+    /**
+     * @var array<non-empty-string, CData & callable>
+     */
+    private array $proc = [];
+
+    /**
+     * @param T $ffi
+     */
     public function __construct(
+        public readonly object $ffi,
         public readonly CData $ptr,
     ) {
         $this->AddRef();
@@ -21,27 +36,69 @@ abstract class LocalManaged
 
     /**
      * @param non-empty-string $name
-     * @param array<non-empty-string, mixed> $args
+     * @return CData & callable
      */
-    protected function call(string $name, array $args): mixed
+    protected function getProc(string $name): CData
     {
-        $method = $this->method($name);
-
         // @phpstan-ignore-next-line
-        return $method($this->ptr, ...$args);
+        return $this->proc[$name] ??= $this->ptr->lpVtbl->$name;
     }
 
     /**
-     * @param non-empty-string $name
+     * @param non-empty-string $method
+     * @param non-empty-string $type
      */
-    protected function method(string $name): CData
+    protected function getManagedPropertyValue(string $method, string $type): CData
     {
-        /**
-         * @var CData
-         *
-         * @phpstan-ignore-next-line
-         */
-        return $this->ptr->lpVtbl->$name;
+        // @phpstan-ignore-next-line
+        $result = $this->ffi->new($type);
+
+        assert($result !== null);
+
+        $proc = $this->getProc('get_' . $method);
+        $proc($this->ptr, \FFI::addr($result));
+
+        return $result;
+    }
+
+    /**
+     * @param non-empty-string $method
+     */
+    protected function setManagedPropertyValue(string $method, mixed $value): void
+    {
+        $proc = $this->getProc('put_' . $method);
+        $proc($this->ptr, $value);
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @return Property<bool, bool>
+     */
+    protected function getBoolProperty(string $method): Property
+    {
+        return Property::new(
+            get: fn(): bool => (bool)$this->getManagedPropertyValue($method, 'BOOL')->cdata,
+            set: fn(bool $value): null => $this->setManagedPropertyValue($method, (int)$value),
+        );
+    }
+
+    private static function getStructNameReader(): StructNameReader
+    {
+        return self::$nameReader ??= new StructNameReader();
+    }
+
+    public static function allocate(object $ffi): CData
+    {
+        $structures = self::getStructNameReader();
+
+        $name = $structures->read(static::class);
+
+        // @phpstan-ignore-next-line
+        $instance = $ffi->new($name, false);
+        // @phpstan-ignore-next-line
+        $instance->lpVtbl = $ffi->new($name . 'Vtbl', false);
+
+        return \FFI::addr($instance);
     }
 
     /**
@@ -50,7 +107,9 @@ abstract class LocalManaged
      */
     public function __call(string $method, array $args = []): mixed
     {
-        return $this->call($method, $args);
+        $proc = $this->getProc($method);
+
+        return $proc($this->ptr, ...$args);
     }
 
     public function __destruct()

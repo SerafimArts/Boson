@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace Serafim\WinUI\Driver\Win32\Lib;
 
+use FFI\CData;
 use Serafim\WinUI\Driver\Library;
+use Serafim\WinUI\Driver\Win32\WebView2\EnvironmentCompletedHandler;
+use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Environment;
 
 final class WebView2 extends Library
 {
@@ -17,6 +20,26 @@ final class WebView2 extends Library
             \PHP_INT_SIZE === 4 => 'x86',
             default => 'x64',
         }, 'WebView2Loader.dll'));
+    }
+
+    /**
+     * @param callable(ICoreWebView2Environment):void $then
+     */
+    public function createCoreWebView2Environment(callable $then): void
+    {
+        $handler = new EnvironmentCompletedHandler(function (CData $env) use ($then): int {
+            $then(new ICoreWebView2Environment($this, $env));
+
+            return 0;
+        });
+
+        $status = $this->ffi->CreateCoreWebView2Environment(\FFI::addr(
+            ptr: $handler->get($this->ffi),
+        ));
+
+        if ($status !== 0) {
+            throw new \RuntimeException('WebView environment creation failed');
+        }
     }
 
     public static function getHeader(): string

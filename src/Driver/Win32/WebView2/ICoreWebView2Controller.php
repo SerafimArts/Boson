@@ -7,36 +7,45 @@ namespace Serafim\WinUI\Driver\Win32\WebView2;
 use FFI\CData;
 use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Managed\LocalManaged;
-use Serafim\WinUI\Driver\Win32\Win32WebView;
+use Serafim\WinUI\Property\Property;
+use Serafim\WinUI\Property\PropertyProviderTrait;
 
+/**
+ * @property-read ICoreWebView2 $coreWebView2
+ *
+ * @template-extends LocalManaged<WebView2>
+ */
 final class ICoreWebView2Controller extends LocalManaged
 {
-    private readonly WebView2 $webview2;
+    use PropertyProviderTrait;
 
     public function __construct(
+        WebView2 $ffi,
         CData $ptr,
         public readonly ICoreWebView2Environment $env,
-        ?WebView2 $webview2 = null,
     ) {
-        parent::__construct($ptr);
-
-        $this->webview2 = $webview2 ?? WebView2::getInstance();
+        parent::__construct($ffi, $ptr);
     }
 
-    public function getCoreWebView(): ICoreWebView2
+    /**
+     * @return Property<ICoreWebView2, never>
+     */
+    protected function coreWebView2(): Property
     {
-        $webview = ICoreWebView2::allocate($this->webview2);
+        return Property::getter(function (): ICoreWebView2 {
+            $webview = ICoreWebView2::allocate($this->ffi);
 
-        $result = $this->get_CoreWebView2(\FFI::addr($webview));
+            $result = $this->get_CoreWebView2(\FFI::addr($webview));
 
-        if ($result !== 0) {
-            throw new \RuntimeException('Could not get WebView core');
-        }
+            if ($result !== 0) {
+                throw new \RuntimeException('Could not get WebView core');
+            }
 
-        return new ICoreWebView2(
-            ptr: $webview,
-            host: $this,
-            webview2: $this->webview2,
-        );
+            return new ICoreWebView2(
+                ffi: $this->ffi,
+                ptr: $webview,
+                host: $this,
+            );
+        });
     }
 }

@@ -10,7 +10,8 @@ use Serafim\WinUI\Driver\Win32\Handle\Win32InstanceHandleFactory;
 use Serafim\WinUI\Driver\Win32\Handle\Win32WindowHandleFactory;
 use Serafim\WinUI\Driver\Win32\Lib\CoInit;
 use Serafim\WinUI\Driver\Win32\Lib\Ole32;
-use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;
+use Serafim\WinUI\Driver\Win32\Lib\WebView2;
+use Serafim\WinUI\Driver\Win32\WebView2\InstallationDetector;
 use Serafim\WinUI\Driver\Win32\Win32Window;
 
 final class Win32Factory extends Driver
@@ -22,6 +23,11 @@ final class Win32Factory extends Driver
 
     protected function onBoot(): void
     {
+        // Detect WebView2 installation
+        $installation = new InstallationDetector();
+        $installation->assertIsInstalledOrFail();
+
+        // Initializes the COM library for use by the calling thread
         $ole32 = Ole32::getInstance();
         $ole32->CoInitializeEx(null, CoInit::COINIT_APARTMENTTHREADED);
     }
@@ -42,7 +48,7 @@ final class Win32Factory extends Driver
             modules: new Win32InstanceHandleFactory(),
             classes: new Win32ClassHandleFactory($this->events),
             windows: new Win32WindowHandleFactory(),
-            webview: new WebView2Factory(),
+            webview: WebView2::getInstance(),
         );
     }
 }
