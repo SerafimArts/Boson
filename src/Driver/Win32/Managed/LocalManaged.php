@@ -72,13 +72,42 @@ abstract class LocalManaged
 
     /**
      * @param non-empty-string $method
-     * @return Property<bool, bool>
+     * @param non-empty-string $type
+     * @return Property<CData, CData>
      */
-    protected function getBoolProperty(string $method): Property
+    protected function getManagedProperty(string $method, string $type): Property
     {
         return Property::new(
-            get: fn(): bool => (bool)$this->getManagedPropertyValue($method, 'BOOL')->cdata,
-            set: fn(bool $value): null => $this->setManagedPropertyValue($method, (int)$value),
+            get: fn(): CData => $this->getManagedPropertyValue($method, $type),
+            set: fn(CData $value): null => $this->setManagedPropertyValue(
+                method: $method,
+                value: $this->ffi->cast($type, $value),
+            ),
+        );
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @param non-empty-string $type
+     * @return Property<mixed, mixed>
+     */
+    protected function getManagedScalarProperty(string $method, string $type): Property
+    {
+        return Property::new(
+            get: fn(): mixed => $this->getManagedPropertyValue($method, $type)->cdata,
+            set: fn(mixed $value): null => $this->setManagedPropertyValue($method, $value),
+        );
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @return Property<mixed, mixed>
+     */
+    protected function getManagedBoolProperty(string $method): Property
+    {
+        return Property::new(
+            get: fn(): bool => (bool) $this->getManagedPropertyValue($method, 'BOOL')->cdata,
+            set: fn(bool $value): null => $this->setManagedPropertyValue($method, (int) $value),
         );
     }
 
@@ -105,11 +134,20 @@ abstract class LocalManaged
      * @param non-empty-string $method
      * @param array<non-empty-string, mixed> $args
      */
-    public function __call(string $method, array $args = []): mixed
+    protected function call(string $method, array $args = []): mixed
     {
         $proc = $this->getProc($method);
 
         return $proc($this->ptr, ...$args);
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @param array<non-empty-string, mixed> $args
+     */
+    public function __call(string $method, array $args = []): mixed
+    {
+        return $this->call($method, $args);
     }
 
     public function __destruct()

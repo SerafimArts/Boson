@@ -8,13 +8,20 @@ use FFI\CData;
 use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Managed\LocalCreated;
 use Serafim\WinUI\Driver\Win32\Managed\ManagedStruct;
+use Serafim\WinUI\Driver\Win32\Text;
+use Serafim\WinUI\Property\Property;
+use Serafim\WinUI\Property\PropertyProviderTrait;
 
 /**
+ * @property-read ICoreWebView2Settings $settings
+ *
  * @template-extends LocalCreated<WebView2>
  */
 #[ManagedStruct(name: 'ICoreWebView2')]
 final class ICoreWebView2 extends LocalCreated
 {
+    use PropertyProviderTrait;
+
     public function __construct(
         WebView2 $ffi,
         CData $ptr,
@@ -23,20 +30,34 @@ final class ICoreWebView2 extends LocalCreated
         parent::__construct($ffi, $ptr);
     }
 
-    public function getSettings(): ICoreWebView2Settings
+    /**
+     * @api
+     */
+    public function navigate(string $url): void
     {
-        $settings = ICoreWebView2Settings::allocate($this->ffi);
+        $this->call('Navigate', [Text::wide($url)]);
+    }
 
-        $result = $this->get_Settings(\FFI::addr($settings));
+    /**
+     * @api
+     * @return Property<ICoreWebView2Settings, never>
+     */
+    protected function settings(): Property
+    {
+        return Property::getter(function () {
+            $settings = ICoreWebView2Settings::allocate($this->ffi);
 
-        if ($result !== 0) {
-            throw new \RuntimeException('Could not get WebView settings');
-        }
+            $result = $this->get_Settings(\FFI::addr($settings));
 
-        return new ICoreWebView2Settings(
-            ffi: $this->ffi,
-            ptr: $settings,
-            core: $this,
-        );
+            if ($result !== 0) {
+                throw new \RuntimeException('Could not get WebView settings');
+            }
+
+            return new ICoreWebView2Settings(
+                ffi: $this->ffi,
+                ptr: $settings,
+                core: $this,
+            );
+        });
     }
 }

@@ -45,10 +45,10 @@ final class Win32Factory extends Driver
         return new Win32Window(
             events: $this->events,
             info: $info,
+            webview: WebView2::getInstance(),
             modules: new Win32InstanceHandleFactory(),
             classes: new Win32ClassHandleFactory($this->events),
             windows: new Win32WindowHandleFactory(),
-            webview: WebView2::getInstance(),
         );
     }
 }

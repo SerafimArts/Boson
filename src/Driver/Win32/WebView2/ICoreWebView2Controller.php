@@ -12,6 +12,9 @@ use Serafim\WinUI\Property\PropertyProviderTrait;
 
 /**
  * @property-read ICoreWebView2 $coreWebView2
+ * @property bool $isVisible
+ * @property CData $bounds
+ * @property float $zoomFactor
  *
  * @template-extends LocalManaged<WebView2>
  */
@@ -28,6 +31,35 @@ final class ICoreWebView2Controller extends LocalManaged
     }
 
     /**
+     * @api
+     * @return Property<bool, bool>
+     */
+    protected function isVisible(): Property
+    {
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsVisible');
+    }
+
+    /**
+     * @api
+     * @return Property<CData, CData>
+     */
+    protected function bounds(): Property
+    {
+        return $this->getManagedProperty('Bounds', 'RECT');
+    }
+
+    /**
+     * @api
+     * @return Property<float, float>
+     */
+    protected function zoomFactor(): Property
+    {
+        return $this->getManagedScalarProperty('ZoomFactor', 'double');
+    }
+
+    /**
+     * @api
      * @return Property<ICoreWebView2, never>
      */
     protected function coreWebView2(): Property
@@ -47,5 +79,18 @@ final class ICoreWebView2Controller extends LocalManaged
                 host: $this,
             );
         });
+    }
+
+    /**
+     * @api
+     */
+    public function close(): void
+    {
+        $this->call('Close');
+    }
+
+    public function __destruct()
+    {
+        $this->close();
     }
 }

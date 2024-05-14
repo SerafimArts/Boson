@@ -22,6 +22,7 @@ final class ICoreWebView2Environment extends LocalManaged
     use PropertyProviderTrait;
 
     /**
+     * @api
      * @return Property<string, never>
      */
     protected function browserVersionString(): Property
@@ -35,6 +36,7 @@ final class ICoreWebView2Environment extends LocalManaged
     }
 
     /**
+     * @api
      * @param callable(ICoreWebView2Controller):void $then
      */
     public function createCoreWebView2Controller(Win32WindowHandle $handle, callable $then): int
@@ -49,10 +51,9 @@ final class ICoreWebView2Environment extends LocalManaged
             return 0;
         });
 
-        return ($this->ptr->lpVtbl->CreateCoreWebView2Controller)(
-            $this->ptr,
+        return $this->call('CreateCoreWebView2Controller', [
             $this->ffi->cast('HWND', $handle->ptr),
             \FFI::addr($handler->get($this->ffi)),
-        );
+        ]);
     }
 }

@@ -58,10 +58,10 @@ final class Win32Window implements WindowInterface
     public function __construct(
         private readonly EventDispatcherInterface $events,
         private readonly CreateInfo $info,
+        WebView2 $webview,
         Win32InstanceHandleFactory $modules,
         Win32ClassHandleFactory $classes,
         Win32WindowHandleFactory $windows,
-        WebView2 $webview,
         ?User32 $user32 = null,
         ?Converter $text = null,
     ) {
@@ -93,7 +93,7 @@ final class Win32Window implements WindowInterface
                 $this->updateWebViewSettings();
                 $this->updateWebViewSize();
 
-                $this->webview->Navigate(Text::wide('https://github.com/SerafimArts/WinUI'));
+                $this->webview->navigate('https://github.com/SerafimArts/WinUI');
             });
         });
 
@@ -129,7 +129,7 @@ final class Win32Window implements WindowInterface
             return;
         }
 
-        $settings = $this->webview->getSettings();
+        $settings = $this->webview->settings;
         $settings->isScriptEnabled = true;
         $settings->isWebMessageEnabled = true;
         $settings->isStatusBarEnabled = false;
@@ -145,11 +145,10 @@ final class Win32Window implements WindowInterface
             return;
         }
 
-        $instance = WebView2::getInstance();
+        dump($this->webview->host->zoomFactor);
 
         // Resize WebView to fit the bounds of the parent window
-        $bounds = $this->rect->get();
-        $this->webview->host->put_Bounds($instance->cast('RECT', $bounds));
+        $this->webview->host->bounds = $this->rect->get();
     }
 
     /**

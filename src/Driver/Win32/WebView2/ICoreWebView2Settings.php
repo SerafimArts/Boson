@@ -38,74 +38,92 @@ final class ICoreWebView2Settings extends LocalCreated
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function isScriptEnabled(): Property
     {
-        return $this->getBoolProperty('IsScriptEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsScriptEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function isWebMessageEnabled(): Property
     {
-        return $this->getBoolProperty('IsWebMessageEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsWebMessageEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function areDefaultScriptDialogsEnabled(): Property
     {
-        return $this->getBoolProperty('AreDefaultScriptDialogsEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('AreDefaultScriptDialogsEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function isStatusBarEnabled(): Property
     {
-        return $this->getBoolProperty('IsStatusBarEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsStatusBarEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function areDevToolsEnabled(): Property
     {
-        return $this->getBoolProperty('AreDevToolsEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('AreDevToolsEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function areDefaultContextMenusEnabled(): Property
     {
-        return $this->getBoolProperty('AreDefaultContextMenusEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('AreDefaultContextMenusEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function areHostObjectsAllowed(): Property
     {
-        return $this->getBoolProperty('AreHostObjectsAllowed');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('AreHostObjectsAllowed');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function isZoomControlEnabled(): Property
     {
-        return $this->getBoolProperty('IsZoomControlEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsZoomControlEnabled');
     }
 
     /**
+     * @api
      * @return Property<bool, bool>
      */
     protected function isBuiltInErrorPageEnabled(): Property
     {
-        return $this->getBoolProperty('IsBuiltInErrorPageEnabled');
+        // @phpstan-ignore-next-line
+        return $this->getManagedBoolProperty('IsBuiltInErrorPageEnabled');
     }
 }
