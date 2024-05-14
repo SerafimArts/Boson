@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace Serafim\WinUI\Driver\Win32;
 
 use Serafim\WinUI\CreateInfo;
-use Serafim\WinUI\Driver\Win32\Handle\Win32ClassHandle;
 use Serafim\WinUI\Driver\Win32\Handle\Win32ClassHandleFactory;
-use Serafim\WinUI\Driver\Win32\Handle\Win32InstanceHandle;
 use Serafim\WinUI\Driver\Win32\Handle\Win32InstanceHandleFactory;
 use Serafim\WinUI\Driver\Win32\Handle\Win32WindowHandle;
 use Serafim\WinUI\Driver\Win32\Handle\Win32WindowHandleFactory;
@@ -20,11 +18,13 @@ use Serafim\WinUI\Driver\Win32\Text\Converter;
 use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2;
 use Serafim\WinUI\Driver\Win32\WebView2\ICoreWebView2Controller;
 use Serafim\WinUI\Driver\Win32\WebView2\WebView2Factory;
+use Serafim\WinUI\Event\WindowResizeEvent;
 use Serafim\WinUI\Property\Property;
 use Serafim\WinUI\Property\PropertyProviderTrait;
 use Serafim\WinUI\Window\PositionInterface;
 use Serafim\WinUI\Window\SizeInterface;
 use Serafim\WinUI\WindowInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Win32Window implements WindowInterface
 {
@@ -35,10 +35,6 @@ final class Win32Window implements WindowInterface
     private readonly User32 $user32;
 
     private readonly Converter $text;
-
-    private readonly Win32InstanceHandle $instance;
-
-    private readonly Win32ClassHandle $class;
 
     public readonly Win32WindowHandle $handle;
 
@@ -51,51 +47,109 @@ final class Win32Window implements WindowInterface
      */
     private ?string $currentIcon = null;
 
-    private readonly ICoreWebView2 $webview;
+    private ?ICoreWebView2Controller $host = null;
+
+    private ?ICoreWebView2 $webview = null;
 
     private Win32Size $win32Size;
 
     private Win32Position $win32Position;
 
+    private Win32Rect $rect;
+
     public function __construct(
+        private readonly EventDispatcherInterface $events,
         CreateInfo $info,
-        Win32InstanceHandleFactory $modules = new Win32InstanceHandleFactory(),
-        Win32ClassHandleFactory $classes = new Win32ClassHandleFactory(),
-        Win32WindowHandleFactory $windows = new Win32WindowHandleFactory(),
+        Win32InstanceHandleFactory $modules,
+        Win32ClassHandleFactory $classes,
+        Win32WindowHandleFactory $windows,
         WebView2Factory $webview = new WebView2Factory(),
         ?User32 $user32 = null,
         ?Converter $text = null,
     ) {
         $this->title = $info->title;
-        $this->instance = $modules->getCurrentInstanceHandle();
-        $this->class = $classes->create($this->instance, $this);
-        $this->handle = $windows->create($this->class, $info);
+
+        $this->handle = $windows->create(
+            info: $info,
+            class: $classes->create(
+                info: $info,
+                instance: $modules->getCurrentInstanceHandle(),
+                window: $this,
+            ),
+        );
+
         $this->user32 = $user32 ?? User32::getInstance();
         $this->text = $text ?? Text::getInstance();
 
         $this->messages = new MessageDispatcher();
         $this->icons = new IconLoader($this->handle, $this->user32, $this->text);
 
-        $rect = new Win32Rect($this->user32, $this->handle);
-        $this->win32Size = new Win32Size($rect);
-        $this->win32Position = new Win32Position($rect);
+        $this->rect = new Win32Rect($this->user32, $this->handle);
+        $this->win32Size = new Win32Size($this->rect);
+        $this->win32Position = new Win32Position($this->rect);
 
-        $webview->createController($this->handle, function (ICoreWebView2Controller $host) use ($rect) {
+        $webview->createController($this->handle, function (ICoreWebView2Controller $host): void {
+            $this->host = $host;
             $this->webview = $host->getCoreWebView();
 
-            // Add a few settings for the webview
-            // The demo step is redundant since the values are the default settings
-            $settings = $this->webview->getSettings();
-            $settings->put_IsScriptEnabled(true);
-            $settings->put_AreDefaultScriptDialogsEnabled(true);
-            $settings->put_IsWebMessageEnabled(true);
-
-            // Resize WebView to fit the bounds of the parent window
-            $bounds = $rect->get();
-            $host->put_Bounds(WebView2::getInstance()->cast('RECT', $bounds));
+            $this->updateWebViewSettings();
+            $this->updateWebViewSize();
 
             $this->webview->Navigate(Text::wide('https://github.com/SerafimArts/WinUI'));
         });
+
+        $this->addEventListeners();
+    }
+
+    private function addEventListeners(): void
+    {
+        $this->events->addListener(WindowResizeEvent::class, $this->onWindowResize(...));
+    }
+
+    private function removeEventListeners(): void
+    {
+        $this->events->removeListener(WindowResizeEvent::class, $this->onWindowResize(...));
+    }
+
+    private function onWindowResize(WindowResizeEvent $e): void
+    {
+        if ($e->target !== $this) {
+            return;
+        }
+
+        $this->updateWebViewSize();
+    }
+
+    /**
+     * Add a few settings for the webview.
+     * The demo step is redundant since the values are the default settings.
+     */
+    private function updateWebViewSettings(): void
+    {
+        if ($this->webview === null) {
+            return;
+        }
+
+        $settings = $this->webview->getSettings();
+        $settings->put_IsScriptEnabled(true);
+        $settings->put_IsWebMessageEnabled(true);
+        $settings->put_IsStatusBarEnabled(false);
+        $settings->put_IsZoomControlEnabled(false);
+        $settings->put_AreDefaultContextMenusEnabled(false);
+        $settings->put_AreDefaultScriptDialogsEnabled(false);
+    }
+
+    private function updateWebViewSize(): void
+    {
+        if ($this->host === null) {
+            return;
+        }
+
+        $instance = WebView2::getInstance();
+
+        // Resize WebView to fit the bounds of the parent window
+        $bounds = $this->rect->get();
+        $this->host->put_Bounds($instance->cast('RECT', $bounds));
     }
 
     /**
@@ -188,11 +242,6 @@ final class Win32Window implements WindowInterface
         $this->user32->ShowWindow($this->handle->ptr, ShowWindowCommand::SW_SHOW);
     }
 
-    public function refresh(): void
-    {
-        $this->user32->UpdateWindow($this->handle->ptr);
-    }
-
     public function hide(): void
     {
         $this->user32->ShowWindow($this->handle->ptr, ShowWindowCommand::SW_HIDE);
@@ -200,6 +249,7 @@ final class Win32Window implements WindowInterface
 
     public function close(): void
     {
+        $this->removeEventListeners();
         $this->user32->DestroyWindow($this->handle->ptr);
     }
 

@@ -49,7 +49,7 @@ final class Factory implements FactoryInterface
      */
     private function getDefaultFactories(): iterable
     {
-        yield new Driver\Win32Factory();
+        yield new Driver\Win32Factory($this->events);
     }
 
     private function select(): DriverInterface

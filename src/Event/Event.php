@@ -7,7 +7,7 @@ namespace Serafim\WinUI\Event;
 /**
  * @template T of object
  */
-abstract class Event
+abstract class Event implements \Stringable
 {
     /**
      * This value is the number of milliseconds elapsed from the beginning of
@@ -23,5 +23,10 @@ abstract class Event
         public readonly object $target,
     ) {
         $this->time = \hrtime(true);
+    }
+
+    public function __toString(): string
+    {
+        return static::class;
     }
 }

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\WinUI\Driver;
 
-use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 abstract class Driver implements DriverInterface
 {

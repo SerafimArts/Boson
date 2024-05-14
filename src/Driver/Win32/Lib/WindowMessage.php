@@ -251,4 +251,15 @@ final readonly class WindowMessage
     public const int WM_GETTITLEBARINFOEX = 0x033F;
     public const int WM_APP = 0x8000;
     public const int WM_USER = 0x0400;
+
+    public static function get(int $id): string
+    {
+        $ref = new \ReflectionClass(self::class);
+        foreach ($ref->getConstants() as $n => $constant) {
+            if ($constant === $id) {
+                return $n;
+            }
+        }
+        return 'WTF?';
+    }
 }

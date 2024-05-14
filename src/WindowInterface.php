@@ -7,6 +7,7 @@ namespace Serafim\WinUI;
 use Serafim\WinUI\Window\HandleInterface;
 use Serafim\WinUI\Window\PositionInterface;
 use Serafim\WinUI\Window\SizeInterface;
+use Serafim\WinUI\Window\WebViewInterface;
 
 /**
  * A class abstraction for a high DPI-aware Window.
@@ -25,6 +26,8 @@ use Serafim\WinUI\Window\SizeInterface;
  * @property-read HandleInterface $handle Returns the backing Window handle to
  *                enable clients to set icon and other window properties.
  *                Returns {@see null} if the window has been destroyed.
+ * @property-read WebViewInterface $webview Returns the WebView instance for the
+ *                specified window.
  */
 interface WindowInterface
 {

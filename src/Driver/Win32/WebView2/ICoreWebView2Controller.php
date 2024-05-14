@@ -7,6 +7,7 @@ namespace Serafim\WinUI\Driver\Win32\WebView2;
 use FFI\CData;
 use Serafim\WinUI\Driver\Win32\Lib\WebView2;
 use Serafim\WinUI\Driver\Win32\Managed\LocalManaged;
+use Serafim\WinUI\Driver\Win32\Win32WebView;
 
 final class ICoreWebView2Controller extends LocalManaged
 {
@@ -24,7 +25,7 @@ final class ICoreWebView2Controller extends LocalManaged
 
     public function getCoreWebView(): ICoreWebView2
     {
-        $webview = ICorewebview2::allocate($this->webview2);
+        $webview = ICoreWebView2::allocate($this->webview2);
 
         $result = $this->get_CoreWebView2(\FFI::addr($webview));
 

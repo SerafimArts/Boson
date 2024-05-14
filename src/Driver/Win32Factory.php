@@ -37,9 +37,10 @@ final class Win32Factory extends Driver
         $this->bootIfNotBooted();
 
         return new Win32Window(
+            events: $this->events,
             info: $info,
             modules: new Win32InstanceHandleFactory(),
-            classes: new Win32ClassHandleFactory(),
+            classes: new Win32ClassHandleFactory($this->events),
             windows: new Win32WindowHandleFactory(),
             webview: new WebView2Factory(),
         );

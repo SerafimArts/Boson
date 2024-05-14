@@ -21,8 +21,10 @@ final class Win32WindowHandleFactory
     /**
      * @var int-mask-of<WindowExtendedStyle::WS_EX_*>
      */
-    private const int DEFAULT_EX_WINDOW_STYLE = WindowExtendedStyle::WS_EX_TOPMOST
-        | WindowExtendedStyle::WS_EX_LTRREADING;
+    private const int DEFAULT_EX_WINDOW_STYLE = WindowExtendedStyle::WS_EX_LTRREADING
+        | WindowExtendedStyle::WS_EX_LEFT
+        | WindowExtendedStyle::WS_EX_RIGHTSCROLLBAR
+    ;
 
     /**
      * @var int-mask-of<WindowStyle::WS_*>
@@ -41,8 +43,16 @@ final class Win32WindowHandleFactory
         $this->text = $text ?? Text::getInstance();
     }
 
-    public function create(Win32ClassHandle $class, CreateInfo $info): Win32WindowHandle
+    public function create(CreateInfo $info, Win32ClassHandle $class): Win32WindowHandle
     {
+        $style = self::DEFAULT_WINDOW_STYLE;
+
+        if ($info->resizable === false) {
+            $style &= ~WindowStyle::WS_MINIMIZEBOX;
+            $style &= ~WindowStyle::WS_MAXIMIZEBOX;
+            $style &= ~WindowStyle::WS_THICKFRAME;
+        }
+
         return new Win32WindowHandle(
             class: $class,
             ptr: $this->user32->CreateWindowExW(
@@ -53,7 +63,7 @@ final class Win32WindowHandleFactory
                 /* LPCSTR    lpWindowName */
                 $this->text->wide($info->title, owned: false),
                 /* DWORD     dwStyle */
-                self::DEFAULT_WINDOW_STYLE,
+                $style,
                 /* int       X */
                 Win32Position::CW_USER_DEFAULT,
                 /* int       Y */

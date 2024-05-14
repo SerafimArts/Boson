@@ -9,4 +9,10 @@ use Serafim\WinUI\WindowInterface;
 /**
  * @template-extends Event<WindowInterface>
  */
-abstract class WindowEvent extends Event {}
+abstract class WindowEvent extends Event
+{
+    public function __construct(WindowInterface $target)
+    {
+        parent::__construct($target);
+    }
+}
