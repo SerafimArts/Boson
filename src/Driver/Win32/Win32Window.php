@@ -145,8 +145,6 @@ final class Win32Window implements WindowInterface
             return;
         }
 
-        dump($this->webview->host->zoomFactor);
-
         // Resize WebView to fit the bounds of the parent window
         $this->webview->host->bounds = $this->rect->get();
     }
