@@ -34,11 +34,11 @@ final class Win32Driver extends Driver
         $environment->run();
     }
 
-    public function isRunnable(): bool
+    public function isRunning(): bool
     {
         $environment = $this->getCurrentEnvironment();
 
-        return $environment->isRunnable();
+        return $environment->isRunning();
     }
 
     public function stop(): void

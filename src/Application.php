@@ -75,7 +75,7 @@ final class Application implements ApplicationInterface
         yield new Driver\Win32\Win32Driver($this->events);
     }
 
-    private function select(): DriverInterface
+    private function getCurrent(): DriverInterface
     {
         if ($this->current !== null) {
             return $this->current;
@@ -92,25 +92,29 @@ final class Application implements ApplicationInterface
 
     public function create(CreateInfo $info = new CreateInfo()): WindowInterface
     {
-        $driver = $this->select();
+        $driver = $this->getCurrent();
+
         return $driver->create($info);
     }
 
     public function run(): void
     {
-        $driver = $this->select();
+        $driver = $this->getCurrent();
+
         $driver->run();
     }
 
-    public function isRunnable(): bool
+    public function isRunning(): bool
     {
-        $driver = $this->select();
-        return $driver->isRunnable();
+        $driver = $this->getCurrent();
+
+        return $driver->isRunning();
     }
 
     public function stop(): void
     {
-        $driver = $this->select();
+        $driver = $this->getCurrent();
+
         $driver->stop();
     }
 }

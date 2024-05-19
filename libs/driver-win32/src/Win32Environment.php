@@ -111,7 +111,7 @@ final class Win32Environment implements ApplicationInterface
         }
     }
 
-    public function isRunnable(): bool
+    public function isRunning(): bool
     {
         return $this->isRunning;
     }
