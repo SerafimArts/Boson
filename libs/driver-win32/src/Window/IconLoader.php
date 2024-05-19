@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Local\Driver\Win32\Win32;
+namespace Local\Driver\Win32\Window;
 
 use FFI\CData;
 use Local\Com\WideString;

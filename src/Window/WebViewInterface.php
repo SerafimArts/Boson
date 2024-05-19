@@ -6,5 +6,7 @@ namespace Serafim\WinUI\Window;
 
 interface WebViewInterface
 {
+    public function isInitialized(): bool;
+
     public function navigate(string $uri): void;
 }

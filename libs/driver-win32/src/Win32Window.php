@@ -2,47 +2,50 @@
 
 declare(strict_types=1);
 
-namespace Local\Driver\Win32\Win32;
+namespace Local\Driver\Win32;
 
-use FFI\CData;
 use Local\Com\WideString;
-use Local\Driver\Win32\Handle\Win32InstanceHandle;
-use Serafim\WinUI\CreateInfo;
 use Local\Driver\Win32\Handle\Win32ClassHandleFactory;
+use Local\Driver\Win32\Handle\Win32InstanceHandle;
 use Local\Driver\Win32\Handle\Win32WindowHandle;
 use Local\Driver\Win32\Handle\Win32WindowHandleFactory;
 use Local\Driver\Win32\Lib\IconSize;
 use Local\Driver\Win32\Lib\ShowWindowCommand;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\Lib\WindowMessage;
-use Local\Driver\Win32\Win32\Text\Converter;
-use Serafim\WinUI\Property\Property;
-use Serafim\WinUI\Property\PropertyProviderTrait;
+use Local\Driver\Win32\Window\IconLoader;
+use Local\Driver\Win32\Window\Win32Position;
+use Local\Driver\Win32\Window\Win32Size;
+use Local\Property\Attribute\MapGetter;
+use Local\Property\Attribute\MapSetter;
+use Local\Property\ContainProperties;
+use Local\WebView2\WebView2;
+use Serafim\WinUI\CreateInfo;
 use Serafim\WinUI\Window\PositionInterface;
-use Serafim\WinUI\Window\SizeInterface;
+use Serafim\WinUI\Window\SizeProviderInterface;
 use Serafim\WinUI\WindowInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Win32Window implements WindowInterface
 {
-    use PropertyProviderTrait;
-
-    private string $title;
+    use ContainProperties;
 
     public readonly Win32WindowHandle $handle;
 
-    private readonly IconLoader $icons;
+    public readonly Win32WebView $webview;
+
+    private string $title;
 
     /**
      * @var non-empty-string|null
      */
     private ?string $currentIcon = null;
 
-    private Win32Size $win32Size;
+    private readonly IconLoader $icons;
 
-    private Win32Position $win32Position;
+    private readonly Win32Size $sizeProperty;
 
-    public readonly CData $rect;
+    private readonly Win32Position $positionProperty;
 
     public function __construct(
         EventDispatcherInterface $events,
@@ -51,6 +54,7 @@ final class Win32Window implements WindowInterface
         Win32ClassHandleFactory $classes,
         Win32WindowHandleFactory $windows,
         private readonly User32 $user32,
+        WebView2 $webView2,
     ) {
         $this->title = $info->title;
 
@@ -64,64 +68,92 @@ final class Win32Window implements WindowInterface
         );
 
         $this->icons = new IconLoader($this->handle, $this->user32);
+        $this->sizeProperty = new Win32Size($this->user32, $this);
+        $this->positionProperty = new Win32Position($this->user32, $this);
 
-        $rect = new Win32Rect($this->user32, $this->handle);
-        $this->win32Size = new Win32Size($rect);
-        $this->win32Position = new Win32Position($rect);
-        $this->rect = $rect->get();
-    }
-
-    /**
-     * @return Property<string, string>
-     */
-    protected function title(): Property
-    {
-        return Property::new(
-            get: fn(): string => $this->title,
-            set: function (string $title): void {
-                $this->user32->SetWindowTextW(
-                    $this->handle->ptr,
-                    WideString::toWideString($this->title = $title),
-                );
-            },
+        $this->webview = new Win32WebView(
+            user32: $this->user32,
+            window: $this,
+            info: $info,
+            events: $events,
+            webview: $webView2,
         );
     }
 
     /**
-     * @return Property<Win32Size, SizeInterface>
+     * @api
      */
-    protected function size(): Property
+    #[MapGetter('title')]
+    public function getTitle(): string
     {
-        return Property::new(
-            get: fn(): Win32Size => $this->win32Size,
-            set: fn(SizeInterface $size): null => $this->win32Size->set($size)
-        );
+        return $this->title;
     }
 
     /**
-     * @return Property<Win32Position, PositionInterface>
+     * @api
      */
-    protected function position(): Property
+    #[MapSetter('title')]
+    public function setTitle(string $title): void
     {
-        return Property::new(
-            get: fn(): Win32Position => $this->win32Position,
-            set: fn(PositionInterface $position): null => $this->win32Position->set($position)
-        );
+        $encoded = WideString::toWideString($this->title = $title);
+
+        $this->user32->SetWindowTextW($this->handle->ptr, $encoded);
     }
 
     /**
-     * @return Property<non-empty-string|null, string|null>
+     * @api
      */
-    protected function icon(): Property
+    #[MapGetter('size')]
+    public function getSize(): Win32Size
     {
-        return Property::new(
-            get: fn(): ?string => $this->currentIcon,
-            set: $this->setIcon(...),
-        );
+        return $this->sizeProperty;
     }
 
-    private function setIcon(?string $pathname): void
+    /**
+     * @api
+     */
+    #[MapSetter('size')]
+    public function setSize(SizeProviderInterface $size): void
     {
+        $this->sizeProperty->set($size);
+    }
+
+    /**
+     * @api
+     */
+    #[MapGetter('position')]
+    public function getPosition(): Win32Position
+    {
+        return $this->positionProperty;
+    }
+
+    /**
+     * @api
+     */
+    #[MapSetter('position')]
+    public function setPosition(PositionInterface $position): void
+    {
+        $this->positionProperty->set($position);
+    }
+
+    /**
+     * @api
+     * @return non-empty-string|null
+     */
+    #[MapGetter('icon')]
+    public function getIcon(): ?string
+    {
+        return $this->currentIcon;
+    }
+
+    /**
+     * @api
+     * @param non-empty-string|null $pathname
+     */
+    #[MapSetter('icon')]
+    public function setIcon(?string $pathname): void
+    {
+        // @phpstan-ignore-next-line
         if ($pathname === '') {
             $pathname = null;
         }

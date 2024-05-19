@@ -8,12 +8,12 @@ namespace Serafim\WinUI\Window;
  * @property int $x
  * @property int $y
  */
-interface PositionInterface
+interface PositionInterface extends PositionProviderInterface
 {
     /**
      * Center the window horizontally and vertically.
      */
     public function center(): void;
 
-    public function set(self $position): void;
+    public function set(PositionProviderInterface $position): void;
 }

@@ -6,7 +6,7 @@ namespace Local\Driver\Win32\WebView2;
 
 use FFI\CData;
 use Local\Driver\Win32\Lib\Advapi32;
-use Serafim\WinUI\Exception\WebView2NotAvailable;
+use Serafim\WinUI\Exception\WebView2NotAvailableException;
 
 final readonly class InstallationDetector
 {
@@ -112,14 +112,14 @@ final readonly class InstallationDetector
 
     /**
      * Determines whether WebView2 is installed or throws an
-     * {@see WebView2NotAvailable} exception instead.
+     * {@see WebView2NotAvailableException} exception instead.
      *
-     * @throws WebView2NotAvailable
+     * @throws WebView2NotAvailableException
      */
     public function assertIsInstalledOrFail(): void
     {
         if (!$this->isInstalled()) {
-            throw WebView2NotAvailable::createWithMessage(
+            throw WebView2NotAvailableException::createWithMessage(
                 <<<'MESSAGE'
                 Please download WebView2 runtime using following link:
                 https://developer.microsoft.com/en-us/microsoft-edge/webview2?form=MA13LH#download-section

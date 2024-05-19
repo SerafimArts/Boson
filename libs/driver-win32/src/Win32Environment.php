@@ -5,15 +5,15 @@ declare(strict_types=1);
 namespace Local\Driver\Win32;
 
 use FFI\CData;
+use Local\Driver\Win32\Handle\Win32ClassHandleFactory;
+use Local\Driver\Win32\Handle\Win32InstanceHandle;
+use Local\Driver\Win32\Handle\Win32WindowHandleFactory;
 use Local\Driver\Win32\Lib\Advapi32;
 use Local\Driver\Win32\Lib\Kernel32;
 use Local\Driver\Win32\Lib\Ole32;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\WebView2\InstallationDetector;
-use Local\Driver\Win32\Handle\Win32ClassHandleFactory;
-use Local\Driver\Win32\Handle\Win32InstanceHandle;
-use Local\Driver\Win32\Handle\Win32WindowHandleFactory;
-use Local\Driver\Win32\Win32\Win32Window;
+use Local\WebView2\WebView2;
 use Serafim\WinUI\ApplicationInterface;
 use Serafim\WinUI\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
@@ -88,6 +88,7 @@ final class Win32Environment implements ApplicationInterface
                 user32: $this->user32,
             ),
             user32: $this->user32,
+            webView2: new WebView2(),
         );
     }
 

@@ -70,7 +70,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'isScriptEnabled')]
     public function setIsScriptEnabled(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->isScriptEnabledProperty->set($value);
     }
 
     /**
@@ -88,7 +88,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'isWebMessageEnabled')]
     public function setIsWebMessageEnabled(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->isWebMessageEnabledProperty->set($value);
     }
 
     /**
@@ -124,7 +124,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'isStatusBarEnabled')]
     public function setIsStatusBarEnabled(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->isStatusBarEnabledProperty->set($value);
     }
 
     /**
@@ -142,7 +142,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'areDevToolsEnabled')]
     public function setAreDevToolsEnabled(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->areDevToolsEnabledProperty->set($value);
     }
 
     /**
@@ -178,7 +178,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'areHostObjectsAllowed')]
     public function setAreHostObjectsAllowed(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->areHostObjectsAllowedProperty->set($value);
     }
 
     /**
@@ -196,7 +196,7 @@ final class ICoreWebView2Settings extends IUnknown
     #[MapSetter(name: 'isZoomControlEnabled')]
     public function setIsZoomControlEnabled(bool $value): void
     {
-        $this->isBuiltInErrorPageEnabledProperty->set($value);
+        $this->isZoomControlEnabledProperty->set($value);
     }
 
     /**

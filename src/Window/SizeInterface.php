@@ -8,14 +8,7 @@ namespace Serafim\WinUI\Window;
  * @property int<0, max> $width
  * @property int<0, max> $height
  */
-interface SizeInterface extends \Stringable
+interface SizeInterface extends SizeProviderInterface
 {
-    public function set(self $size): void;
-
-    /**
-     * Returns string representation of the size object.
-     *
-     * @return non-empty-string
-     */
-    public function __toString(): string;
+    public function set(SizeProviderInterface $size): void;
 }

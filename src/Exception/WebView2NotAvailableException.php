@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\WinUI\Exception;
 
-final class WebView2NotAvailable extends UserInterfaceException
+final class WebView2NotAvailableException extends UserInterfaceException
 {
     private ?string $suffix = null;
 

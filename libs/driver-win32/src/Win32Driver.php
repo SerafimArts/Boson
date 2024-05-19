@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Local\Driver\Win32;
 
-use Local\Driver\Win32\Win32\Win32Window;
 use Serafim\WinUI\CreateInfo;
 use Serafim\WinUI\Driver;
 

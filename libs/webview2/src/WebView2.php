@@ -12,9 +12,7 @@ use Local\WebView2\Handler\CreateCoreWebView2EnvironmentCompletedHandler;
 
 final class WebView2 extends Proxy
 {
-    private static ?WebView2 $instance = null;
-
-    private function __construct()
+    public function __construct()
     {
         Runtime::assertAvailable();
 
@@ -22,11 +20,6 @@ final class WebView2 extends Proxy
             code: self::getHeader(),
             lib: self::getLibraryPathname(),
         ));
-    }
-
-    public static function getInstance(): self
-    {
-        return self::$instance ??= new self();
     }
 
     /**
