@@ -9,7 +9,7 @@ use FFI\Proxy\Proxy as BaseProxy;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Serafim\WinUI
+ * @psalm-internal Serafim\Boson
  *
  * @mixin \FFI
  */

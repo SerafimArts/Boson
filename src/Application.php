@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI;
+namespace Serafim\Boson;
 
 use Local\Driver;
-use Serafim\WinUI\Event\Event;
+use Serafim\Boson\Event\Event;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

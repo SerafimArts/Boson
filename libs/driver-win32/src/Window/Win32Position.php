@@ -9,9 +9,9 @@ use Local\Driver\Win32\Lib\WindowPosition;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
-use Serafim\WinUI\Window\Position;
-use Serafim\WinUI\Window\PositionInterface;
-use Serafim\WinUI\Window\PositionProviderInterface;
+use Serafim\Boson\Window\Position;
+use Serafim\Boson\Window\PositionInterface;
+use Serafim\Boson\Window\PositionProviderInterface;
 
 final class Win32Position extends WindowRectProvider implements PositionInterface
 {

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Tests\Functional;
+namespace Serafim\Boson\Tests\Functional;
 
 use PHPUnit\Framework\Attributes\Group;
-use Serafim\WinUI\Tests\TestCase as BaseTestCase;
+use Serafim\Boson\Tests\TestCase as BaseTestCase;
 
-#[Group('functional'), Group('serafim/winui')]
+#[Group('functional'), Group('serafim/boson')]
 abstract class TestCase extends BaseTestCase {}

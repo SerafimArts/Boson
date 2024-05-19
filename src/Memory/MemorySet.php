@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Memory;
+namespace Serafim\Boson\Memory;
 
 /**
  * A set of objects with callbacks to desturctors.

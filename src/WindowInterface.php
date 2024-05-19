@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI;
+namespace Serafim\Boson;
 
-use Serafim\WinUI\Window\HandleInterface;
-use Serafim\WinUI\Window\PositionInterface;
-use Serafim\WinUI\Window\SizeInterface;
-use Serafim\WinUI\Window\WebViewInterface;
+use Serafim\Boson\Window\HandleInterface;
+use Serafim\Boson\Window\PositionInterface;
+use Serafim\Boson\Window\SizeInterface;
+use Serafim\Boson\Window\WebViewInterface;
 
 /**
  * A class abstraction for a high DPI-aware Window.

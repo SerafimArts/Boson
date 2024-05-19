@@ -8,9 +8,9 @@ use Local\Driver\Win32\Lib\WindowPosition;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
-use Serafim\WinUI\Window\Size;
-use Serafim\WinUI\Window\SizeInterface;
-use Serafim\WinUI\Window\SizeProviderInterface;
+use Serafim\Boson\Window\Size;
+use Serafim\Boson\Window\SizeInterface;
+use Serafim\Boson\Window\SizeProviderInterface;
 
 final class Win32Size extends WindowRectProvider implements SizeInterface
 {

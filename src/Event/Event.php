@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Event;
+namespace Serafim\Boson\Event;
 
 /**
  * @template T of object

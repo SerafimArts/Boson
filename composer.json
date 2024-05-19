@@ -1,5 +1,5 @@
 {
-    "name": "serafim/winui",
+    "name": "serafim/boson",
     "description": "Native PHP WebView bridge",
     "type": "library",
     "license": "MIT",
@@ -24,7 +24,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Serafim\\WinUI\\": "src"
+            "Serafim\\Boson\\": "src"
         }
     },
     "require-dev": {
@@ -41,7 +41,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Serafim\\WinUI\\Tests\\": "tests"
+            "Serafim\\Boson\\Tests\\": "tests"
         }
     },
     "extra": {

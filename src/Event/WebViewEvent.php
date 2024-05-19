@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Event;
+namespace Serafim\Boson\Event;
 
-use Serafim\WinUI\Window\WebViewInterface;
-use Serafim\WinUI\WindowInterface;
+use Serafim\Boson\Window\WebViewInterface;
+use Serafim\Boson\WindowInterface;
 
 abstract class WebViewEvent extends WindowEvent
 {

@@ -14,8 +14,8 @@ use Local\Driver\Win32\Lib\Ole32;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\WebView2\InstallationDetector;
 use Local\WebView2\WebView2;
-use Serafim\WinUI\ApplicationInterface;
-use Serafim\WinUI\CreateInfo;
+use Serafim\Boson\ApplicationInterface;
+use Serafim\Boson\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**

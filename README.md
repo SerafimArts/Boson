@@ -1,6 +1,9 @@
-## TLDR
+## Boson
 
-See [example](/example) directory.
+Why Boson? Because it's not an [Electron](https://www.electronjs.org)! 
+And much easier than that =)
+
+- See [example](/example) directory.
 
 ## Requirements
 
@@ -38,6 +41,9 @@ $window = $app->create(new \Serafim\WinUI\CreateInfo(
 // [get; set] Change window size
 $window->size->width = 640;
 $window->size->height = 480;
+
+// [get; set] Atomic window resize
+$window->size = new \Serafim\WinUI\Window\Size();
 
 // [get; set] Change window position
 $window->position->x = 100;

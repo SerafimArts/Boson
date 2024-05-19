@@ -20,10 +20,10 @@ use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
 use Local\WebView2\WebView2;
-use Serafim\WinUI\CreateInfo;
-use Serafim\WinUI\Window\PositionInterface;
-use Serafim\WinUI\Window\SizeProviderInterface;
-use Serafim\WinUI\WindowInterface;
+use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Window\PositionInterface;
+use Serafim\Boson\Window\SizeProviderInterface;
+use Serafim\Boson\WindowInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Win32Window implements WindowInterface

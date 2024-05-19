@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Window;
+namespace Serafim\Boson\Window;
 
 final readonly class Size implements SizeProviderInterface
 {

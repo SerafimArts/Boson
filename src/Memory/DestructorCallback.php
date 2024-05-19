@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Memory;
+namespace Serafim\Boson\Memory;
 
 /**
  * An object that allows you to add a callback to the reference destructor.

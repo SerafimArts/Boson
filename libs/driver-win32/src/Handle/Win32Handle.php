@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Local\Driver\Win32\Handle;
 
-use Serafim\WinUI\Window\HandleInterface;
+use Serafim\Boson\Window\HandleInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

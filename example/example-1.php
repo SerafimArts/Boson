@@ -1,9 +1,9 @@
 <?php
 
-use Serafim\WinUI\Application;
-use Serafim\WinUI\CreateInfo;
-use Serafim\WinUI\Event\WebViewCreatedEvent;
-use Serafim\WinUI\Event\WindowCloseEvent;
+use Serafim\Boson\Application;
+use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Event\WebViewCreatedEvent;
+use Serafim\Boson\Event\WindowCloseEvent;
 
 require __DIR__ . '/../vendor/autoload.php';
 

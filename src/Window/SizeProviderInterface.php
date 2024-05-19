@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI\Window;
+namespace Serafim\Boson\Window;
 
 /**
  * @property-read int<0, max> $width

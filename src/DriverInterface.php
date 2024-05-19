@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\WinUI;
+namespace Serafim\Boson;
 
 interface DriverInterface extends ApplicationInterface
 {

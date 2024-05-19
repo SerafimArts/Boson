@@ -7,23 +7,23 @@ namespace Local\Driver\Win32\Handle;
 use FFI\CData;
 use Local\Com\WideString;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Serafim\WinUI\CreateInfo;
+use Serafim\Boson\CreateInfo;
 use Local\Driver\Win32\Lib\Color;
 use Local\Driver\Win32\Lib\Cursor;
 use Local\Driver\Win32\Lib\Icon;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\Lib\WindowClassStyle;
 use Local\Driver\Win32\Lib\WindowMessage;
-use Serafim\WinUI\Event\WindowBlurEvent;
-use Serafim\WinUI\Event\WindowCloseEvent;
-use Serafim\WinUI\Event\WindowFocusEvent;
-use Serafim\WinUI\Event\WindowHideEvent;
-use Serafim\WinUI\Event\WindowMoveEvent;
-use Serafim\WinUI\Event\WindowResizeEvent;
-use Serafim\WinUI\Event\WindowShowEvent;
-use Serafim\WinUI\Exception\WindowNotCreatableException;
-use Serafim\WinUI\Memory\MemorySet;
-use Serafim\WinUI\WindowInterface;
+use Serafim\Boson\Event\WindowBlurEvent;
+use Serafim\Boson\Event\WindowCloseEvent;
+use Serafim\Boson\Event\WindowFocusEvent;
+use Serafim\Boson\Event\WindowHideEvent;
+use Serafim\Boson\Event\WindowMoveEvent;
+use Serafim\Boson\Event\WindowResizeEvent;
+use Serafim\Boson\Event\WindowShowEvent;
+use Serafim\Boson\Exception\WindowNotCreatableException;
+use Serafim\Boson\Memory\MemorySet;
+use Serafim\Boson\WindowInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

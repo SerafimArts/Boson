@@ -10,19 +10,19 @@ use Local\WebView2\ICoreWebView2;
 use Local\WebView2\ICoreWebView2Controller;
 use Local\WebView2\ICoreWebView2Environment;
 use Local\WebView2\WebView2;
-use Serafim\WinUI\CreateInfo;
-use Serafim\WinUI\Event\WebViewCreatedEvent;
-use Serafim\WinUI\Event\WindowCloseEvent;
-use Serafim\WinUI\Event\WindowResizeEvent;
-use Serafim\WinUI\Exception\WebView2NotAvailableException;
-use Serafim\WinUI\Window\WebViewInterface;
+use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Event\WebViewCreatedEvent;
+use Serafim\Boson\Event\WindowCloseEvent;
+use Serafim\Boson\Event\WindowResizeEvent;
+use Serafim\Boson\Exception\WebView2NotAvailableException;
+use Serafim\Boson\Window\WebViewInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 final class Win32WebView implements WebViewInterface
 {
     private ?ICoreWebView2 $core = null;
 
-    private readonly CData $rect;
+    public readonly CData $rect;
 
     public function __construct(
         private readonly User32 $user32,
