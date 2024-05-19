@@ -38,10 +38,13 @@ final class Application implements ApplicationInterface
      * @template T of Event
      * @param class-string<T> $event
      * @param callable(T):void $listener
+     * @return callable(T):void
      */
-    public function on(string $event, callable $listener): void
+    public function on(string $event, callable $listener): callable
     {
         $this->events->addListener($event, $listener);
+
+        return $listener;
     }
 
     /**
