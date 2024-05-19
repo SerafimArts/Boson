@@ -25,7 +25,7 @@ final readonly class Property
     public ?\Closure $setter;
 
     /**
-     * Contains {@see true} if the {@see Property} object must be
+     * Contains {@see true} if the {@see MapProperty} object must be
      * initialized once for one property or {@see false} instead.
      */
     public bool $memoized;

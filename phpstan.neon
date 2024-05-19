@@ -12,5 +12,9 @@ parameters:
     - php
   paths:
     - src
+    - libs/com
+    - libs/driver-win32
+    - libs/property
+    - libs/webview2
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true

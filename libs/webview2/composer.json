@@ -1,0 +1,48 @@
+{
+    "name": "local/webview2",
+    "type": "library",
+    "license": "MIT",
+    "require": {
+        "php": "^8.3",
+        "ext-ffi": "*",
+        "ffi/env": "^1.0",
+        "ffi/proxy": "^1.0",
+        "local/com": "^1.0",
+        "local/property": "^1.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Local\\WebView2\\": "src"
+        }
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^11.0"
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Local\\WebView2\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev",
+            "dev-main": "1.0.x-dev"
+        }
+    },
+    "config": {
+        "sort-packages": true,
+        "platform-check": true,
+        "bin-compat": "full",
+        "optimize-autoloader": true,
+        "preferred-install": {
+            "*": "dist"
+        }
+    },
+    "scripts": {
+        "test": ["@test:unit", "@test:functional"],
+        "test:unit": "phpunit --testdox --testsuite=unit",
+        "test:functional": "phpunit --testsuite=functional"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

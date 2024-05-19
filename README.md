@@ -28,10 +28,10 @@ Doesn't work yet)
 require __DIR__ . '/vendor/autoload.php';
 
 // Window Factory
-$factory = new \Serafim\WinUI\Factory();
+$app = new \Serafim\WinUI\Application();
 
 // Window Instance
-$window = $factory->create(new \Serafim\WinUI\CreateInfo(
+$window = $app->create(new \Serafim\WinUI\CreateInfo(
     title: 'My Window', // Optional, default empty string
     width: 640,         // Optional, default 0
     height: 480,        // Optional, default 0
@@ -58,11 +58,5 @@ $window->title = 'Hello World!';
 // [get] Window Handle (object { ptr: CData<HWND> })
 dump($window->handle);
 
-// Running
-// TODO: API may be broken/changed in future versions
-while (true) {
-    $window->peek();
-
-    usleep(1); // Do not forget to add any usleep/sleep to reduce CPU load.
-}
+$app->run();
 ```

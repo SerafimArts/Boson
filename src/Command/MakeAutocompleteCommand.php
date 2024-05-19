@@ -25,7 +25,6 @@ final class MakeAutocompleteCommand extends Command
         Driver\Win32\Lib\Advapi32::class,
         Driver\Win32\Lib\Kernel32::class,
         Driver\Win32\Lib\Ole32::class,
-        Driver\Win32\Lib\WebView2::class,
         Driver\Win32\Lib\User32::class,
     ];
 

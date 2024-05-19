@@ -3,10 +3,17 @@
     "description": "Native PHP WebView bridge",
     "type": "library",
     "license": "MIT",
+    "repositories": [
+        {"type": "path", "url": "libs/*"}
+    ],
     "require": {
         "php": "^8.3",
         "ext-ffi": "*",
         "ext-iconv": "*",
+        "local/com": "^1.0",
+        "local/driver-win32": "^1.0",
+        "local/property": "^1.0",
+        "local/webview2": "^1.0",
         "ffi/env": "^1.0",
         "ffi/location": "^1.0",
         "ffi/proxy": "^1.0",
