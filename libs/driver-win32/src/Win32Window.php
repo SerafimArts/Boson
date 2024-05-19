@@ -21,6 +21,7 @@ use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
 use Local\WebView2\WebView2;
 use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Event\WindowCreatedEvent;
 use Serafim\Boson\Window\PositionInterface;
 use Serafim\Boson\Window\SizeProviderInterface;
 use Serafim\Boson\WindowInterface;
@@ -78,6 +79,8 @@ final class Win32Window implements WindowInterface
             events: $events,
             webview: $webView2,
         );
+
+        $events->dispatch(new WindowCreatedEvent($this));
     }
 
     /**

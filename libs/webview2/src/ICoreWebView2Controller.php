@@ -171,7 +171,7 @@ final class ICoreWebView2Controller extends IUnknown
      * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller#get_isvisible
      */
     #[MapGetter(name: 'isVisible')]
-    public function getIsVisible(): bool
+    public function isVisible(): bool
     {
         return $this->isVisibleProperty->get();
     }
@@ -183,7 +183,7 @@ final class ICoreWebView2Controller extends IUnknown
      * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2controller#put_isvisible
      */
     #[MapSetter(name: 'isVisible')]
-    public function setIsVisible(bool $value): void
+    public function setVisible(bool $value): void
     {
         $this->isVisibleProperty->set($value);
     }

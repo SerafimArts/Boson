@@ -4,4 +4,4 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Exception;
 
-final class WindowNotCreatableException extends WindowException {}
+class WebViewException extends BosonException {}

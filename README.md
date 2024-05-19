@@ -55,15 +55,19 @@ $app->off(Event\EventName::class, $listener);
 
 // Events list:
 // - Window
-$app->on(Event\WindowBlurEvent::class, ...);   // Occurs when the window loses focus
-$app->on(Event\WindowCloseEvent::class, ...);  // Occurs when the window is closed
-$app->on(Event\WindowFocusEvent::class, ...);  // Occurs when the window gains focus
-$app->on(Event\WindowHideEvent::class, ...);   // Occurs when the window is hidden
-$app->on(Event\WindowMoveEvent::class, ...);   // Occurs when the window is moved
-$app->on(Event\WindowResizeEvent::class, ...); // Occurs when the window is resized
-$app->on(Event\WindowShowEvent::class, ...);   // Occurs when the window is shown
+$app->on(Event\WindowBlurEvent::class, ...);            // Window loses focus
+$app->on(Event\WindowCloseEvent::class, ...);           // Window is closed
+$app->on(Event\WindowCreatedEvent::class, ...);         // Window is created
+$app->on(Event\WindowFocusEvent::class, ...);           // Window gains focus
+$app->on(Event\WindowHideEvent::class, ...);            // Window is hidden
+$app->on(Event\WindowMoveEvent::class, ...);            // Window is moved
+$app->on(Event\WindowResizeEvent::class, ...);          // Window is resized
+$app->on(Event\WindowShowEvent::class, ...);            // Window is shown
 // - WebView
-$app->on(Event\WebViewCreatedEvent::class, ...); // Occurs when the window's webview is created
+$app->on(Event\WebViewCreatedEvent::class, ...);        // WebView is created
+$app->on(Event\WebViewNavigationStarting::class, ...);  // WebView navigation starts
+$app->on(Event\WebViewNavigationCompleted::class, ...); // WebView navigation is successfully completed
+$app->on(Event\WebViewNavigationFailed::class, ...);    // WebView navigation fails
 
 // [get; set] Change window size
 $window->size->width = 640;

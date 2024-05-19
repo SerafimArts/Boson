@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Local\Driver\Win32\WebView2;
 
 use FFI\CData;
+use Local\Driver\Win32\Exception\WebView2NotAvailableException;
 use Local\Driver\Win32\Lib\Advapi32;
-use Serafim\Boson\Exception\WebView2NotAvailableException;
 
 final readonly class InstallationDetector
 {

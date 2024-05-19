@@ -9,7 +9,7 @@ use Local\Com\Attribute\MapStruct;
 use Local\Com\IUnknown;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Property\Attribute\MapGetter;
-use Local\WebView2\Handler\CreateCoreWebView2ControllerCompletedHandler;
+use Local\WebView2\Callback\CreateCoreWebView2ControllerCompletedHandler;
 
 /**
  * @template-extends IUnknown<WebView2>

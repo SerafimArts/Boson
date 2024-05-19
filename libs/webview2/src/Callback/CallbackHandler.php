@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Local\WebView2\Handler;
+namespace Local\WebView2\Callback;
 
 use FFI\CData;
 use Local\Com\Attribute\MapCallback;
@@ -15,7 +15,7 @@ use Local\WebView2\WebView2;
  *
  * @template-extends IUnknown<WebView2>
  */
-abstract class Handler extends IUnknown
+abstract class CallbackHandler extends IUnknown
 {
     /**
      * @param \Closure(T):void $callback

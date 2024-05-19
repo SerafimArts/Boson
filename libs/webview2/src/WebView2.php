@@ -8,7 +8,7 @@ use FFI\CData;
 use FFI\Env\Runtime;
 use FFI\Proxy\Proxy;
 use Local\Com\Exception\ResultException;
-use Local\WebView2\Handler\CreateCoreWebView2EnvironmentCompletedHandler;
+use Local\WebView2\Callback\CreateCoreWebView2EnvironmentCompletedHandler;
 
 final class WebView2 extends Proxy
 {

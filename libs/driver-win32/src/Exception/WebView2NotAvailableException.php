@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Exception;
+namespace Local\Driver\Win32\Exception;
 
-final class WebView2NotAvailableException extends UserInterfaceException
+use Serafim\Boson\Exception\BosonException;
+
+final class WebView2NotAvailableException extends BosonException
 {
     private ?string $suffix = null;
 

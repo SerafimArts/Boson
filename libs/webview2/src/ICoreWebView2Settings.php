@@ -59,7 +59,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'isScriptEnabled')]
-    public function getIsScriptEnabled(): bool
+    public function isScriptEnabled(): bool
     {
         return $this->isScriptEnabledProperty->get();
     }
@@ -68,7 +68,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'isScriptEnabled')]
-    public function setIsScriptEnabled(bool $value): void
+    public function setScriptEnabled(bool $value): void
     {
         $this->isScriptEnabledProperty->set($value);
     }
@@ -77,7 +77,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'isWebMessageEnabled')]
-    public function getIsWebMessageEnabled(): bool
+    public function isWebMessageEnabled(): bool
     {
         return $this->isWebMessageEnabledProperty->get();
     }
@@ -86,7 +86,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'isWebMessageEnabled')]
-    public function setIsWebMessageEnabled(bool $value): void
+    public function setWebMessageEnabled(bool $value): void
     {
         $this->isWebMessageEnabledProperty->set($value);
     }
@@ -95,7 +95,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'areDefaultScriptDialogsEnabled')]
-    public function getAreDefaultScriptDialogsEnabled(): bool
+    public function areDefaultScriptDialogsEnabled(): bool
     {
         return $this->areDefaultScriptDialogsEnabledProperty->get();
     }
@@ -104,7 +104,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'areDefaultScriptDialogsEnabled')]
-    public function setAreDefaultScriptDialogsEnabled(bool $value): void
+    public function setDefaultScriptDialogsEnabled(bool $value): void
     {
         $this->areDefaultScriptDialogsEnabledProperty->set($value);
     }
@@ -113,7 +113,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'isStatusBarEnabled')]
-    public function getIsStatusBarEnabled(): bool
+    public function isStatusBarEnabled(): bool
     {
         return $this->isStatusBarEnabledProperty->get();
     }
@@ -122,7 +122,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'isStatusBarEnabled')]
-    public function setIsStatusBarEnabled(bool $value): void
+    public function setStatusBarEnabled(bool $value): void
     {
         $this->isStatusBarEnabledProperty->set($value);
     }
@@ -131,7 +131,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'areDevToolsEnabled')]
-    public function getAreDevToolsEnabled(): bool
+    public function areDevToolsEnabled(): bool
     {
         return $this->areDevToolsEnabledProperty->get();
     }
@@ -140,7 +140,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'areDevToolsEnabled')]
-    public function setAreDevToolsEnabled(bool $value): void
+    public function setDevToolsEnabled(bool $value): void
     {
         $this->areDevToolsEnabledProperty->set($value);
     }
@@ -149,7 +149,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'areDefaultContextMenusEnabled')]
-    public function getAreDefaultContextMenusEnabled(): bool
+    public function areDefaultContextMenusEnabled(): bool
     {
         return $this->areDefaultContextMenusEnabledProperty->get();
     }
@@ -158,7 +158,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'areDefaultContextMenusEnabled')]
-    public function setAreDefaultContextMenusEnabled(bool $value): void
+    public function setDefaultContextMenusEnabled(bool $value): void
     {
         $this->areDefaultContextMenusEnabledProperty->set($value);
     }
@@ -167,7 +167,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'areHostObjectsAllowed')]
-    public function getAreHostObjectsAllowed(): bool
+    public function areHostObjectsAllowed(): bool
     {
         return $this->areHostObjectsAllowedProperty->get();
     }
@@ -176,7 +176,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'areHostObjectsAllowed')]
-    public function setAreHostObjectsAllowed(bool $value): void
+    public function setHostObjectsAllowed(bool $value): void
     {
         $this->areHostObjectsAllowedProperty->set($value);
     }
@@ -185,7 +185,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'isZoomControlEnabled')]
-    public function getIsZoomControlEnabled(): bool
+    public function isZoomControlEnabled(): bool
     {
         return $this->isZoomControlEnabledProperty->get();
     }
@@ -194,7 +194,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'isZoomControlEnabled')]
-    public function setIsZoomControlEnabled(bool $value): void
+    public function setZoomControlEnabled(bool $value): void
     {
         $this->isZoomControlEnabledProperty->set($value);
     }
@@ -203,7 +203,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapGetter(name: 'isBuiltInErrorPageEnabled')]
-    public function getIsBuiltInErrorPageEnabled(): bool
+    public function isBuiltInErrorPageEnabled(): bool
     {
         return $this->isBuiltInErrorPageEnabledProperty->get();
     }
@@ -212,7 +212,7 @@ final class ICoreWebView2Settings extends IUnknown
      * @api
      */
     #[MapSetter(name: 'isBuiltInErrorPageEnabled')]
-    public function setIsBuiltInErrorPageEnabled(bool $value): void
+    public function setBuiltInErrorPageEnabled(bool $value): void
     {
         $this->isBuiltInErrorPageEnabledProperty->set($value);
     }
