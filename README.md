@@ -23,6 +23,26 @@ And much easier than that =)
 
 - Multiple windows is not supported.
 
+## App Example
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\Event\WebView\WebViewCreatedEvent;
+use Serafim\Boson\Window\CreateInfo;
+
+$app = new Application();
+
+$app->on(WebViewCreatedEvent::class, function (WebViewCreatedEvent $e): void {
+    $e->subject->uri = 'https://nesk.me';
+});
+
+$window = $app->create(new CreateInfo(title: 'Example Application'));
+$window->position->center();
+$window->show();
+
+$app->run();
+```
+
 ## Short Documentation
 
 ```php
@@ -48,13 +68,35 @@ $window = $app->create(new CreateInfo(
 ));
 
 // Add event listener
-$listener = $app->on(Event\EventName::class, function (Event\EventName $event) { /** do something */ });
+$listener = $app->on(Event\EventName::class, function (Event\EventName $event) { 
+    // Something happened
+});
 
-// Remove event listener
+$listener = $app->on(Event\HookName::class, function (Event\HookName $hook) { 
+    // Something is going to happen
+    
+    // We can "block" this action
+    $hook->stopPropagation();
+    
+    // Also some things can be changed
+    $hook->data = 42; 
+});
+
+// Remove event listener or hook
 $app->off(Event\EventName::class, $listener);
 
-// Events list:
-// - Window
+// Events and hooks list.
+// - Each hook is a type of event that can be used to control the operation
+//   of the application. Any hook is mutable.
+// - Every event is an immutable result of some action.
+
+// === Application ===
+$app->on(Event\Application\ApplicationStartingHook::class,...);     // Application starts
+$app->on(Event\Application\ApplicationStartedEvent::class, ...);    // Application is started
+$app->on(Event\Application\ApplicationStoppingHook::class,...);     // Application stops
+$app->on(Event\Application\ApplicationStoppedEvent::class, ...);    // Application is stopped
+
+// === Window ===
 $app->on(Event\Window\WindowFocusLostEvent::class, ...);        // Window loses focus
 $app->on(Event\Window\WindowClosedEvent::class, ...);           // Window is closed
 $app->on(Event\Window\WindowCreatedEvent::class, ...);          // Window is created
@@ -63,7 +105,8 @@ $app->on(Event\Window\WindowHiddenEvent::class, ...);           // Window is hid
 $app->on(Event\Window\WindowMovedEvent::class, ...);            // Window is moved
 $app->on(Event\Window\WindowResizeEvent::class, ...);           // Window is resized
 $app->on(Event\Window\WindowShownEvent::class, ...);            // Window is shown
-// - WebView
+
+// === WebView ===
 $app->on(Event\WebView\WebViewCreatedEvent::class, ...);        // WebView is created
 $app->on(Event\WebView\WebViewNavigationStarted::class, ...);   // WebView navigation starts
 $app->on(Event\WebView\WebViewNavigationCompleted::class, ...); // WebView navigation is successfully completed
@@ -101,26 +144,6 @@ $window->title = 'Hello World!';
 
 // [get] Window Handle (object { ptr: CData<HWND> })
 dump($window->handle);
-
-$app->run();
-```
-
-## App Example
-
-```php
-use Serafim\Boson\Application;
-use Serafim\Boson\Event\WebView\WebViewCreatedEvent;
-use Serafim\Boson\Window\CreateInfo;
-
-$app = new Application();
-
-$app->on(WebViewCreatedEvent::class, function (WebViewCreatedEvent $e): void {
-    $e->webview->uri = 'https://nesk.me';
-});
-
-$window = $app->create(new CreateInfo(title: 'Example Application'));
-$window->position->center();
-$window->show();
 
 $app->run();
 ```

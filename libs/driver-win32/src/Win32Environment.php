@@ -15,6 +15,10 @@ use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\WebView2\InstallationDetector;
 use Local\WebView2\WebView2;
 use Serafim\Boson\ApplicationInterface;
+use Serafim\Boson\Event\Application\ApplicationStartedEvent;
+use Serafim\Boson\Event\Application\ApplicationStartingHook;
+use Serafim\Boson\Event\Application\ApplicationStoppedEvent;
+use Serafim\Boson\Event\Application\ApplicationStoppingHook;
 use Serafim\Boson\Window\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -93,13 +97,32 @@ final class Win32Environment implements ApplicationInterface
         );
     }
 
+    /**
+     * Dispatch staring hooks and events.
+     *
+     * @return bool Return {@see true} in case of application should start
+     *         or {@see false} if it should not.
+     */
+    private function dispatchStarting(): bool
+    {
+        $hook = $this->events->dispatch(new ApplicationStartingHook($this));
+
+        if ($hook->isPropagationStopped()) {
+            return false;
+        }
+
+        $this->events->dispatch(new ApplicationStartedEvent($this));
+
+        return true;
+    }
+
     public function run(): void
     {
         if ($this->isRunning === true) {
             return;
         }
 
-        $this->isRunning = true;
+        $this->isRunning = $this->dispatchStarting();
 
         // @phpstan-ignore-next-line
         while ($this->isRunning) {
@@ -117,9 +140,32 @@ final class Win32Environment implements ApplicationInterface
         return $this->isRunning;
     }
 
+    /**
+     * Dispatch stop hooks and events.
+     *
+     * @return bool Return {@see true} in case of application should stop
+     *         or {@see false} if it should not.
+     */
+    private function dispatchStopping(): bool
+    {
+        $hook = $this->events->dispatch(new ApplicationStoppingHook($this));
+
+        if ($hook->isPropagationStopped()) {
+            return false;
+        }
+
+        $this->events->dispatch(new ApplicationStoppedEvent($this));
+
+        return true;
+    }
+
     public function stop(): void
     {
-        $this->isRunning = false;
+        if ($this->isRunning === false) {
+            return;
+        }
+
+        $this->isRunning = ! $this->dispatchStopping();
     }
 
     public function __destruct()
