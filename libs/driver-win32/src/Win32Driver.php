@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Local\Driver\Win32;
 
-use Serafim\Boson\CreateInfo;
 use Serafim\Boson\Driver;
+use Serafim\Boson\Window\CreateInfo;
 
 final class Win32Driver extends Driver
 {

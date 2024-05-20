@@ -10,6 +10,6 @@ use Local\WebView2\Attribute\MapEventArgs;
 /**
  * @template-extends EventHandler<NavigationCompletedEventArgs>
  */
-#[MapEventArgs(NavigationCompletedEventArgs::class)]
+#[MapEventArgs(class: NavigationCompletedEventArgs::class)]
 #[MapStruct(name: 'ICoreWebView2NavigationCompletedEventHandler')]
 final class NavigationCompletedEventHandler extends EventHandler {}

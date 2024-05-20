@@ -6,6 +6,7 @@ namespace Serafim\Boson;
 
 use Local\Driver;
 use Serafim\Boson\Event\Event;
+use Serafim\Boson\Window\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcher;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 

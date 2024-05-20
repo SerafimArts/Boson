@@ -6,14 +6,12 @@ namespace Local\WebView2;
 
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
-use Local\Com\IUnknown;
 use Local\Com\Property\BoolProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
+use Local\WebView2\Shared\IUnknown;
 
 /**
- * @template-extends IUnknown<WebView2>
- *
  * @property bool $isScriptEnabled
  * @property bool $isWebMessageEnabled
  * @property bool $areDefaultScriptDialogsEnabled

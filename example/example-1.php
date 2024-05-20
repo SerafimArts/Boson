@@ -1,23 +1,23 @@
 <?php
 
 use Serafim\Boson\Application;
-use Serafim\Boson\CreateInfo;
-use Serafim\Boson\Event\WebViewCreatedEvent;
-use Serafim\Boson\Event\WebViewNavigationCompleted;
-use Serafim\Boson\Event\WebViewNavigationFailed;
-use Serafim\Boson\Event\WindowCloseEvent;
+use Serafim\Boson\Event\WebView\WebViewCreatedEvent;
+use Serafim\Boson\Event\WebView\WebViewNavigationCompleted;
+use Serafim\Boson\Event\WebView\WebViewNavigationFailed;
+use Serafim\Boson\Event\Window\WindowClosedEvent;
+use Serafim\Boson\Window\CreateInfo;
 
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = new Application();
 
-$app->on(WindowCloseEvent::class, function (WindowCloseEvent $e) use ($app): void {
-    $e->target->close();
+$app->on(WindowClosedEvent::class, function (WindowClosedEvent $e) use ($app): void {
+    $e->subject->close();
     $app->stop();
 });
 
 $app->on(WebViewCreatedEvent::class, function (WebViewCreatedEvent $e): void {
-    $e->webview->uri = 'https://nesk.me';
+    $e->subject->uri = 'https://nesk.me';
 });
 
 $app->on(WebViewNavigationFailed::class, function (WebViewNavigationFailed $e): void {
@@ -25,7 +25,7 @@ $app->on(WebViewNavigationFailed::class, function (WebViewNavigationFailed $e): 
 });
 
 $app->on(WebViewNavigationCompleted::class, function (WebViewNavigationCompleted $e): void {
-    echo $e->webview->uri;
+    echo $e->subject->uri;
 });
 
 $window = $app->create(new CreateInfo(

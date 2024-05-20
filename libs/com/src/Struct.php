@@ -64,6 +64,6 @@ abstract class Struct
 
     public function __destruct()
     {
-        $this->shutDownInteractWithOwnership();
+        $this->tearDownInteractWithOwnership();
     }
 }

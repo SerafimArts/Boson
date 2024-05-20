@@ -15,7 +15,7 @@ use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\WebView2\InstallationDetector;
 use Local\WebView2\WebView2;
 use Serafim\Boson\ApplicationInterface;
-use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Window\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
 /**
@@ -77,8 +77,9 @@ final class Win32Environment implements ApplicationInterface
         $this->installation->assertIsInstalledOrFail();
 
         return new Win32Window(
-            events: $this->events,
+            app: $this,
             info: $info,
+            events: $this->events,
             instance: $this->instance,
             classes: new Win32ClassHandleFactory(
                 events: $this->events,

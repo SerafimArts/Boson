@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace Serafim\Boson\Event;
 
 /**
- * @template T of object
+ * Any event object is the result of an action taken.
+ *
+ * @template TSubject of object
  */
 abstract class Event implements \Stringable
 {
     /**
-     * This value is the number of milliseconds elapsed from the beginning of
+     * This value is the number of nanoseconds elapsed from the beginning of
      * the time origin until the event was created.
      */
     public readonly int $time;
 
     /**
-     * @param T $target The read-only target property of the {@see Event} class
-     *        is a reference to the object onto which the event was dispatched.
+     * @param TSubject $subject The read-only subject of the {@see Event} class.
+     *        A reference to the object that sent the event.
      */
     public function __construct(
-        public readonly object $target,
+        public object $subject,
+        ?int $time = null,
     ) {
-        $this->time = \hrtime(true);
+        $this->time = $time ?? \hrtime(true);
     }
 
     public function __toString(): string

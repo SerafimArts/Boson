@@ -6,17 +6,15 @@ namespace Local\WebView2;
 
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
-use Local\Com\IUnknown;
 use Local\Com\Property\BoolProperty;
 use Local\Com\Property\DoubleProperty;
 use Local\Com\Property\Property;
 use Local\Com\Property\ReadableStructProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
+use Local\WebView2\Shared\IUnknown;
 
 /**
- * @template-extends IUnknown<WebView2>
- *
  * @property CData $bounds
  * @property int<0, max> $width
  * @property int<0, max> $height
@@ -220,7 +218,7 @@ final class ICoreWebView2Controller extends IUnknown
      */
     public function close(): void
     {
-        ($this->vt->Close)($this->cdata);
+        $this->call('Close');
     }
 
     public function __destruct()

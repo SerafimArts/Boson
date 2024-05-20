@@ -46,7 +46,7 @@ trait InteractWithOwnership
         $this->isOwnedStruct = true;
     }
 
-    protected function shutDownInteractWithOwnership(): void
+    protected function tearDownInteractWithOwnership(): void
     {
         $metadata = self::getStructMetadata();
 

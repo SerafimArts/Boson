@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson;
 
+use Serafim\Boson\Window\CreateInfo;
 use Serafim\Boson\Window\HandleInterface;
 use Serafim\Boson\Window\PositionInterface;
 use Serafim\Boson\Window\SizeInterface;
@@ -14,6 +15,9 @@ use Serafim\Boson\Window\WebViewInterface;
  * Intended to be inherited from by classes that wish to specialize with custom
  * rendering and input handling.
  *
+ * @property-read ApplicationInterface $app An application that owns the window.
+ * @property-read CreateInfo $info An information DTO about the window with
+ *                which it was created.
  * @property string $title The title of the specified window encoded as UTF-8,
  *           of the specified window.
  * @property non-empty-string|null $icon The icon pathname for the specified

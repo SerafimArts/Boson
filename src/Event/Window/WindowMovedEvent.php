@@ -2,18 +2,22 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Event;
+namespace Serafim\Boson\Event\Window;
 
+use Serafim\Boson\Event\WindowEvent;
 use Serafim\Boson\WindowInterface;
 
-final class WindowMoveEvent extends WindowEvent
+/**
+ * Occurs after the window has been moved to another location.
+ */
+final class WindowMovedEvent extends WindowEvent
 {
     public function __construct(
-        WindowInterface $target,
+        WindowInterface $subject,
         public readonly int $x = 0,
         public readonly int $y = 0,
     ) {
-        parent::__construct($target);
+        parent::__construct($subject);
     }
 
     public function __toString(): string

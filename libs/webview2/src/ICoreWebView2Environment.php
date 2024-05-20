@@ -7,15 +7,13 @@ namespace Local\WebView2;
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
 use Local\Com\Exception\ResultException;
-use Local\Com\IUnknown;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\WebView2\Callback\CreateCoreWebView2ControllerCompletedHandler;
 use React\Promise\Promise;
+use Local\WebView2\Shared\IUnknown;
 
 /**
- * @template-extends IUnknown<WebView2>
- *
  * @property-read string $browserVersionString
  * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2environment
  */
@@ -54,23 +52,10 @@ final class ICoreWebView2Environment extends IUnknown
                 },
             );
 
-            /**
-             * @var int $result
-             * @phpstan-ignore-next-line
-             */
-            $result = ($this->vt->CreateCoreWebView2Controller)(
-                $this->cdata,
+            $this->call('CreateCoreWebView2Controller', [
                 $this->ffi->cast('HWND', $window),
                 \FFI::addr($handler->cdata),
-            );
-
-            if ($result !== 0) {
-                throw ResultException::fromStructMetadata(
-                    meta: self::getStructMetadata(),
-                    proc: 'CreateCoreWebView2Controller',
-                    code: $result,
-                );
-            }
+            ]);
         });
     }
 

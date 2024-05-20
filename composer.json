@@ -28,6 +28,7 @@
         }
     },
     "require-dev": {
+        "jetbrains/phpstorm-attributes": "^1.1",
         "ffi/ide-helper-generator": "^1.0",
         "ffi/var-dumper": "^1.0",
         "filp/whoops": "^2.15",

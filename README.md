@@ -23,12 +23,12 @@ And much easier than that =)
 
 - Multiple windows is not supported.
 
-## Example
+## Short Documentation
 
 ```php
 use Serafim\Boson\Application;
-use Serafim\Boson\CreateInfo;
 use Serafim\Boson\Event;
+use Serafim\Boson\Window\CreateInfo;
 use Serafim\Boson\Window\Position;
 use Serafim\Boson\Window\Size;
 
@@ -55,19 +55,19 @@ $app->off(Event\EventName::class, $listener);
 
 // Events list:
 // - Window
-$app->on(Event\WindowBlurEvent::class, ...);            // Window loses focus
-$app->on(Event\WindowCloseEvent::class, ...);           // Window is closed
-$app->on(Event\WindowCreatedEvent::class, ...);         // Window is created
-$app->on(Event\WindowFocusEvent::class, ...);           // Window gains focus
-$app->on(Event\WindowHideEvent::class, ...);            // Window is hidden
-$app->on(Event\WindowMoveEvent::class, ...);            // Window is moved
-$app->on(Event\WindowResizeEvent::class, ...);          // Window is resized
-$app->on(Event\WindowShowEvent::class, ...);            // Window is shown
+$app->on(Event\Window\WindowFocusLostEvent::class, ...);        // Window loses focus
+$app->on(Event\Window\WindowClosedEvent::class, ...);           // Window is closed
+$app->on(Event\Window\WindowCreatedEvent::class, ...);          // Window is created
+$app->on(Event\Window\WindowFocusReceivedEvent::class, ...);    // Window gains focus
+$app->on(Event\Window\WindowHiddenEvent::class, ...);           // Window is hidden
+$app->on(Event\Window\WindowMovedEvent::class, ...);            // Window is moved
+$app->on(Event\Window\WindowResizeEvent::class, ...);           // Window is resized
+$app->on(Event\Window\WindowShownEvent::class, ...);            // Window is shown
 // - WebView
-$app->on(Event\WebViewCreatedEvent::class, ...);        // WebView is created
-$app->on(Event\WebViewNavigationStarting::class, ...);  // WebView navigation starts
-$app->on(Event\WebViewNavigationCompleted::class, ...); // WebView navigation is successfully completed
-$app->on(Event\WebViewNavigationFailed::class, ...);    // WebView navigation fails
+$app->on(Event\WebView\WebViewCreatedEvent::class, ...);        // WebView is created
+$app->on(Event\WebView\WebViewNavigationStarted::class, ...);   // WebView navigation starts
+$app->on(Event\WebView\WebViewNavigationCompleted::class, ...); // WebView navigation is successfully completed
+$app->on(Event\WebView\WebViewNavigationFailed::class, ...);    // WebView navigation fails
 
 // [get; set] Change window size
 $window->size->width = 640;
@@ -101,6 +101,26 @@ $window->title = 'Hello World!';
 
 // [get] Window Handle (object { ptr: CData<HWND> })
 dump($window->handle);
+
+$app->run();
+```
+
+## App Example
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\Event\WebView\WebViewCreatedEvent;
+use Serafim\Boson\Window\CreateInfo;
+
+$app = new Application();
+
+$app->on(WebViewCreatedEvent::class, function (WebViewCreatedEvent $e): void {
+    $e->webview->uri = 'https://nesk.me';
+});
+
+$window = $app->create(new CreateInfo(title: 'Example Application'));
+$window->position->center();
+$window->show();
 
 $app->run();
 ```

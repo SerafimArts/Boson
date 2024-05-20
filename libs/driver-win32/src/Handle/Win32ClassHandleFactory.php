@@ -6,23 +6,23 @@ namespace Local\Driver\Win32\Handle;
 
 use FFI\CData;
 use Local\Com\WideString;
-use Psr\EventDispatcher\EventDispatcherInterface;
-use Serafim\Boson\CreateInfo;
 use Local\Driver\Win32\Lib\Color;
 use Local\Driver\Win32\Lib\Cursor;
 use Local\Driver\Win32\Lib\Icon;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\Lib\WindowClassStyle;
 use Local\Driver\Win32\Lib\WindowMessage;
-use Serafim\Boson\Event\WindowBlurEvent;
-use Serafim\Boson\Event\WindowCloseEvent;
-use Serafim\Boson\Event\WindowFocusEvent;
-use Serafim\Boson\Event\WindowHideEvent;
-use Serafim\Boson\Event\WindowMoveEvent;
-use Serafim\Boson\Event\WindowResizeEvent;
-use Serafim\Boson\Event\WindowShowEvent;
+use Psr\EventDispatcher\EventDispatcherInterface;
+use Serafim\Boson\Event\Window\WindowFocusLostEvent;
+use Serafim\Boson\Event\Window\WindowClosedEvent;
+use Serafim\Boson\Event\Window\WindowFocusReceivedEvent;
+use Serafim\Boson\Event\Window\WindowHiddenEvent;
+use Serafim\Boson\Event\Window\WindowMovedEvent;
+use Serafim\Boson\Event\Window\WindowResizeEvent;
+use Serafim\Boson\Event\Window\WindowShownEvent;
 use Serafim\Boson\Exception\WindowNotCreatableException;
 use Serafim\Boson\Memory\MemorySet;
+use Serafim\Boson\Window\CreateInfo;
 use Serafim\Boson\WindowInterface;
 
 /**
@@ -90,32 +90,36 @@ final readonly class Win32ClassHandleFactory
         $info->lpfnWndProc = function (CData $hWnd, int $msg, int $wParam, int $lParam) use ($window): int {
             switch ($msg) {
                 case WindowMessage::WM_CLOSE:
-                    $this->events->dispatch(new WindowCloseEvent($window));
+                    $this->events->dispatch(new WindowClosedEvent($window));
                     return 0;
 
                 case WindowMessage::WM_SETFOCUS:
-                case WindowMessage::WM_SHOWWINDOW:
-                    $this->events->dispatch(new WindowFocusEvent($window));
+                    $this->events->dispatch(new WindowFocusReceivedEvent($window));
                     return 0;
 
                 case WindowMessage::WM_KILLFOCUS:
-                    $this->events->dispatch(new WindowBlurEvent($window));
-                    return 0;
-
-                case WindowMessage::WM_ACTIVATE:
-                    if ($wParam === 1) {
-                        $this->events->dispatch(new WindowShowEvent($window));
-                    } elseif ($wParam === 0) {
-                        $this->events->dispatch(new WindowHideEvent($window));
-                    }
+                    $this->events->dispatch(new WindowFocusLostEvent($window));
                     return 0;
 
                 case WindowMessage::WM_MOVE:
-                    $this->events->dispatch(new WindowMoveEvent(
+                    $this->events->dispatch(new WindowMovedEvent(
                         $window,
                         self::loWord($lParam),
                         self::hiWord($lParam),
                     ));
+                    return 0;
+
+                case WindowMessage::WM_ACTIVATE:
+                    if ($wParam !== 1) {
+                        $this->events->dispatch(new WindowHiddenEvent($window));
+                    } else {
+                        $this->events->dispatch(new WindowShownEvent($window));
+                    }
+                    return 0;
+
+                case WindowMessage::WM_CAPTURECHANGED:
+                    // change full size/normal states
+                    //echo sprintf("[%08d] %s\n", $msg, WindowMessage::get($msg));
                     return 0;
 
                 case WindowMessage::WM_SIZE:

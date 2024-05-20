@@ -9,7 +9,7 @@ use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\Lib\WindowExtendedStyle;
 use Local\Driver\Win32\Lib\WindowStyle;
 use Local\Driver\Win32\Window\Win32Position;
-use Serafim\Boson\CreateInfo;
+use Serafim\Boson\Window\CreateInfo;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

@@ -55,11 +55,13 @@ abstract class CallbackHandler extends IUnknown
 
     /**
      * @template TArg of mixed
-     * @param callable(TArg):void $callback
+     * @param (callable(TArg):void)|null $callback
      * @return static<TArg>
      */
-    public static function create(WebView2 $ffi, callable $callback): static
+    public static function create(WebView2 $ffi, callable $callback = null): static
     {
+        $callback ??= static fn(): null => null;
+
         $struct = static::new($ffi);
 
         return new static($ffi, $struct, $callback(...));

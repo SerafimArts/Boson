@@ -6,21 +6,26 @@ namespace Local\WebView2;
 
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
-use Local\Com\IUnknown;
+use Local\Com\Property\ReadableBoolProperty;
 use Local\Com\Property\ReadableStructProperty;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Com\WideString;
 use Local\Property\Attribute\MapGetter;
+use Local\WebView2\Callback\ExecuteScriptCompletedHandler;
 use Local\WebView2\Handler\EventSubscription;
 use Local\WebView2\Handler\NavigationCompletedEventArgs;
 use Local\WebView2\Handler\NavigationCompletedEventHandler;
 use Local\WebView2\Handler\NavigationStartingEventArgs;
 use Local\WebView2\Handler\NavigationStartingEventHandler;
+use Local\WebView2\Handler\WebMessageReceivedEventArgs;
+use Local\WebView2\Handler\WebMessageReceivedEventHandler;
+use Local\WebView2\Shared\IUnknown;
 
 /**
- * @template-extends IUnknown<WebView2>
- *
  * @property-read ICoreWebView2Settings $settings
+ * @property-read string $source
+ * @property-read bool $canGoBack
+ * @property-read bool $canGoForward
  */
 #[MapStruct(name: 'ICoreWebView2', owned: false)]
 final class ICoreWebView2 extends IUnknown
@@ -29,13 +34,9 @@ final class ICoreWebView2 extends IUnknown
      * @var ReadableStructProperty<ICoreWebView2Settings>
      */
     protected readonly ReadableStructProperty $settingsProperty;
-
     protected readonly ReadableWideStringProperty $sourceProperty;
-
-    /**
-     * @var list<EventSubscription>
-     */
-    private array $listeners = [];
+    protected readonly ReadableBoolProperty $canGoBackProperty;
+    protected readonly ReadableBoolProperty $canGoForwardProperty;
 
     public function __construct(
         WebView2 $ffi,
@@ -44,6 +45,8 @@ final class ICoreWebView2 extends IUnknown
     ) {
         parent::__construct($ffi, $cdata);
 
+        $this->canGoBackProperty = new ReadableBoolProperty($this, 'CanGoBack');
+        $this->canGoForwardProperty = new ReadableBoolProperty($this, 'CanGoForward');
         $this->sourceProperty = new ReadableWideStringProperty($this, 'Source');
         $this->settingsProperty = new ReadableStructProperty(
             context: $this,
@@ -78,12 +81,33 @@ final class ICoreWebView2 extends IUnknown
 
     /**
      * @api
+     */
+    #[MapGetter(name: 'canGoBack')]
+    public function canGoBack(): bool
+    {
+        return $this->canGoBackProperty->get();
+    }
+
+    /**
+     * @api
+     */
+    #[MapGetter(name: 'canGoForward')]
+    public function canGoForward(): bool
+    {
+        return $this->canGoForwardProperty->get();
+    }
+
+    /**
+     * @api
      * @param callable(NavigationStartingEventArgs):void $then
      */
     public function onNavigationStarting(callable $then): EventSubscription
     {
-        return $this->listeners[] = NavigationStartingEventHandler::create($this->ffi, $then)
-            ->listen($this, 'NavigationStarting');
+        return $this->addEventListener(
+            name: 'NavigationStarting',
+            class: NavigationStartingEventHandler::class,
+            then: $then,
+        );
     }
 
     /**
@@ -92,8 +116,11 @@ final class ICoreWebView2 extends IUnknown
      */
     public function onNavigationCompleted(callable $then): EventSubscription
     {
-        return $this->listeners[] = NavigationCompletedEventHandler::create($this->ffi, $then)
-            ->listen($this, 'NavigationCompleted');
+        return $this->addEventListener(
+            name: 'NavigationCompleted',
+            class: NavigationCompletedEventHandler::class,
+            then: $then,
+        );
     }
 
     /**
@@ -102,8 +129,11 @@ final class ICoreWebView2 extends IUnknown
      */
     public function onFrameNavigationStarting(callable $then): EventSubscription
     {
-        return $this->listeners[] = NavigationStartingEventHandler::create($this->ffi, $then)
-            ->listen($this, 'FrameNavigationStarting');
+        return $this->addEventListener(
+            name: 'FrameNavigationStarting',
+            class: NavigationStartingEventHandler::class,
+            then: $then,
+        );
     }
 
     /**
@@ -112,8 +142,37 @@ final class ICoreWebView2 extends IUnknown
      */
     public function onFrameNavigationCompleted(callable $then): EventSubscription
     {
-        return $this->listeners[] = NavigationCompletedEventHandler::create($this->ffi, $then)
-            ->listen($this, 'FrameNavigationCompleted');
+        return $this->addEventListener(
+            name: 'FrameNavigationCompleted',
+            class: NavigationCompletedEventHandler::class,
+            then: $then,
+        );
+    }
+
+    /**
+     * @api
+     * @param callable(WebMessageReceivedEventArgs):void $then
+     */
+    public function onWebMessageReceived(callable $then): EventSubscription
+    {
+        return $this->addEventListener(
+            name: 'WebMessageReceived',
+            class: WebMessageReceivedEventHandler::class,
+            then: $then,
+        );
+    }
+
+    /**
+     * @api
+     */
+    public function executeScript(string $code): void
+    {
+        $handler = ExecuteScriptCompletedHandler::create($this->ffi);
+
+        $this->call('ExecuteScript', [
+            WideString::toWideString($code),
+            \FFI::addr($handler->cdata),
+        ]);
     }
 
     /**
@@ -121,7 +180,19 @@ final class ICoreWebView2 extends IUnknown
      */
     public function navigate(string $uri): void
     {
-        ($this->vt->Navigate)($this->cdata, WideString::toWideString($uri));
+        $this->call('Navigate', [
+            WideString::toWideString($uri),
+        ]);
+    }
+
+    /**
+     * @api
+     */
+    public function navigateToString(string $content): void
+    {
+        $this->call('NavigateToString', [
+            WideString::toWideString($content),
+        ]);
     }
 
     /**
@@ -129,15 +200,44 @@ final class ICoreWebView2 extends IUnknown
      */
     public function reload(): void
     {
-        ($this->vt->Reload)($this->cdata);
+        $this->call('Reload');
     }
 
-    public function __destruct()
+    /**
+     * @api
+     */
+    public function stop(): void
     {
-        foreach ($this->listeners as $listener) {
-            $listener->cancel();
-        }
+        $this->call('Stop');
+    }
 
-        $this->listeners = [];
+    /**
+     * @api
+     */
+    public function goBack(): void
+    {
+        $this->call('GoBack');
+    }
+
+    /**
+     * @api
+     */
+    public function goForward(): void
+    {
+        $this->call('GoForward');
+    }
+
+    /**
+     * @param array<array-key, mixed>|object $data
+     * @throws \JsonException
+     * @api
+     */
+    public function postWebMessage(array|object $data): void
+    {
+        $json = \json_encode($data, \JSON_THROW_ON_ERROR);
+
+        $this->call('PostWebMessageAsJson', [
+            WideString::toWideString($json),
+        ]);
     }
 }
