@@ -6,10 +6,12 @@ namespace Local\WebView2;
 
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
+use Local\Com\Exception\ResultException;
 use Local\Com\IUnknown;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\WebView2\Callback\CreateCoreWebView2ControllerCompletedHandler;
+use React\Promise\Promise;
 
 /**
  * @template-extends IUnknown<WebView2>
@@ -38,23 +40,38 @@ final class ICoreWebView2Environment extends IUnknown
      * and other things impacted by sibling window order are affected accordingly.
      *
      * @api
-     * @param callable(ICoreWebView2Controller):void $then
      * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2environment#createcorewebview2controller
+     * @return Promise<ICoreWebView2Controller>
      */
-    public function createCoreWebView2Controller(CData $window, callable $then): int
+    public function createCoreWebView2Controller(CData $window): Promise
     {
-        $handler = CreateCoreWebView2ControllerCompletedHandler::create(
-            ffi: $this->ffi,
-            callback: function (CData $host) use ($then): void {
-                $then(new ICoreWebView2Controller($this->ffi, $host, $this));
-            },
-        );
+        /** @var Promise<ICoreWebView2Controller> */
+        return new Promise(function (callable $resolve) use ($window): void {
+            $handler = CreateCoreWebView2ControllerCompletedHandler::create(
+                ffi: $this->ffi,
+                callback: function (CData $host) use ($resolve): void {
+                    $resolve(new ICoreWebView2Controller($this->ffi, $host, $this));
+                },
+            );
 
-        return ($this->vt->CreateCoreWebView2Controller)(
-            $this->cdata,
-            $this->ffi->cast('HWND', $window),
-            \FFI::addr($handler->cdata),
-        );
+            /**
+             * @var int $result
+             * @phpstan-ignore-next-line
+             */
+            $result = ($this->vt->CreateCoreWebView2Controller)(
+                $this->cdata,
+                $this->ffi->cast('HWND', $window),
+                \FFI::addr($handler->cdata),
+            );
+
+            if ($result !== 0) {
+                throw ResultException::fromStructMetadata(
+                    meta: self::getStructMetadata(),
+                    proc: 'CreateCoreWebView2Controller',
+                    code: $result,
+                );
+            }
+        });
     }
 
     /**

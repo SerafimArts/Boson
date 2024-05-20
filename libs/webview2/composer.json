@@ -8,7 +8,8 @@
         "ffi/env": "^1.0",
         "ffi/proxy": "^1.0",
         "local/com": "^1.0",
-        "local/property": "^1.0"
+        "local/property": "^1.0",
+        "react/promise": "^3.1"
     },
     "autoload": {
         "psr-4": {

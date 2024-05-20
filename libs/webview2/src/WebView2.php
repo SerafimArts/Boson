@@ -9,6 +9,7 @@ use FFI\Env\Runtime;
 use FFI\Proxy\Proxy;
 use Local\Com\Exception\ResultException;
 use Local\WebView2\Callback\CreateCoreWebView2EnvironmentCompletedHandler;
+use React\Promise\Promise;
 
 final class WebView2 extends Proxy
 {
@@ -26,27 +27,30 @@ final class WebView2 extends Proxy
      * Creates an evergreen WebView2 Environment using the installed WebView2
      * Runtime version.
      *
-     * @param callable(ICoreWebView2Environment):void $then
      * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/webview2-idl#createcorewebview2environment
+     * @return Promise<ICoreWebView2Environment>
      */
-    public function createCoreWebView2Environment(callable $then): void
+    public function createCoreWebView2Environment(): Promise
     {
-        $handler = CreateCoreWebView2EnvironmentCompletedHandler::create(
-            ffi: $this,
-            callback: function (CData $ptr) use ($then): void {
-                $then(new ICoreWebView2Environment($this, $ptr));
-            },
-        );
+        /** @var Promise<ICoreWebView2Environment> */
+        return new Promise(function (callable $resolve): void {
+            $handler = CreateCoreWebView2EnvironmentCompletedHandler::create(
+                ffi: $this,
+                callback: function (CData $ptr) use ($resolve): void {
+                    $resolve(new ICoreWebView2Environment($this, $ptr));
+                },
+            );
 
-        /**
-         * @var int $result
-         * @phpstan-ignore-next-line
-         */
-        $result = $this->ffi->CreateCoreWebView2Environment(\FFI::addr($handler->cdata));
+            /**
+             * @var int $result
+             * @phpstan-ignore-next-line
+             */
+            $result = $this->ffi->CreateCoreWebView2Environment(\FFI::addr($handler->cdata));
 
-        if ($result !== 0) {
-            throw ResultException::fromProcName('CreateCoreWebView2Environment', $result);
-        }
+            if ($result !== 0) {
+                throw ResultException::fromProcName('CreateCoreWebView2Environment', $result);
+            }
+        });
     }
 
     /**

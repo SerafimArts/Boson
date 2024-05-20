@@ -124,6 +124,14 @@ final class ICoreWebView2 extends IUnknown
         ($this->vt->Navigate)($this->cdata, WideString::toWideString($uri));
     }
 
+    /**
+     * @api
+     */
+    public function reload(): void
+    {
+        ($this->vt->Reload)($this->cdata);
+    }
+
     public function __destruct()
     {
         foreach ($this->listeners as $listener) {

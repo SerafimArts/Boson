@@ -47,23 +47,25 @@ final class Win32WebView implements WebViewInterface
 
         $this->addEventListeners();
 
-        $this->webview->createCoreWebView2Environment(function (ICoreWebView2Environment $env): void {
-            $env->createCoreWebView2Controller(
-                window: $this->window->handle->ptr,
-                then: function (ICoreWebView2Controller $host): void {
-                    $this->core = $core = $host->coreWebView2;
+        $this->webview->createCoreWebView2Environment()
+            ->then(function (ICoreWebView2Environment $env) {
+                $env->createCoreWebView2Controller($this->window->handle->ptr)
+                    ->then($this->onControllerCreated(...));
+            });
+    }
 
-                    $this->updateSettings();
-                    $this->updateWindowSize();
-                    $this->delegateEventListeners($core);
+    private function onControllerCreated(ICoreWebView2Controller $host): void
+    {
+        $this->core = $core = $host->coreWebView2;
 
-                    $this->events->dispatch(new WebViewCreatedEvent(
-                        target: $this->window,
-                        webview: $this,
-                    ));
-                },
-            );
-        });
+        $this->updateSettings();
+        $this->updateWindowSize();
+        $this->delegateEventListeners($core);
+
+        $this->events->dispatch(new WebViewCreatedEvent(
+            target: $this->window,
+            webview: $this,
+        ));
     }
 
     private function delegateEventListeners(ICoreWebView2 $core): void
