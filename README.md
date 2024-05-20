@@ -38,7 +38,6 @@ $app->on(WebViewCreatedEvent::class, function (WebViewCreatedEvent $e): void {
 
 $window = $app->create(new CreateInfo(title: 'Example Application'));
 $window->position->center();
-$window->show();
 
 $app->run();
 ```
