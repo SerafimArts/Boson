@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window;
 
+use Serafim\Boson\Window\WebView\WebViewCreateInfo;
+
 /**
  * DTO containing the initial information for creating the window.
  */
@@ -30,5 +32,6 @@ final readonly class CreateInfo
         public bool $resizable = false,
         public bool $visible = true,
         public bool $debug = false,
+        public WebViewCreateInfo $webview = new WebViewCreateInfo(),
     ) {}
 }

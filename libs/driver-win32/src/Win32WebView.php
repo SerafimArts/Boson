@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Local\Driver\Win32;
 
+use Composer\InstalledVersions;
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use Local\Driver\Win32\Lib\User32;
@@ -12,6 +13,7 @@ use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
 use Local\WebView2\Exception\WebViewNotAvailableException;
 use Local\WebView2\Handler;
+use Local\WebView2\Handler\NavigationStartingEventArgs;
 use Local\WebView2\ICoreWebView2;
 use Local\WebView2\ICoreWebView2Controller;
 use Local\WebView2\ICoreWebView2Environment;
@@ -24,6 +26,7 @@ use Serafim\Boson\Event\WebView\WebViewNavigationStarted;
 use Serafim\Boson\Event\Window\WindowClosedEvent;
 use Serafim\Boson\Event\Window\WindowResizeEvent;
 use Serafim\Boson\Exception\WebViewNavigationException;
+use Serafim\Boson\Window\CreateInfo;
 use Serafim\Boson\Window\WebViewInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -54,6 +57,20 @@ final class Win32WebView implements WebViewInterface
             });
     }
 
+    /**
+     * @return non-empty-string
+     */
+    private function getUserAgent(ICoreWebView2 $webview, CreateInfo $info): string
+    {
+        return $info->webview->userAgent
+            ?? \vsprintf('WebView2/%s Boson/%s', [
+                $webview->host->env->getBrowserVersionString(),
+                \class_exists(InstalledVersions::class)
+                    ? InstalledVersions::getPrettyVersion('serafim/boson')
+                    : 'dev-master',
+            ]);
+    }
+
     private function onControllerCreated(ICoreWebView2Controller $host): void
     {
         $this->core = $core = $host->coreWebView2;
@@ -62,7 +79,15 @@ final class Win32WebView implements WebViewInterface
         $this->updateWindowSize();
         $this->delegateEventListeners($core);
 
+        // Inject the bootstrap script into the document.
         $core->addScriptToExecuteOnDocumentCreated($this->bootstrap);
+
+
+        // Upgrade request headers.
+        $userAgent = $this->getUserAgent($core, $this->window->info);
+        $core->onNavigationStarting(function (NavigationStartingEventArgs $args) use ($userAgent): void {
+            $args->requestHeaders->setHeader('User-Agent', $userAgent);
+        });
 
         $this->events->dispatch(new WebViewCreatedEvent(
             subject: $this,
@@ -71,14 +96,14 @@ final class Win32WebView implements WebViewInterface
 
     private function delegateEventListeners(ICoreWebView2 $core): void
     {
-        $core->onNavigationStarting(function (Handler\NavigationStartingEventArgs $e): void {
+        $core->onNavigationStarting(function (NavigationStartingEventArgs $e): void {
             $this->events->dispatch(new WebViewNavigationStarted(
                 subject: $this,
                 uri: $e->uri,
             ));
         });
 
-        $core->onFrameNavigationStarting(function (Handler\NavigationStartingEventArgs $e): void {
+        $core->onFrameNavigationStarting(function (NavigationStartingEventArgs $e): void {
             $this->events->dispatch(new WebViewNavigationStarted(
                 subject: $this,
                 uri: $e->uri,
