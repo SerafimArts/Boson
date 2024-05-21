@@ -21,6 +21,8 @@ use Local\WebView2\Handler\NavigationStartingEventArgs;
 use Local\WebView2\Handler\NavigationStartingEventHandler;
 use Local\WebView2\Handler\WebMessageReceivedEventArgs;
 use Local\WebView2\Handler\WebMessageReceivedEventHandler;
+use Local\WebView2\Handler\WebResourceRequestedEventArgs;
+use Local\WebView2\Handler\WebResourceRequestedEventHandler;
 use Local\WebView2\Shared\IUnknown;
 use React\Promise\Promise;
 
@@ -102,6 +104,19 @@ final class ICoreWebView2 extends IUnknown
 
     /**
      * @api
+     * @param callable(WebResourceRequestedEventArgs):void $then
+     */
+    public function onWebResourceRequested(callable $then): EventSubscription
+    {
+        return $this->addEventListener(
+            name: 'WebResourceRequested',
+            class: WebResourceRequestedEventHandler::class,
+            then: $then,
+        );
+    }
+
+    /**
+     * @api
      * @param callable(NavigationStartingEventArgs):void $then
      */
     public function onNavigationStarting(callable $then): EventSubscription
@@ -163,6 +178,32 @@ final class ICoreWebView2 extends IUnknown
             class: WebMessageReceivedEventHandler::class,
             then: $then,
         );
+    }
+
+    /**
+     * @api
+     */
+    public function addWebResourceRequestedFilter(
+        string $uri,
+        WebResourceContext $context = WebResourceContext::CONTEXT_ALL,
+    ): void {
+        $this->call('AddWebResourceRequestedFilter', [
+            WideString::toWideString($uri),
+            $context->value,
+        ]);
+    }
+
+    /**
+     * @api
+     */
+    public function removeWebResourceRequestedFilter(
+        string $uri,
+        WebResourceContext $context = WebResourceContext::CONTEXT_ALL,
+    ): void {
+        $this->call('RemoveWebResourceRequestedFilter', [
+            WideString::toWideString($uri),
+            $context->value,
+        ]);
     }
 
     /**

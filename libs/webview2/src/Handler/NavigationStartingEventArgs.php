@@ -9,9 +9,11 @@ use Local\Com\Attribute\MapStruct;
 use Local\Com\Property\BoolProperty;
 use Local\Com\Property\ReadableBoolProperty;
 use Local\Com\Property\ReadableInt64Property;
+use Local\Com\Property\ReadableStructProperty;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
+use Local\WebView2\ICoreWebView2HttpRequestHeaders;
 use Local\WebView2\WebView2;
 
 /**
@@ -20,8 +22,7 @@ use Local\WebView2\WebView2;
  * @property-read bool $isRedirected
  * @property bool $cancel
  * @property-read int $navigationId
- *
- * TODO Add HRESULT (*get_RequestHeaders)(..., ICoreWebView2HttpRequestHeaders** requestHeaders);
+ * @property-read ICoreWebView2HttpRequestHeaders $requestHeaders
  */
 #[MapStruct(name: 'ICoreWebView2NavigationStartingEventArgs', owned: false)]
 final class NavigationStartingEventArgs extends EventArgs
@@ -31,6 +32,7 @@ final class NavigationStartingEventArgs extends EventArgs
     protected readonly ReadableBoolProperty $isRedirectedProperty;
     protected readonly BoolProperty $cancelProperty;
     protected readonly ReadableInt64Property $navigationIdProperty;
+    protected readonly ReadableStructProperty $requestHeadersProperty;
 
     public function __construct(WebView2 $ffi, CData $cdata)
     {
@@ -41,6 +43,20 @@ final class NavigationStartingEventArgs extends EventArgs
         $this->isRedirectedProperty = new ReadableBoolProperty($this, 'IsRedirected');
         $this->cancelProperty = new BoolProperty($this, 'Cancel');
         $this->navigationIdProperty = new ReadableInt64Property($this, 'NavigationId', 'UINT64');
+        $this->requestHeadersProperty = new ReadableStructProperty(
+            context: $this,
+            name: 'RequestHeaders',
+            struct: ICoreWebView2HttpRequestHeaders::class,
+        );
+    }
+
+    /**
+     * @api
+     */
+    #[MapGetter('requestHeaders')]
+    public function getRequestHeaders(): ICoreWebView2HttpRequestHeaders
+    {
+        return $this->requestHeadersProperty->get();
     }
 
     /**
