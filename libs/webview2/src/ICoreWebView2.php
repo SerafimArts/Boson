@@ -11,6 +11,8 @@ use Local\Com\Property\ReadableStructProperty;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Com\WideString;
 use Local\Property\Attribute\MapGetter;
+use Local\WebView2\Callback\AddedScriptToExecuteHandler;
+use Local\WebView2\Callback\AddScriptToExecuteOnDocumentCreatedCompletedHandler;
 use Local\WebView2\Callback\ExecuteScriptCompletedHandler;
 use Local\WebView2\Handler\EventSubscription;
 use Local\WebView2\Handler\NavigationCompletedEventArgs;
@@ -20,6 +22,7 @@ use Local\WebView2\Handler\NavigationStartingEventHandler;
 use Local\WebView2\Handler\WebMessageReceivedEventArgs;
 use Local\WebView2\Handler\WebMessageReceivedEventHandler;
 use Local\WebView2\Shared\IUnknown;
+use React\Promise\Promise;
 
 /**
  * @property-read ICoreWebView2Settings $settings
@@ -160,6 +163,37 @@ final class ICoreWebView2 extends IUnknown
             class: WebMessageReceivedEventHandler::class,
             then: $then,
         );
+    }
+
+    /**
+     * @api
+     * @return Promise<AddedScriptToExecuteHandler>
+     */
+    public function addScriptToExecuteOnDocumentCreated(string $code): Promise
+    {
+        return new Promise(function ($resolve) use ($code) {
+            $handler = AddScriptToExecuteOnDocumentCreatedCompletedHandler::create(
+                ffi: $this->ffi,
+                callback: static function (string $id) use ($resolve): void {
+                    $resolve(new AddedScriptToExecuteHandler($id));
+                },
+            );
+
+            $this->call('AddScriptToExecuteOnDocumentCreated', [
+                WideString::toWideString($code),
+                \FFI::addr($handler->cdata),
+            ]);
+        });
+    }
+
+    /**
+     * @api
+     */
+    public function removeScriptToExecuteOnDocumentCreated(AddedScriptToExecuteHandler $handler): void
+    {
+        $this->call('RemoveScriptToExecuteOnDocumentCreated', [
+            $handler->id,
+        ]);
     }
 
     /**
