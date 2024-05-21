@@ -21,7 +21,12 @@ And much easier than that =)
 
 ## Known Issues
 
-- Multiple windows is not supported.
+- [x] ~~The WebView Controller is initialized ONLY after the window has been moved, 
+  otherwise `Failed to create WebView Controller` has been thrown.~~
+- [x] ~~The WebView is not rendering at the moment.~~
+- [x] ~~Multiple windows is not supported.~~
+- [ ] Holding windows in PHP GC (including handling their messages) after 
+  closing the window.
 
 ## App Example
 

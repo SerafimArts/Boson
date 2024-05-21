@@ -41,13 +41,13 @@ final class ICoreWebView2Environment extends IUnknown
      * @link https://learn.microsoft.com/en-us/microsoft-edge/webview2/reference/win32/icorewebview2environment#createcorewebview2controller
      * @return Promise<ICoreWebView2Controller>
      */
-    public function createCoreWebView2Controller(CData $window): Promise
+    public function createCoreWebView2Controller(mixed $window): Promise
     {
         /** @var Promise<ICoreWebView2Controller> */
         return new Promise(function (callable $resolve) use ($window): void {
             $handler = CreateCoreWebView2ControllerCompletedHandler::create(
                 ffi: $this->ffi,
-                callback: function (CData $host) use ($resolve): void {
+                callback: function (mixed $host) use ($resolve): void {
                     $resolve(new ICoreWebView2Controller($this->ffi, $host, $this));
                 },
             );

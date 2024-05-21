@@ -28,7 +28,6 @@ final readonly class CreateInfo
         public int $width = self::DEFAULT_WIDTH,
         public int $height = self::DEFAULT_HEIGHT,
         public bool $resizable = false,
-        public bool $closable = true,
         public bool $visible = true,
         public bool $debug = false,
     ) {}

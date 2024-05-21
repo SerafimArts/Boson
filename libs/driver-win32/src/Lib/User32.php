@@ -82,7 +82,8 @@ typedef LONG_PTR            LRESULT;
 
 typedef void*               HANDLE;
 
-typedef HANDLE              HWND;
+typedef intptr_t            HWND;
+
 typedef UINT_PTR            HMENU;
 typedef HANDLE              HACCEL;
 typedef HANDLE              HBRUSH;

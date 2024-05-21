@@ -13,6 +13,6 @@ final readonly class Win32WindowHandle extends Win32Handle
 {
     public function __construct(
         public Win32ClassHandle $class,
-        public CData $ptr,
+        public mixed $ptr,
     ) {}
 }

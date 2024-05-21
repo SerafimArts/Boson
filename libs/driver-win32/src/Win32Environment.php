@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Local\Driver\Win32;
 
 use FFI\CData;
+use Local\Driver\Win32\Handle\Win32ClassHandle;
 use Local\Driver\Win32\Handle\Win32ClassHandleFactory;
 use Local\Driver\Win32\Handle\Win32InstanceHandle;
 use Local\Driver\Win32\Handle\Win32WindowHandleFactory;
@@ -42,6 +43,8 @@ final class Win32Environment implements ApplicationInterface
     private readonly InstallationDetector $installation;
     private readonly Win32InstanceHandle $instance;
 
+    private readonly Win32ClassHandleFactory $classes;
+
     private readonly CData $message;
 
     public function __construct(
@@ -50,6 +53,10 @@ final class Win32Environment implements ApplicationInterface
         $this->ole32 = new Ole32();
         $this->user32 = new User32();
         $this->kernel32 = new Kernel32();
+        $this->classes = new Win32ClassHandleFactory(
+            events: $this->events,
+            user32: $this->user32,
+        );
 
         $this->installation = $this->createInstallationDetector();
         $this->instance = $this->createInstanceHandle();
@@ -80,21 +87,22 @@ final class Win32Environment implements ApplicationInterface
     {
         $this->installation->assertIsInstalledOrFail();
 
-        return new Win32Window(
+        $result = new Win32Window(
             app: $this,
             info: $info,
             events: $this->events,
             instance: $this->instance,
-            classes: new Win32ClassHandleFactory(
-                events: $this->events,
-                user32: $this->user32,
-            ),
+            classes: $this->classes,
             windows: new Win32WindowHandleFactory(
                 user32: $this->user32,
             ),
             user32: $this->user32,
             webView2: new WebView2(),
         );
+
+        $this->classes->attach($result);
+
+        return $result;
     }
 
     /**

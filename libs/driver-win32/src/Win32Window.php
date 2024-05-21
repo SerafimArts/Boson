@@ -66,7 +66,6 @@ final class Win32Window implements WindowInterface
             class: $classes->create(
                 info: $info,
                 instance: $instance,
-                window: $this,
             ),
         );
 

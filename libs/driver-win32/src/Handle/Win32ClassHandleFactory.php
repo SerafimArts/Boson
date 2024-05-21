@@ -12,6 +12,7 @@ use Local\Driver\Win32\Lib\Icon;
 use Local\Driver\Win32\Lib\User32;
 use Local\Driver\Win32\Lib\WindowClassStyle;
 use Local\Driver\Win32\Lib\WindowMessage;
+use Local\Driver\Win32\Win32Window;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Event\Window\WindowFocusLostEvent;
 use Serafim\Boson\Event\Window\WindowClosedEvent;
@@ -21,14 +22,13 @@ use Serafim\Boson\Event\Window\WindowMovedEvent;
 use Serafim\Boson\Event\Window\WindowResizeEvent;
 use Serafim\Boson\Event\Window\WindowShownEvent;
 use Serafim\Boson\Exception\WindowNotCreatableException;
-use Serafim\Boson\Memory\MemorySet;
 use Serafim\Boson\Window\CreateInfo;
 use Serafim\Boson\WindowInterface;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
  */
-final readonly class Win32ClassHandleFactory
+final class Win32ClassHandleFactory
 {
     /**
      * @var int-mask-of<WindowClassStyle::CS_*>
@@ -37,16 +37,31 @@ final readonly class Win32ClassHandleFactory
         | WindowClassStyle::CS_VREDRAW
         | WindowClassStyle::CS_OWNDC;
 
-    /**
-     * @var MemorySet<Win32ClassHandle>
-     */
-    private MemorySet $handles;
+    private ?Win32ClassHandle $current = null;
 
+    /**
+     * @var \ArrayObject<mixed, Win32Window>
+     */
+    private readonly \ArrayObject $windows;
+
+    /**
+     * @param \ArrayObject<int, Win32Window> $windows
+     */
     public function __construct(
-        private EventDispatcherInterface $events,
-        private User32 $user32,
+        private readonly EventDispatcherInterface $events,
+        private readonly User32 $user32,
     ) {
-        $this->handles = new MemorySet();
+        $this->windows = new \ArrayObject();
+    }
+
+    public function attach(Win32Window $window): void
+    {
+        $this->windows[$window->handle->ptr] = $window;
+    }
+
+    public function detach(Win32Window $window): void
+    {
+        unset($this->windows[$window->handle->ptr]);
     }
 
     private function createWindowClass(CreateInfo $info, Win32InstanceHandle $module): CData
@@ -67,10 +82,6 @@ final readonly class Win32ClassHandleFactory
         $class->lpszClassName = WideString::toWideStringCData($this->user32, __CLASS__);
         $class->hbrBackground = $this->user32->GetSysColorBrush(Color::COLOR_WINDOW);
 
-        if ($info->closable === false) {
-            $class->style = WindowClassStyle::CS_NOCLOSE;
-        }
-
         /** @var CData */
         return $class;
     }
@@ -84,57 +95,72 @@ final readonly class Win32ClassHandleFactory
         return $info;
     }
 
-    private function registerWindowFunction(CData $info, WindowInterface $window): CData
+    private function registerWindowFunction(CData $info): CData
     {
         // @phpstan-ignore-next-line
-        $info->lpfnWndProc = function (CData $hWnd, int $msg, int $wParam, int $lParam) use ($window): int {
-            switch ($msg) {
-                case WindowMessage::WM_CLOSE:
-                    $this->events->dispatch(new WindowClosedEvent($window));
-                    return 0;
+        $info->lpfnWndProc = function (mixed $hWnd, int $msg, int $wParam, int $lParam): int {
+            $window = $this->windows[$hWnd] ?? null;
 
-                case WindowMessage::WM_SETFOCUS:
-                    $this->events->dispatch(new WindowFocusReceivedEvent($window));
-                    return 0;
+            if ($window !== null) {
+                $result = $this->processWindow($window, $msg, $wParam, $lParam);
 
-                case WindowMessage::WM_KILLFOCUS:
-                    $this->events->dispatch(new WindowFocusLostEvent($window));
-                    return 0;
-
-                case WindowMessage::WM_MOVE:
-                    $this->events->dispatch(new WindowMovedEvent(
-                        $window,
-                        self::loWord($lParam),
-                        self::hiWord($lParam),
-                    ));
-                    return 0;
-
-                case WindowMessage::WM_ACTIVATE:
-                    if ($wParam !== 1) {
-                        $this->events->dispatch(new WindowHiddenEvent($window));
-                    } else {
-                        $this->events->dispatch(new WindowShownEvent($window));
-                    }
-                    return 0;
-
-                case WindowMessage::WM_CAPTURECHANGED:
-                    // change full size/normal states
-                    //echo sprintf("[%08d] %s\n", $msg, WindowMessage::get($msg));
-                    return 0;
-
-                case WindowMessage::WM_SIZE:
-                    $this->events->dispatch(new WindowResizeEvent(
-                        $window,
-                        \max(0, self::loWord($lParam)),
-                        \max(0, self::hiWord($lParam)),
-                    ));
-                    return 0;
+                if ($result !== null) {
+                    return $result;
+                }
             }
 
             return $this->user32->DefWindowProcW($hWnd, $msg, $wParam, $lParam);
         };
 
         return $info;
+    }
+
+    private function processWindow(WindowInterface $window, int $msg, int $wParam, int $lParam): ?int
+    {
+        switch ($msg) {
+            case WindowMessage::WM_CLOSE:
+                $this->events->dispatch(new WindowClosedEvent($window));
+                return 0;
+
+            case WindowMessage::WM_SETFOCUS:
+                $this->events->dispatch(new WindowFocusReceivedEvent($window));
+                return 0;
+
+            case WindowMessage::WM_KILLFOCUS:
+                $this->events->dispatch(new WindowFocusLostEvent($window));
+                return 0;
+
+            case WindowMessage::WM_MOVE:
+                $this->events->dispatch(new WindowMovedEvent(
+                    $window,
+                    self::loWord($lParam),
+                    self::hiWord($lParam),
+                ));
+                return 0;
+
+            case WindowMessage::WM_ACTIVATE:
+                if ($wParam !== 1) {
+                    $this->events->dispatch(new WindowHiddenEvent($window));
+                } else {
+                    $this->events->dispatch(new WindowShownEvent($window));
+                }
+                return 0;
+
+            case WindowMessage::WM_CAPTURECHANGED:
+                // change full size/normal states
+                //echo sprintf("[%08d] %s\n", $msg, WindowMessage::get($msg));
+                return 0;
+
+            case WindowMessage::WM_SIZE:
+                $this->events->dispatch(new WindowResizeEvent(
+                    $window,
+                    \max(0, self::loWord($lParam)),
+                    \max(0, self::hiWord($lParam)),
+                ));
+                return 0;
+        }
+
+        return null;
     }
 
     private static function loWord(int $value): int
@@ -154,9 +180,9 @@ final readonly class Win32ClassHandleFactory
         return $value > 32767 ? $value - 65535 : $value;
     }
 
-    public function create(CreateInfo $info, Win32InstanceHandle $instance, WindowInterface $window): Win32ClassHandle
+    public function create(CreateInfo $info, Win32InstanceHandle $instance): Win32ClassHandle
     {
-        $result = new Win32ClassHandle(
+        return $this->current ??= new Win32ClassHandle(
             instance: $instance,
             id: __CLASS__,
             ptr: $this->registerWindowClass(
@@ -165,18 +191,17 @@ final readonly class Win32ClassHandleFactory
                         info: $info,
                         module: $instance,
                     ),
-                    window: $window,
                 ),
             ),
         );
+    }
 
-        $this->handles->create($result, function (Win32ClassHandle $handle) {
-            $this->user32->UnregisterClassW(
-                $handle->id,
-                null,
-            );
-        });
+    public function __destruct()
+    {
+        if ($this->current === null) {
+            return;
+        }
 
-        return $result;
+        $this->user32->UnregisterClassW($this->current->id, null);
     }
 }
