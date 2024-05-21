@@ -8,13 +8,13 @@ And much easier than that =)
 ## Requirements
 
 - Windows OS
-- PHP 8.3+
+- PHP 8.3+ (64bit, TS or NTS)
 - ext-ffi
 
 | OS      | CPU   | Supported             |
 |---------|-------|-----------------------|
 | Windows | x64   | Yes                   |
-| Windows | x86   | Possible (Not Tested) |
+| Windows | x86   | No                    |
 | Windows | ARM64 | Possible (Not Tested) |
 | Linux   | Any   | No (TODO)             |
 | MacOS   | Any   | No (TODO)             |

@@ -7,7 +7,7 @@
         {"type": "path", "url": "libs/*"}
     ],
     "require": {
-        "php": "^8.3",
+        "php-64bit": "^8.3",
         "ext-ffi": "*",
         "ext-iconv": "*",
         "local/com": "^1.0",

@@ -5,15 +5,13 @@ declare(strict_types=1);
 namespace Local\Driver\Win32;
 
 use FFI\CData;
-use Local\Driver\Win32\Handle\Win32ClassHandle;
 use Local\Driver\Win32\Handle\Win32ClassHandleFactory;
 use Local\Driver\Win32\Handle\Win32InstanceHandle;
 use Local\Driver\Win32\Handle\Win32WindowHandleFactory;
-use Local\Driver\Win32\Lib\Advapi32;
 use Local\Driver\Win32\Lib\Kernel32;
 use Local\Driver\Win32\Lib\Ole32;
 use Local\Driver\Win32\Lib\User32;
-use Local\Driver\Win32\WebView2\InstallationDetector;
+use Local\WebView2\InstallationDetector;
 use Local\WebView2\WebView2;
 use Serafim\Boson\ApplicationInterface;
 use Serafim\Boson\Event\Application\ApplicationStartedEvent;
@@ -58,16 +56,11 @@ final class Win32Environment implements ApplicationInterface
             user32: $this->user32,
         );
 
-        $this->installation = $this->createInstallationDetector();
+        $this->installation = new InstallationDetector();
         $this->instance = $this->createInstanceHandle();
         $this->message = $this->createMessage();
 
         $this->ole32->CoInitializeEx(null, self::COINIT_APARTMENTTHREADED);
-    }
-
-    private function createInstallationDetector(): InstallationDetector
-    {
-        return new InstallationDetector(new Advapi32());
     }
 
     private function createMessage(): CData

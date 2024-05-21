@@ -6,11 +6,11 @@ namespace Local\Driver\Win32;
 
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
-use Local\Driver\Win32\Exception\WebView2NotAvailableException;
 use Local\Driver\Win32\Lib\User32;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
 use Local\Property\ContainProperties;
+use Local\WebView2\Exception\WebViewNotAvailableException;
 use Local\WebView2\Handler;
 use Local\WebView2\ICoreWebView2;
 use Local\WebView2\ICoreWebView2Controller;
@@ -178,7 +178,7 @@ final class Win32WebView implements WebViewInterface
     public function load(string $content): void
     {
         if ($this->core === null) {
-            throw WebView2NotAvailableException::createWithMessage('Not Initialized');
+            throw WebViewNotAvailableException::createWithMessage('Not Initialized');
         }
 
         $this->core->navigateToString($content);
@@ -187,7 +187,7 @@ final class Win32WebView implements WebViewInterface
     public function exec(#[Language('JavaScript')] string $script): void
     {
         if ($this->core === null) {
-            throw WebView2NotAvailableException::createWithMessage('Not Initialized');
+            throw WebViewNotAvailableException::createWithMessage('Not Initialized');
         }
 
         $this->core->executeScript($script);
@@ -210,7 +210,7 @@ final class Win32WebView implements WebViewInterface
     public function setUri(string $uri): void
     {
         if ($this->core === null) {
-            throw WebView2NotAvailableException::createWithMessage('Not Initialized');
+            throw WebViewNotAvailableException::createWithMessage('Not Initialized');
         }
 
         $this->core->navigate($uri);

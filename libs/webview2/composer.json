@@ -3,7 +3,7 @@
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.3",
+        "php-64bit": "^8.3",
         "ext-ffi": "*",
         "ffi/env": "^1.0",
         "ffi/proxy": "^1.0",

@@ -2,10 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Local\Driver\Win32\Lib;
+namespace Local\WebView2\Internal;
 
 use Local\Driver\Win32\Library;
 
+/**
+ * @internal This is an internal library class, please do not use it in your code.
+ * @psalm-internal Local\WebView2
+ */
 final class Advapi32 extends Library
 {
     public function __construct()
@@ -42,6 +46,7 @@ LSTATUS RegOpenKeyExA(
     REGSAM samDesired,
     PHKEY phkResult
 );
+
 LSTATUS RegOpenKeyExW(
     HKEY hKey,
     LPCWSTR lpSubKey,

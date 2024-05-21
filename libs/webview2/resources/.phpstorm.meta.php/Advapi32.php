@@ -5,7 +5,7 @@
 
 /**
  * A helper file for FFI, to provide autocomplete information to your IDE
- * Generated for FFI {@see Local\Driver\Win32\Lib\Advapi32}.
+ * Generated for FFI {@see Local\WebView2\Internal\Advapi32}.
  *
  * This file should not be included in your code, only analyzed by your IDE!
  *
@@ -47,15 +47,15 @@ namespace PHPSTORM_META {
         'REGSAM',
         'PHKEY',
     );
-    expectedArguments(\Local\Driver\Win32\Lib\Advapi32::new(), 0, argumentsSet('ffi_advapi32types_list'));
-    expectedArguments(\Local\Driver\Win32\Lib\Advapi32::cast(), 0, argumentsSet('ffi_advapi32types_list'));
-    expectedArguments(\Local\Driver\Win32\Lib\Advapi32::type(), 0, argumentsSet('ffi_advapi32types_list'));
-    override(\Local\Driver\Win32\Lib\Advapi32::new(0), map([
+    expectedArguments(\Local\WebView2\Internal\Advapi32::new(), 0, argumentsSet('ffi_advapi32types_list'));
+    expectedArguments(\Local\WebView2\Internal\Advapi32::cast(), 0, argumentsSet('ffi_advapi32types_list'));
+    expectedArguments(\Local\WebView2\Internal\Advapi32::type(), 0, argumentsSet('ffi_advapi32types_list'));
+    override(\Local\WebView2\Internal\Advapi32::new(0), map([
         // List of return type coercions
         '' => '\PHPSTORM_META\@',
     ]));
 }
-namespace Local\Driver\Win32\Lib {
+namespace Local\WebView2\Internal {
     interface Advapi32
     {
         /**

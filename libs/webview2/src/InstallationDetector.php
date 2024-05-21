@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Local\Driver\Win32\WebView2;
+namespace Local\WebView2;
 
 use FFI\CData;
-use Local\Driver\Win32\Exception\WebView2NotAvailableException;
-use Local\Driver\Win32\Lib\Advapi32;
+use Local\WebView2\Exception\WebViewNotAvailableException;
+use Local\WebView2\Internal\Advapi32;
 
 final readonly class InstallationDetector
 {
@@ -47,7 +47,7 @@ final readonly class InstallationDetector
     private CData $hKey;
 
     public function __construct(
-        private Advapi32 $advapi32,
+        private Advapi32 $advapi32 = new Advapi32(),
     ) {
         // @phpstan-ignore-next-line
         $this->hKey = $this->advapi32->cast('HKEY', self::HKEY_LOCAL_MACHINE);
@@ -112,14 +112,14 @@ final readonly class InstallationDetector
 
     /**
      * Determines whether WebView2 is installed or throws an
-     * {@see WebView2NotAvailableException} exception instead.
+     * {@see WebViewNotAvailableException} exception instead.
      *
-     * @throws WebView2NotAvailableException
+     * @throws WebViewNotAvailableException
      */
     public function assertIsInstalledOrFail(): void
     {
         if (!$this->isInstalled()) {
-            throw WebView2NotAvailableException::createWithMessage(
+            throw WebViewNotAvailableException::createWithMessage(
                 <<<'MESSAGE'
                 Please download WebView2 runtime using following link:
                 https://developer.microsoft.com/en-us/microsoft-edge/webview2?form=MA13LH#download-section
