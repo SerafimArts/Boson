@@ -52,6 +52,7 @@ final class Win32Window implements WindowInterface
     public function __construct(
         public readonly ApplicationInterface $app,
         public readonly CreateInfo $info,
+        private readonly string $bootstrap,
         EventDispatcherInterface $events,
         Win32InstanceHandle $instance,
         Win32ClassHandleFactory $classes,
@@ -78,6 +79,7 @@ final class Win32Window implements WindowInterface
             window: $this,
             events: $events,
             webview: $webView2,
+            bootstrap: $this->bootstrap,
         );
 
         if ($this->info->visible) {

@@ -18,7 +18,7 @@ final class Win32Driver extends Driver
 
     private function getCurrentEnvironment(): Win32Environment
     {
-        return $this->env ??= new Win32Environment($this->events);
+        return $this->env ??= new Win32Environment($this->events, $this->bootstrap);
     }
 
     public function create(CreateInfo $info = new CreateInfo()): Win32Window

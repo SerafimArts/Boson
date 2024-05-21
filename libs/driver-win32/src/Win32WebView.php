@@ -40,6 +40,7 @@ final class Win32WebView implements WebViewInterface
         public readonly Win32Window $window,
         private readonly EventDispatcherInterface $events,
         private readonly WebView2 $webview,
+        private readonly string $bootstrap,
     ) {
         // @phpstan-ignore-next-line
         $this->rect = $this->user32->new('RECT');
@@ -60,6 +61,8 @@ final class Win32WebView implements WebViewInterface
         $this->updateSettings();
         $this->updateWindowSize();
         $this->delegateEventListeners($core);
+
+        $core->addScriptToExecuteOnDocumentCreated($this->bootstrap);
 
         $this->events->dispatch(new WebViewCreatedEvent(
             subject: $this,

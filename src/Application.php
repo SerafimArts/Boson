@@ -13,6 +13,11 @@ use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 final class Application implements ApplicationInterface
 {
     /**
+     * @var non-empty-string
+     */
+    private const string DEFAULT_BOOTSTRAP_FILE = __DIR__ . '/../resources/assets/scripts/bootstrap.js';
+
+    /**
      * @var list<DriverInterface>
      */
     private array $drivers = [];
@@ -76,7 +81,9 @@ final class Application implements ApplicationInterface
      */
     private function getDefaultFactories(): iterable
     {
-        yield new Driver\Win32\Win32Driver($this->events);
+        $bootstrap = \file_get_contents(self::DEFAULT_BOOTSTRAP_FILE);
+
+        yield new Driver\Win32\Win32Driver($this->events, $bootstrap);
     }
 
     private function getCurrent(): DriverInterface

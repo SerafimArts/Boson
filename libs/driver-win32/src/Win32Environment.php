@@ -47,6 +47,7 @@ final class Win32Environment implements ApplicationInterface
 
     public function __construct(
         private readonly EventDispatcherInterface $events,
+        private readonly string $bootstrap,
     ) {
         $this->ole32 = new Ole32();
         $this->user32 = new User32();
@@ -83,6 +84,7 @@ final class Win32Environment implements ApplicationInterface
         $result = new Win32Window(
             app: $this,
             info: $info,
+            bootstrap: $this->bootstrap,
             events: $this->events,
             instance: $this->instance,
             classes: $this->classes,

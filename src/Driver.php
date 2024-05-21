@@ -10,5 +10,6 @@ abstract class Driver implements DriverInterface
 {
     public function __construct(
         protected readonly EventDispatcherInterface $events,
+        protected readonly string $bootstrap,
     ) {}
 }
