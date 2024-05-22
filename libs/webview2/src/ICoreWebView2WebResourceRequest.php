@@ -6,16 +6,18 @@ namespace Local\WebView2;
 
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
+use Local\Com\Property\Property;
 use Local\Com\Property\ReadableStructProperty;
 use Local\Com\Property\WideStringProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\Property\Attribute\MapSetter;
+use Local\WebView2\Internal\IStream;
 use Local\WebView2\Shared\IUnknown;
 
 /**
  * @property string $uri
  * @property string $method
- * @property string $content
+ * @property-read IStream $content
  * @property-read ICoreWebView2HttpRequestHeaders $headers
  */
 #[MapStruct('ICoreWebView2WebResourceRequest', owned: true)]
@@ -23,7 +25,15 @@ final class ICoreWebView2WebResourceRequest extends IUnknown
 {
     protected readonly WideStringProperty $uriProperty;
     protected readonly WideStringProperty $methodProperty;
-    protected readonly WideStringProperty $contentProperty;
+
+    /**
+     * @var ReadableStructProperty<IStream>
+     */
+    protected readonly ReadableStructProperty $contentProperty;
+
+    /**
+     * @var ReadableStructProperty<ICoreWebView2HttpRequestHeaders>
+     */
     protected readonly ReadableStructProperty $headersProperty;
 
     public function __construct(object $ffi, CData $cdata)
@@ -32,7 +42,11 @@ final class ICoreWebView2WebResourceRequest extends IUnknown
 
         $this->uriProperty = new WideStringProperty($this, 'Uri');
         $this->methodProperty = new WideStringProperty($this, 'Method');
-        $this->contentProperty = new WideStringProperty($this, 'Content');
+        $this->contentProperty = new ReadableStructProperty(
+            context: $this,
+            name: 'Content',
+            struct: IStream::class,
+        );
         $this->headersProperty = new ReadableStructProperty(
             context: $this,
             name: 'Headers',
@@ -80,18 +94,9 @@ final class ICoreWebView2WebResourceRequest extends IUnknown
      * @api
      */
     #[MapGetter('content')]
-    public function getContent(): string
+    public function getContent(): IStream
     {
         return $this->contentProperty->get();
-    }
-
-    /**
-     * @api
-     */
-    #[MapSetter('content')]
-    public function setContent(string $uri): void
-    {
-        $this->contentProperty->set($uri);
     }
 
     /**

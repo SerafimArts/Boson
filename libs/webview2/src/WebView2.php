@@ -101,13 +101,17 @@ typedef PVOID HANDLE;
 typedef HANDLE HWND;
 typedef HANDLE HICON;
 typedef HICON HCURSOR;
+typedef int64_t LONGLONG;
+typedef uint64_t ULONGLONG;
+typedef WCHAR OLECHAR;
+typedef OLECHAR *LPOLESTR;
 
 typedef struct _GUID {
     unsigned int Data1;
     unsigned short Data2;
     unsigned short Data3;
     unsigned char Data4[8];
-} GUID, IID;
+} GUID, IID, CLSID;
 
 typedef struct tagPOINT {
     LONG x;
@@ -121,9 +125,68 @@ typedef struct tagRECT {
     LONG bottom;
 } RECT;
 
+typedef struct _FILETIME {
+    DWORD dwLowDateTime;
+    DWORD dwHighDateTime;
+} FILETIME, *PFILETIME, *LPFILETIME;
+
+typedef union _LARGE_INTEGER {
+    struct {
+        DWORD LowPart;
+        LONG HighPart;
+    } u;
+    LONGLONG QuadPart;
+} LARGE_INTEGER;
+
+typedef union _ULARGE_INTEGER {
+    struct {
+        DWORD LowPart;
+        DWORD HighPart;
+    } u;
+    ULONGLONG QuadPart;
+} ULARGE_INTEGER;
+
 typedef struct IStream IStream;
 typedef struct IUnknown IUnknown;
 typedef struct tagVARIANT VARIANT;
+
+typedef struct tagSTATSTG
+{
+    LPOLESTR pwcsName;
+    DWORD type;
+    ULARGE_INTEGER cbSize;
+    FILETIME mtime;
+    FILETIME ctime;
+    FILETIME atime;
+    DWORD grfMode;
+    DWORD grfLocksSupported;
+    CLSID clsid;
+    DWORD grfStateBits;
+    DWORD reserved;
+} STATSTG;
+
+typedef struct IStreamVtbl
+{
+    HRESULT (*QueryInterface)(IStream* This, const IID* const riid, void** ppvObject);
+    ULONG (*AddRef)(IStream * This);
+    ULONG (*Release)(IStream * This);
+    HRESULT (*Read)(IStream* This, void* pv, ULONG cb, ULONG *pcbRead);
+    HRESULT (*Write)(IStream* This, const void* pv, ULONG cb, ULONG *pcbWritten);
+    HRESULT (*Seek)(IStream* This, LARGE_INTEGER dlibMove, DWORD dwOrigin, ULARGE_INTEGER* plibNewPosition);
+    HRESULT (*SetSize)(IStream* This, ULARGE_INTEGER libNewSize);
+    HRESULT (*CopyTo)(IStream* This, IStream* pstm, ULARGE_INTEGER cb, ULARGE_INTEGER* pcbRead, ULARGE_INTEGER* pcbWritten);
+    HRESULT (*Commit)(IStream* This, DWORD grfCommitFlags);
+    HRESULT (*Revert)(IStream* This);
+    HRESULT (*LockRegion)(IStream* This, ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType);
+    HRESULT (*UnlockRegion)(IStream* This, ULARGE_INTEGER libOffset, ULARGE_INTEGER cb, DWORD dwLockType);
+    HRESULT (*Stat)(IStream* This, STATSTG *pstatstg, DWORD grfStatFlag);
+    HRESULT (*Clone)(IStream* This, IStream** ppstm);
+} IStreamVtbl;
+
+struct IStream
+{
+    struct IStreamVtbl *lpVtbl;
+};
 
 typedef struct ICoreWebView2AcceleratorKeyPressedEventArgs ICoreWebView2AcceleratorKeyPressedEventArgs;
 typedef struct ICoreWebView2AcceleratorKeyPressedEventHandler ICoreWebView2AcceleratorKeyPressedEventHandler;

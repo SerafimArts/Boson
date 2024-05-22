@@ -44,6 +44,10 @@ final readonly class WideStringProperty implements PropertyInterface
 
     public function set(mixed $value): void
     {
-        $this->property->set(WideString::toWideString($value));
+        try {
+            $this->property->set(WideString::toWideString($value));
+        } catch (\Throwable $e) {
+            dump($e->getMessage());
+        }
     }
 }

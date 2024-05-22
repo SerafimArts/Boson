@@ -87,9 +87,11 @@ final class Win32WebView implements WebViewInterface
         // Upgrade request headers.
         $userAgent = $this->getUserAgent($core, $this->window->info);
         $core->onNavigationStarting(function (NavigationStartingEventArgs $args) use ($userAgent): void {
+            $args->requestHeaders->removeHeader('sec-ch-ua');
             $args->requestHeaders->setHeader('User-Agent', $userAgent);
         });
         $core->onWebResourceRequested(function (WebResourceRequestedEventArgs $args) use ($userAgent): void {
+            $args->request->headers->removeHeader('sec-ch-ua');
             $args->request->headers->setHeader('User-Agent', $userAgent);
         });
 
