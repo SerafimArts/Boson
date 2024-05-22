@@ -16,13 +16,20 @@ use Local\WebView2\WebView2;
 
 /**
  * @property-read ICoreWebView2WebResourceRequest $request
- * @property-read ICoreWebView2WebResourceResponse $response
+ * @property-read ICoreWebView2WebResourceResponse|null $response
  * @property-read WebResourceContext $resourceContext
  */
 #[MapStruct(name: 'ICoreWebView2WebResourceRequestedEventArgs', owned: false)]
 final class WebResourceRequestedEventArgs extends EventArgs
 {
+    /**
+     * @var ReadableStructProperty<ICoreWebView2WebResourceRequest>
+     */
     protected readonly ReadableStructProperty $requestProperty;
+
+    /**
+     * @var ReadableStructProperty<ICoreWebView2WebResourceResponse|null>
+     */
     protected readonly ReadableStructProperty $responseProperty;
     protected readonly ReadableIntProperty $resourceContextProperty;
 
@@ -62,9 +69,9 @@ final class WebResourceRequestedEventArgs extends EventArgs
      * @api
      */
     #[MapGetter('response')]
-    public function getResponse(): ICoreWebView2WebResourceResponse
+    public function getResponse(): ?ICoreWebView2WebResourceResponse
     {
-        return $this->responseProperty->get();
+        return $this->responseProperty->fetch();
     }
 
     /**

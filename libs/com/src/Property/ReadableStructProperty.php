@@ -6,6 +6,7 @@ namespace Local\Com\Property;
 
 use FFI\CData;
 use Local\Com\Struct;
+use Local\Property\Exception\PropertyNotReadableException;
 use Local\Property\ReadablePropertyInterface;
 
 /**
@@ -58,6 +59,42 @@ final class ReadableStructProperty implements ReadablePropertyInterface
         );
     }
 
+    private function getPointer(): CData
+    {
+        $cdata = \FFI::addr(($this->struct)::new($this->context->ffi, false));
+
+        ($this->context->vt->{'get_' . $this->name})(
+            $this->context->cdata,
+            \FFI::addr($cdata),
+        );
+
+        return $cdata;
+    }
+
+    public function has(): bool
+    {
+        $cdata = $this->getPointer();
+
+        return !\FFI::isNull($cdata);
+    }
+
+    /**
+     * @return T|null
+     */
+    public function fetch(): ?Struct
+    {
+        $cdata = $this->getPointer();
+
+        if (\FFI::isNull($cdata)) {
+            return null;
+        }
+
+        $this->value = ($this->initializer)($cdata);
+        $this->value->markAsNonOwned();
+
+        return $this->value;
+    }
+
     /**
      * @return T
      */
@@ -67,16 +104,15 @@ final class ReadableStructProperty implements ReadablePropertyInterface
             return $this->value;
         }
 
-        $cdata = \FFI::addr(($this->struct)::new($this->context->ffi, false));
+        $result = $this->fetch();
 
-        ($this->context->vt->{'get_' . $this->name})(
-            $this->context->cdata,
-            \FFI::addr($cdata),
-        );
+        if ($result === null) {
+            throw PropertyNotReadableException::fromPropertyName(
+                \FFI::typeof($this->context->cdata)->getName(),
+                $this->name,
+            );
+        }
 
-        $this->value = ($this->initializer)($cdata);
-        $this->value->markAsNonOwned();
-
-        return $this->value;
+        return $result;
     }
 }
