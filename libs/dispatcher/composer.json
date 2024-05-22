@@ -1,13 +1,15 @@
 {
-    "name": "local/property",
+    "name": "local/dispatcher",
     "type": "library",
     "license": "MIT",
     "require": {
-        "php": "^8.3"
+        "php": "^8.3",
+        "local/id": "^1.0",
+        "psr/event-dispatcher": "^1.0"
     },
     "autoload": {
         "psr-4": {
-            "Local\\Property\\": "src"
+            "Local\\Dispatcher\\": "src"
         }
     },
     "require-dev": {
@@ -15,7 +17,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Local\\Property\\Tests\\": "tests"
+            "Local\\Dispatcher\\Tests\\": "tests"
         }
     },
     "extra": {

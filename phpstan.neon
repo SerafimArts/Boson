@@ -13,7 +13,9 @@ parameters:
   paths:
     - src
     - libs/com
+    - libs/dispatcher
     - libs/driver-win32
+    - libs/id
     - libs/property
     - libs/webview2
   tmpDir: vendor/.cache.phpstan

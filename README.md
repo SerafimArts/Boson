@@ -95,10 +95,10 @@ $app->off(Event\EventName::class, $listener);
 // - Every event is an immutable result of some action.
 
 // === Application ===
-$app->on(Event\Application\ApplicationStartingHook::class,...);     // Application starts
-$app->on(Event\Application\ApplicationStartedEvent::class, ...);    // Application is started
-$app->on(Event\Application\ApplicationStoppingHook::class,...);     // Application stops
-$app->on(Event\Application\ApplicationStoppedEvent::class, ...);    // Application is stopped
+$app->on(Event\Application\AppStartingHook::class,...);     // Application starts
+$app->on(Event\Application\AppStartedEvent::class, ...);    // Application is started
+$app->on(Event\Application\AppStoppingHook::class,...);     // Application stops
+$app->on(Event\Application\AppStoppedEvent::class, ...);    // Application is stopped
 
 // === Window ===
 $app->on(Event\Window\WindowFocusLostEvent::class, ...);        // Window loses focus

@@ -11,7 +11,9 @@
         "ext-ffi": "*",
         "ext-iconv": "*",
         "local/com": "^1.0",
+        "local/dispatcher": "^1.0",
         "local/driver-win32": "^1.0",
+        "local/id": "^1.0",
         "local/property": "^1.0",
         "local/webview2": "^1.0",
         "ffi/env": "^1.0",
@@ -42,7 +44,13 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Serafim\\Boson\\Tests\\": "tests"
+            "Serafim\\Boson\\Tests\\": "tests",
+            "Local\\Com\\Tests\\": "libs/com/tests",
+            "Local\\Dispatcher\\Tests\\": "libs/dispatcher/tests",
+            "Local\\Driver\\Win32\\Tests\\": "libs/driver-win32/tests",
+            "Local\\Id\\Tests\\": "libs/id/tests",
+            "Local\\Property\\Tests\\": "libs/property/tests",
+            "Local\\WebView2\\Tests\\": "libs/webview2/tests"
         }
     },
     "extra": {

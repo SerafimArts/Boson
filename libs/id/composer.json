@@ -1,5 +1,5 @@
 {
-    "name": "local/property",
+    "name": "local/id",
     "type": "library",
     "license": "MIT",
     "require": {
@@ -7,7 +7,7 @@
     },
     "autoload": {
         "psr-4": {
-            "Local\\Property\\": "src"
+            "Local\\Id\\": "src"
         }
     },
     "require-dev": {
@@ -15,7 +15,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "Local\\Property\\Tests\\": "tests"
+            "Local\\Id\\Tests\\": "tests"
         }
     },
     "extra": {

@@ -35,11 +35,6 @@
             "*": "dist"
         }
     },
-    "scripts": {
-        "test": ["@test:unit", "@test:functional"],
-        "test:unit": "phpunit --testdox --testsuite=unit",
-        "test:functional": "phpunit --testsuite=functional"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true
 }

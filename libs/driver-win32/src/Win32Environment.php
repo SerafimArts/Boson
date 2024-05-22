@@ -14,10 +14,10 @@ use Local\Driver\Win32\Lib\User32;
 use Local\WebView2\InstallationDetector;
 use Local\WebView2\WebView2;
 use Serafim\Boson\ApplicationInterface;
-use Serafim\Boson\Event\Application\ApplicationStartedEvent;
-use Serafim\Boson\Event\Application\ApplicationStartingHook;
-use Serafim\Boson\Event\Application\ApplicationStoppedEvent;
-use Serafim\Boson\Event\Application\ApplicationStoppingHook;
+use Serafim\Boson\Event\Application\AppStartedEvent;
+use Serafim\Boson\Event\Application\AppStartingHook;
+use Serafim\Boson\Event\Application\AppStoppedEvent;
+use Serafim\Boson\Event\Application\AppStoppingHook;
 use Serafim\Boson\Window\CreateInfo;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -108,13 +108,13 @@ final class Win32Environment implements ApplicationInterface
      */
     private function dispatchStarting(): bool
     {
-        $hook = $this->events->dispatch(new ApplicationStartingHook($this));
+        $hook = $this->events->dispatch(new AppStartingHook($this));
 
         if ($hook->isPropagationStopped()) {
             return false;
         }
 
-        $this->events->dispatch(new ApplicationStartedEvent($this));
+        $this->events->dispatch(new AppStartedEvent($this));
 
         return true;
     }
@@ -151,13 +151,13 @@ final class Win32Environment implements ApplicationInterface
      */
     private function dispatchStopping(): bool
     {
-        $hook = $this->events->dispatch(new ApplicationStoppingHook($this));
+        $hook = $this->events->dispatch(new AppStoppingHook($this));
 
         if ($hook->isPropagationStopped()) {
             return false;
         }
 
-        $this->events->dispatch(new ApplicationStoppedEvent($this));
+        $this->events->dispatch(new AppStoppedEvent($this));
 
         return true;
     }

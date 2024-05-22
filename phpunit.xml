@@ -12,6 +12,12 @@
     <testsuites>
         <testsuite name="unit">
             <directory>tests/Unit</directory>
+            <directory>libs/com/tests</directory>
+            <directory>libs/dispatcher/tests</directory>
+            <directory>libs/driver-win32/tests</directory>
+            <directory>libs/id/tests</directory>
+            <directory>libs/property/tests</directory>
+            <directory>libs/webview2/tests</directory>
         </testsuite>
         <testsuite name="functional">
             <directory>tests/Functional</directory>
