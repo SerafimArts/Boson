@@ -8,7 +8,7 @@ use FFI\CData;
 use Local\Com\Attribute\MapStruct;
 use Local\Com\Property\BoolProperty;
 use Local\Com\Property\ReadableBoolProperty;
-use Local\Com\Property\ReadableInt64Property;
+use Local\Com\Property\ReadableIntProperty;
 use Local\Com\Property\ReadableStructProperty;
 use Local\Com\Property\ReadableWideStringProperty;
 use Local\Property\Attribute\MapGetter;
@@ -31,7 +31,7 @@ final class NavigationStartingEventArgs extends EventArgs
     protected readonly ReadableBoolProperty $isUserInitiatedProperty;
     protected readonly ReadableBoolProperty $isRedirectedProperty;
     protected readonly BoolProperty $cancelProperty;
-    protected readonly ReadableInt64Property $navigationIdProperty;
+    protected readonly ReadableIntProperty $navigationIdProperty;
     protected readonly ReadableStructProperty $requestHeadersProperty;
 
     public function __construct(WebView2 $ffi, CData $cdata)
@@ -42,7 +42,7 @@ final class NavigationStartingEventArgs extends EventArgs
         $this->isUserInitiatedProperty = new ReadableBoolProperty($this, 'IsUserInitiated');
         $this->isRedirectedProperty = new ReadableBoolProperty($this, 'IsRedirected');
         $this->cancelProperty = new BoolProperty($this, 'Cancel');
-        $this->navigationIdProperty = new ReadableInt64Property($this, 'NavigationId', 'UINT64');
+        $this->navigationIdProperty = new ReadableIntProperty($this, 'NavigationId', 'UINT64');
         $this->requestHeadersProperty = new ReadableStructProperty(
             context: $this,
             name: 'RequestHeaders',

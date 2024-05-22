@@ -7,7 +7,7 @@ namespace Local\WebView2\Handler;
 use FFI\CData;
 use Local\Com\Attribute\MapStruct;
 use Local\Com\Property\ReadableBoolProperty;
-use Local\Com\Property\ReadableInt64Property;
+use Local\Com\Property\ReadableIntProperty;
 use Local\Property\Attribute\MapGetter;
 use Local\WebView2\WebErrorStatus;
 use Local\WebView2\WebView2;
@@ -21,16 +21,16 @@ use Local\WebView2\WebView2;
 final class NavigationCompletedEventArgs extends EventArgs
 {
     protected readonly ReadableBoolProperty $isSuccessProperty;
-    protected readonly ReadableInt64Property $navigationIdProperty;
-    protected readonly ReadableInt64Property $webErrorStatusProperty;
+    protected readonly ReadableIntProperty $navigationIdProperty;
+    protected readonly ReadableIntProperty $webErrorStatusProperty;
 
     public function __construct(WebView2 $ffi, CData $cdata)
     {
         parent::__construct($ffi, $cdata);
 
         $this->isSuccessProperty = new ReadableBoolProperty($this, 'IsSuccess');
-        $this->webErrorStatusProperty = new ReadableInt64Property($this, 'WebErrorStatus', 'COREWEBVIEW2_WEB_ERROR_STATUS');
-        $this->navigationIdProperty = new ReadableInt64Property($this, 'NavigationId', 'UINT64');
+        $this->webErrorStatusProperty = new ReadableIntProperty($this, 'WebErrorStatus', 'COREWEBVIEW2_WEB_ERROR_STATUS');
+        $this->navigationIdProperty = new ReadableIntProperty($this, 'NavigationId', 'UINT64');
     }
 
     /**

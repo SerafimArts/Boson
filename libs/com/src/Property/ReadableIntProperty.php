@@ -11,7 +11,7 @@ use Local\Property\ReadablePropertyInterface;
 /**
  * @template-implements ReadablePropertyInterface<int>
  */
-final class ReadableInt64Property implements ReadablePropertyInterface
+final class ReadableIntProperty implements ReadablePropertyInterface
 {
     /**
      * @var non-empty-string
