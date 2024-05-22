@@ -14,6 +14,7 @@ use Local\Property\ContainProperties;
 use Local\WebView2\Exception\WebViewNotAvailableException;
 use Local\WebView2\Handler;
 use Local\WebView2\Handler\NavigationStartingEventArgs;
+use Local\WebView2\Handler\WebResourceRequestedEventArgs;
 use Local\WebView2\ICoreWebView2;
 use Local\WebView2\ICoreWebView2Controller;
 use Local\WebView2\ICoreWebView2Environment;
@@ -87,6 +88,9 @@ final class Win32WebView implements WebViewInterface
         $userAgent = $this->getUserAgent($core, $this->window->info);
         $core->onNavigationStarting(function (NavigationStartingEventArgs $args) use ($userAgent): void {
             $args->requestHeaders->setHeader('User-Agent', $userAgent);
+        });
+        $core->onWebResourceRequested(function (WebResourceRequestedEventArgs $args) use ($userAgent): void {
+            $args->request->headers->setHeader('User-Agent', $userAgent);
         });
 
         $this->events->dispatch(new WebViewCreatedEvent(

@@ -78,4 +78,13 @@ final class ICoreWebView2HttpRequestHeaders extends IUnknown implements \Iterato
     {
         return HttpHeadersCollectionIterator::from($this);
     }
+
+    /**
+     * @return array<string, string>
+     * @throws \Exception
+     */
+    public function toArray(): array
+    {
+        return \iterator_to_array($this->getIterator());
+    }
 }

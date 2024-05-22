@@ -11,7 +11,7 @@ use Local\Property\ReadablePropertyInterface;
 /**
  * @template-implements ReadablePropertyInterface<int>
  */
-final class ReadableIntProperty implements ReadablePropertyInterface
+final readonly class ReadableIntProperty implements ReadablePropertyInterface
 {
     /**
      * @var non-empty-string
@@ -21,7 +21,7 @@ final class ReadableIntProperty implements ReadablePropertyInterface
     /**
      * @var ReadableProperty<CData>
      */
-    private readonly ReadableProperty $property;
+    private ReadableProperty $property;
 
     /**
      * @param Struct<object> $context Same as {@see Property::$context}.
