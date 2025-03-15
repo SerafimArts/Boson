@@ -14,8 +14,6 @@ final readonly class Application
         public ApplicationCreateInfo $info = new ApplicationCreateInfo(),
     ) {
         $this->webview = new WebView($this->info->webview);
-
-
     }
 
     public function quit(): void

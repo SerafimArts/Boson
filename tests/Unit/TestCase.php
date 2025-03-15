@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\Group;
-use Serafim\Boson\Tests\TestCase as BaseTestCase;
+use PHPUnit\Framework\TestCase as BaseTestCase;
 
-#[Group('unit'), Group('serafim/boson')]
+#[Group('serafim/boson')]
 abstract class TestCase extends BaseTestCase {}

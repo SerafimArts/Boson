@@ -7,6 +7,12 @@ return (new PhpCsFixer\Config())
     ->setRules([
         '@PER-CS2.0' => true,
         '@PER-CS2.0:risky' => true,
+        // broken in v3.70.2 (`$property { get; set; }` -> `$property { get; }`)
+        'no_empty_statement' => false,
+        // broken in v3.70.2 (`public private(set) Some $x` -> `public private(set) public Some $x`)
+        'visibility_required' => false,
+        // broken in v3.70.2 (invalid indentation of property accessors/mutators)
+        'statement_indentation' => false,
         'strict_param' => true,
         'align_multiline_comment' => true,
         'array_syntax' => [
@@ -60,7 +66,6 @@ return (new PhpCsFixer\Config())
         'no_blank_lines_after_phpdoc' => true,
         'no_empty_comment' => true,
         'no_empty_phpdoc' => true,
-        'no_empty_statement' => true,
         'no_extra_blank_lines' => [
             'tokens' => [
                 'attribute',
@@ -223,9 +228,6 @@ return (new PhpCsFixer\Config())
         ],
         'standardize_increment' => true,
         'standardize_not_equals' => true,
-        'statement_indentation' => [
-            'stick_comment_to_next_continuous_control_statement' => true,
-        ],
         'switch_continue_to_break' => true,
         'trailing_comma_in_multiline' => true,
         'trim_array_spaces' => true,
