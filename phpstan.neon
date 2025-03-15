@@ -1,22 +1,17 @@
 includes:
   - phar://phpstan.phar/conf/bleedingEdge.neon
+  - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
-  level: 9
+  level: max
+  scanFiles:
+    - resources/stubs/webview.php
   strictRules:
     allRules: true
-  ignoreErrors:
-    # FFI proxy calls
-    - '#undefined method .+?\\Lib\\[a-zA-Z0-9\_]+::[a-zA-Z0-9\_]+\(\)#'
-    - '#undefined property FFI\\CData::\$[a-zA-Z0-9_]+#'
   fileExtensions:
     - php
   paths:
     - src
-    - libs/com
-    - libs/dispatcher
-    - libs/driver-win32
-    - libs/id
-    - libs/property
-    - libs/webview2
+  excludePaths:
+    - src/Core/Runtime
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true

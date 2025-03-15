@@ -4,128 +4,33 @@ declare(strict_types=1);
 
 namespace Serafim\Boson;
 
-use Local\Driver;
-use Serafim\Boson\Event\Event;
-use Serafim\Boson\Window\CreateInfo;
-use Symfony\Component\EventDispatcher\EventDispatcher;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
+use Serafim\Boson\Core\WebView;
 
-final class Application implements ApplicationInterface
+final readonly class Application
 {
-    /**
-     * @var non-empty-string
-     */
-    private const string DEFAULT_BOOTSTRAP_FILE = __DIR__ . '/../resources/assets/scripts/bootstrap.js';
+    public WebView $webview;
 
-    /**
-     * @var list<DriverInterface>
-     */
-    private array $drivers = [];
-
-    private ?DriverInterface $current = null;
-
-    /**
-     * @param iterable<mixed, DriverInterface> $drivers
-     */
     public function __construct(
-        private readonly EventDispatcherInterface $events = new EventDispatcher(),
-        iterable $drivers = [],
+        public ApplicationCreateInfo $info = new ApplicationCreateInfo(),
     ) {
-        foreach ($drivers as $factory) {
-            $this->drivers[] = $factory;
-        }
+        $this->webview = new WebView($this->info->webview);
 
-        foreach ($this->getDefaultFactories() as $factory) {
-            $this->drivers[] = $factory;
-        }
+
     }
 
-    /**
-     * @template T of Event
-     * @param class-string<T> $event
-     * @param callable(T):void $listener
-     * @return callable(T):void
-     */
-    public function on(string $event, callable $listener): callable
+    public function quit(): void
     {
-        $this->events->addListener($event, $listener);
-
-        return $listener;
-    }
-
-    /**
-     * @template T of Event
-     * @param class-string<T> $event
-     * @param callable(T):void $listener
-     */
-    public function off(string $event, callable $listener): void
-    {
-        $this->events->removeListener($event, $listener);
-    }
-
-    public function withDriver(DriverInterface $driver): self
-    {
-        $self = clone $this;
-        $self->addDriver($driver);
-
-        return $self;
-    }
-
-    public function addDriver(DriverInterface $driver): void
-    {
-        $this->drivers[] = $driver;
-    }
-
-    /**
-     * @return iterable<array-key, DriverInterface>
-     */
-    private function getDefaultFactories(): iterable
-    {
-        $bootstrap = \file_get_contents(self::DEFAULT_BOOTSTRAP_FILE);
-
-        yield new Driver\Win32\Win32Driver($this->events, $bootstrap);
-    }
-
-    private function getCurrent(): DriverInterface
-    {
-        if ($this->current !== null) {
-            return $this->current;
-        }
-
-        foreach ($this->drivers as $driver) {
-            if ($driver->supports()) {
-                return $this->current = $driver;
-            }
-        }
-
-        throw new \RuntimeException('No suitable driver found');
-    }
-
-    public function create(CreateInfo $info = new CreateInfo()): WindowInterface
-    {
-        $driver = $this->getCurrent();
-
-        return $driver->create($info);
+        $this->webview->terminate();
     }
 
     public function run(): void
     {
-        $driver = $this->getCurrent();
+        if (\function_exists('\\sapi_windows_set_ctrl_handler')) {
+            \sapi_windows_set_ctrl_handler(function () {
+                $this->quit();
+            });
+        }
 
-        $driver->run();
-    }
-
-    public function isRunning(): bool
-    {
-        $driver = $this->getCurrent();
-
-        return $driver->isRunning();
-    }
-
-    public function stop(): void
-    {
-        $driver = $this->getCurrent();
-
-        $driver->stop();
+        $this->webview->run();
     }
 }

@@ -3,26 +3,11 @@
     "description": "Native PHP WebView bridge",
     "type": "library",
     "license": "MIT",
-    "repositories": [
-        {"type": "path", "url": "libs/*"}
-    ],
     "require": {
-        "php-64bit": "^8.3",
+        "php": "^8.4",
         "ext-ffi": "*",
-        "ext-iconv": "*",
-        "local/com": "^1.0",
-        "local/dispatcher": "^1.0",
-        "local/driver-win32": "^1.0",
-        "local/id": "^1.0",
-        "local/property": "^1.0",
-        "local/webview2": "^1.0",
         "ffi/env": "^1.0",
-        "ffi/location": "^1.0",
-        "ffi/proxy": "^1.0",
-        "psr/event-dispatcher": "^1.0",
-        "symfony/event-dispatcher": "^5.4|^6.4|^7.0",
-        "symfony/polyfill-ctype": "^1.29",
-        "symfony/polyfill-mbstring": "^1.29"
+        "ffi/proxy": "^1.0"
     },
     "autoload": {
         "psr-4": {
@@ -30,27 +15,18 @@
         }
     },
     "require-dev": {
-        "jetbrains/phpstorm-attributes": "^1.1",
-        "ffi/ide-helper-generator": "^1.0",
         "ffi/var-dumper": "^1.0",
-        "filp/whoops": "^2.15",
-        "friendsofphp/php-cs-fixer": "^3.53",
-        "phpstan/extension-installer": "^1.3",
-        "phpstan/phpstan": "^1.10",
-        "phpstan/phpstan-strict-rules": "^1.5",
-        "phpunit/phpunit": "^11.0",
+        "jetbrains/phpstorm-attributes": "^1.2",
+        "friendsofphp/php-cs-fixer": "^3.72",
+        "phpstan/phpstan": "^2.1",
+        "phpstan/phpstan-strict-rules": "^2.0",
+        "phpunit/phpunit": "^12.0",
         "symfony/console": "^5.4|^6.4|^7.0",
         "symfony/var-dumper": "^5.4|^6.4|^7.0"
     },
     "autoload-dev": {
         "psr-4": {
-            "Serafim\\Boson\\Tests\\": "tests",
-            "Local\\Com\\Tests\\": "libs/com/tests",
-            "Local\\Dispatcher\\Tests\\": "libs/dispatcher/tests",
-            "Local\\Driver\\Win32\\Tests\\": "libs/driver-win32/tests",
-            "Local\\Id\\Tests\\": "libs/id/tests",
-            "Local\\Property\\Tests\\": "libs/property/tests",
-            "Local\\WebView2\\Tests\\": "libs/webview2/tests"
+            "Serafim\\Boson\\Tests\\": "tests"
         }
     },
     "extra": {
@@ -66,14 +42,10 @@
         "optimize-autoloader": true,
         "preferred-install": {
             "*": "dist"
-        },
-        "allow-plugins": {
-            "phpstan/extension-installer": true
         }
     },
     "scripts": {
-        "win32ui": "@php bin/win32ui",
-        "test": ["@test:unit", "@test:functional"],
+        "test": ["@test:unit", "@test:functionalb"],
         "test:unit": "phpunit --testdox --testsuite=unit",
         "test:functional": "phpunit --testsuite=functional",
         "linter": "@linter:check",
