@@ -113,6 +113,7 @@ final class WebView
     /**
      * Binds an function to a new global JavaScript function
      *
+     * @api
      * @param non-empty-string $function
      */
     public function bind(string $function, callable $callback): void
@@ -127,6 +128,7 @@ final class WebView
     /**
      * Remove previously registered function binding
      *
+     * @api
      * @param non-empty-string $function
      */
     public function unbind(string $function): void
@@ -139,6 +141,8 @@ final class WebView
      *
      * Use {@see WebView::bind()} bindings if you need to communicate
      * the result of the evaluation
+     *
+     * @api
      */
     public function eval(#[Language('JavaScript')] string $code): void
     {
@@ -158,9 +162,9 @@ final class WebView
      *    functions such as `gtk_window_set_geometry_hints` were removed.
      *    This option has no effect when using GTK 4.
      *
-     * @param int<1, max> $width
-     * @param int<1, max> $height
-     *@api
+     * @api
+     * @param int<1, 2147483647> $width
+     * @param int<1, 2147483647> $height
      */
     public function resize(int $width, int $height, WebViewSizeHint $hint = WebViewSizeHint::Default): void
     {
