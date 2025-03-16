@@ -24,6 +24,23 @@ And much easier than that =)
     - [Fedora](#fedora)
     - [FreeBSD](#freebsd)
   - [MacOS](#macos)
+- [Usage](#usage)
+  - **Window**
+    - [Window Title](#window-title)
+    - [Window Resizing](#window-resizing)
+    - [Window Max Size](#window-max-size)
+    - [Window Min Size](#window-min-size)
+    - [Window Fixed Size](#window-fixed-size)
+    - [Window HTML Content](#window-html-content)
+  - **Styles**
+    - [Global Styles](#global-styles)
+  - **JavaScript**
+    - [Global Scripts](#global-scripts)
+    - [Creating Functions](#creating-functions)
+    - [Code Evaluation](#code-evaluation)
+    - [Code Requests](#code-requests)
+  - **Misc**
+    - [Quit](#quit) 
 
 ## Simple Example
 
@@ -129,3 +146,190 @@ pkg install webkit2-gtk3
 
 It appears that no additional dependencies are required.
 
+## Usage
+
+### Window Title
+
+To get or update the title, you should change the `$title` property
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->title = 'New Title';
+
+echo 'Current Title: ' . $app->webview->title;
+
+$app->run();
+```
+
+
+### Window Resizing
+
+To change the size, use the `resize()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->resize(640, 480);
+
+$app->run();
+```
+
+
+### Window Max Size
+
+To change the max size, use the `resize()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::MaxBounds);
+
+$app->run();
+```
+
+
+### Window Min Size
+
+To change the min size, use the `resize()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::MinBounds);
+
+$app->run();
+```
+
+
+### Window Fixed Size
+
+To set the fixed size, use the `resize()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::Fixed);
+
+$app->run();
+```
+
+
+### Window HTML Content
+
+To set the content, you should use the `$html` property
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->html = '<button>Do Not Click Me!</button>';
+
+$app->run();
+```
+
+Please note that reading this property is NOT possible. If you need to
+read the contents, use the [data retrieval method](#webview-requests).
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->request('document.body.innerHTML')
+    ->then(function (string $html) {
+        var_dump($html);
+    });
+
+$app->run();
+```
+
+
+### Global Styles
+
+You can register a CSS style that will be applied to any page
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->styleBeforeLoad(<<<'CSS'
+    body {
+        background: #900;
+    }
+    CSS);
+
+$app->run();
+```
+
+
+### Global Scripts
+
+You can register a JavaScript code that will be applied to any page
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->evalBeforeLoad(<<<'JS'
+    alert('hello');
+    JS);
+
+$app->run();
+```
+
+
+### Creating Functions
+
+You can create a function that can be called directly from WebView
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->bind('foo', function () { 
+    var_dump('Executed!');
+});
+
+$app->run();
+```
+
+
+### Code Evaluation
+
+You can execute arbitrary code directly on current WebView
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->eval('document.write("Hello World!")');
+
+$app->run();
+```
+
+
+### Code Requests
+
+You can directly get data from WebView context
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->request('document.location')
+    ->then(function (array $data) {
+        var_dump($data);
+    });
+
+$app->run();
+```
+
+
+### Quit
+
+To exit the application, you should call the `quit()` method
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->html = '<button onclick="quit()">exit</button>';
+
+$app->webview->bind('quit', function () use ($app) {
+    $app->quit();
+});
+
+$app->run();
+```
