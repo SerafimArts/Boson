@@ -128,6 +128,7 @@ final class WebView
      * You really don't need this
      *
      * @api
+     *
      * @param callable():void $callback
      */
     public function dispatch(callable $callback): void
@@ -155,7 +156,9 @@ final class WebView
      * Facade method of {@see WebViewScriptsMapInterface::add()}
      *
      * @api
+     *
      * @param non-empty-string $code An initialization JavaScript code
+     *
      * @return array-key Returns code identifier
      */
     public function evalBeforeLoad(#[Language('JavaScript')] string $code): int|string
@@ -167,7 +170,9 @@ final class WebView
      * Facade method of {@see WebViewStylesMapInterface::add()}
      *
      * @api
+     *
      * @param non-empty-string $style An initialization CSS styles
+     *
      * @return array-key Returns code identifier
      */
     public function styleBeforeLoad(#[Language('CSS')] string $style): int|string
@@ -181,24 +186,12 @@ final class WebView
      * @api
      *
      * @param non-empty-string $function
+     *
      * @throws WebViewException in case of function binding error
      */
     public function bind(string $function, callable $callback): void
     {
         $this->functions->add($function, $callback(...));
-    }
-
-    /**
-     * Remove previously registered function binding
-     *
-     * @api
-     *
-     * @param non-empty-string $function
-     * @throws WebViewException in case of function binding error
-     */
-    public function unbind(string $function): void
-    {
-        $this->functions->remove($function);
     }
 
     /**
