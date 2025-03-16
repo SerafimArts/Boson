@@ -18,6 +18,9 @@ use Serafim\Boson\Core\Runtime\WebViewLibrary;
 use Serafim\Boson\Core\Scripts\WebViewFrozenScriptsMap;
 use Serafim\Boson\Core\Scripts\WebViewScriptsMap;
 use Serafim\Boson\Core\Scripts\WebViewScriptsMapInterface;
+use Serafim\Boson\Core\Styles\WebViewFrozenStylesMap;
+use Serafim\Boson\Core\Styles\WebViewStylesMap;
+use Serafim\Boson\Core\Styles\WebViewStylesMapInterface;
 use Serafim\Boson\Exception\WebViewException;
 use Serafim\Boson\Exception\WebViewInternalException;
 
@@ -96,6 +99,11 @@ final class WebView
     public private(set) WebViewScriptsMapInterface $scripts;
 
     /**
+     * Contains a list of registered initialization styles
+     */
+    public private(set) WebViewStylesMapInterface $styles;
+
+    /**
      * Contains API for receiving data from the client
      */
     public readonly WebViewRequests $requests;
@@ -108,6 +116,7 @@ final class WebView
         $this->webview = $this->api->webview_create((int) $this->info->debug, null);
         $this->functions = new WebViewFunctionsMap($this->api, $this->webview);
         $this->scripts = new WebViewScriptsMap();
+        $this->styles = new WebViewStylesMap();
         $this->requests = new WebViewRequests($this);
 
         if ($this->info->title !== '') {
@@ -152,6 +161,18 @@ final class WebView
     public function evalBeforeLoad(#[Language('JavaScript')] string $code): int|string
     {
         return $this->scripts->add($code);
+    }
+
+    /**
+     * Facade method of {@see WebViewStylesMapInterface::add()}
+     *
+     * @api
+     * @param non-empty-string $style An initialization CSS styles
+     * @return array-key Returns code identifier
+     */
+    public function styleBeforeLoad(#[Language('CSS')] string $style): int|string
+    {
+        return $this->styles->add($style);
     }
 
     /**
@@ -230,12 +251,21 @@ final class WebView
      */
     public function run(): void
     {
-        // Load initialization script
-        $result = $this->api->webview_init($this->webview, (string) $this->scripts);
+        // Load initialization script (after navigation)
+        $result = $this->api->webview_init($this->webview, \vsprintf("%s\n%s", [
+            (string) $this->styles,
+            (string) $this->scripts,
+        ]));
 
         if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-            throw WebViewInternalException::becauseErrorOccurs('setting init JavaScript', $result);
+            throw WebViewInternalException::becauseErrorOccurs('setting init CSS and JavaScript', $result);
         }
+
+        // Apply styles on current HTML
+        $this->eval(\vsprintf("%s\n%s", [
+            (string) $this->styles,
+            (string) $this->scripts,
+        ]));
 
         // Execute an application
         $result = $this->api->webview_run($this->webview);
@@ -252,6 +282,11 @@ final class WebView
         // Freeze code list
         if ($this->scripts instanceof WebViewScriptsMap) {
             $this->scripts = new WebViewFrozenScriptsMap($this->scripts);
+        }
+
+        // Freeze styles list
+        if ($this->styles instanceof WebViewStylesMap) {
+            $this->styles = new WebViewFrozenStylesMap($this->styles);
         }
     }
 
