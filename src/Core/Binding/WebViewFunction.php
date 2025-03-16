@@ -8,6 +8,8 @@ use FFI\CData;
 use Serafim\Boson\Core\Runtime\WebViewLibrary;
 
 /**
+ * @template TFunction of \Closure = \Closure
+ *
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson\Core\Binding
  */
@@ -16,6 +18,9 @@ final readonly class WebViewFunction
     public function __construct(
         private WebViewLibrary $api,
         private CData $webview,
+        /**
+         * @var TFunction
+         */
         public \Closure $callback,
     ) {}
 

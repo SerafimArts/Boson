@@ -7,10 +7,13 @@ namespace Serafim\Boson\Core;
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use React\Promise\PromiseInterface;
+use Serafim\Boson\Core\Binding\WebViewFrozenFunctions;
 use Serafim\Boson\Core\Binding\WebViewFunctions;
+use Serafim\Boson\Core\Binding\WebViewFunctionsInterface;
 use Serafim\Boson\Core\Runtime\WebViewError;
 use Serafim\Boson\Core\Runtime\WebViewHint;
 use Serafim\Boson\Core\Runtime\WebViewLibrary;
+use Serafim\Boson\Exception\WebViewException;
 use Serafim\Boson\Exception\WebViewFunctionAlreadyRegisteredException;
 use Serafim\Boson\Exception\WebViewInternalException;
 
@@ -107,8 +110,10 @@ final class WebView
 
     /**
      * Contains a list of registered functions
+     *
+     * @var WebViewFunctionsInterface<\Closure>
      */
-    public readonly WebViewFunctions $functions;
+    public private(set) WebViewFunctionsInterface $functions;
 
     /**
      * Contains API for receiving data from the client
@@ -162,14 +167,11 @@ final class WebView
      * @api
      *
      * @param non-empty-string $function
+     * @throws WebViewException in case of function binding error
      */
     public function bind(string $function, callable $callback): void
     {
-        $result = $this->functions->add($function, $callback);
-
-        if ($result === false) {
-            throw WebViewFunctionAlreadyRegisteredException::becauseFunctionAlreadyRegistered($function);
-        }
+        $this->functions->add($function, $callback(...));
     }
 
     /**
@@ -178,6 +180,7 @@ final class WebView
      * @api
      *
      * @param non-empty-string $function
+     * @throws WebViewException in case of function binding error
      */
     public function unbind(string $function): void
     {
@@ -239,6 +242,8 @@ final class WebView
         if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
             throw WebViewInternalException::becauseErrorOccurs('running WebView', $result);
         }
+
+        $this->functions = new WebViewFrozenFunctions($this->functions);
     }
 
     /**
