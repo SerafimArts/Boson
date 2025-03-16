@@ -1,9 +1,10 @@
 # IDE
-/.idea/
+/.idea
+/build
 
 # Composer
 /composer.lock
-/vendor/
+/vendor
 
 # Testing
 test.php
