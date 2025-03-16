@@ -5,14 +5,15 @@ declare(strict_types=1);
 namespace Serafim\Boson\Core\Runtime;
 
 use FFI\Env\Runtime;
-use FFI\Proxy\Proxy;
 
 /**
  * @internal this is an internal library class, please do not use it in your code.
  * @psalm-internal Serafim\Boson\Core
  */
-final class WebViewLibrary extends Proxy
+final readonly class WebViewLibrary
 {
+    public \FFI $ffi;
+
     /**
      * @param non-empty-string $library
      */
@@ -20,9 +21,7 @@ final class WebViewLibrary extends Proxy
     {
         Runtime::assertAvailable();
 
-        $ffi = \FFI::cdef(self::getHeaders(), $library);
-
-        parent::__construct($ffi);
+        $this->ffi = \FFI::cdef(self::getHeaders(), $library);
     }
 
     /**
@@ -34,6 +33,29 @@ final class WebViewLibrary extends Proxy
         static $headers = \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__);
 
         return $headers;
+    }
+
+    /**
+     * @param non-empty-string $method
+     * @param array<non-empty-string|int<0, max>, mixed> $args
+     */
+    public function __call(string $method, array $args): mixed
+    {
+        // @phpstan-ignore-next-line : Additional assertion
+        assert($method !== '', 'Method name MUST not be empty');
+
+        // @phpstan-ignore-next-line : Thx PHPStan, I know
+        return $this->ffi->$method(...$args);
+    }
+
+    public function __serialize(): array
+    {
+        throw new \LogicException('Cannot serialize WebView library');
+    }
+
+    public function __clone()
+    {
+        throw new \LogicException('Cannot clone WebView library');
     }
 }
 
