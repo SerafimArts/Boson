@@ -6,6 +6,7 @@ namespace Serafim\Boson\Core;
 
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
+use React\Promise\PromiseInterface;
 use Serafim\Boson\Core\Binding\WebViewFunctions;
 use Serafim\Boson\Core\Runtime\WebViewError;
 use Serafim\Boson\Core\Runtime\WebViewHint;
@@ -24,6 +25,15 @@ final class WebView
      * Pointer to WebView structure
      */
     private readonly CData $webview;
+
+    public int $ptr {
+        get {
+            /** @var object{cdata: int} $ptr */
+            $ptr = $this->api->ffi->cast('intptr_t', $this->webview);
+
+            return $ptr->cdata;
+        }
+    }
 
     /**
      * Contains the title of the WebView window
@@ -95,7 +105,15 @@ final class WebView
         }
     }
 
+    /**
+     * Contains a list of registered functions
+     */
     public readonly WebViewFunctions $functions;
+
+    /**
+     * Contains API for receiving data from the client
+     */
+    public readonly WebViewRequests $requests;
 
     public function __construct(
         public readonly WebViewCreateInfo $info = new WebViewCreateInfo(),
@@ -104,10 +122,38 @@ final class WebView
 
         $this->webview = $this->api->webview_create((int) $this->info->debug, null);
         $this->functions = new WebViewFunctions($this->api, $this->webview);
+        $this->requests = new WebViewRequests($this);
 
         if ($this->info->title !== '') {
             $this->title = $this->info->title;
         }
+    }
+
+    /**
+     * You really don't need this
+     *
+     * @api
+     * @param callable():void $callback
+     */
+    public function dispatch(callable $callback): void
+    {
+        $result = $this->api->webview_dispatch($this->webview, $callback, null);
+
+        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
+            throw WebViewInternalException::becauseErrorOccurs('dispatching callback', $result);
+        }
+    }
+
+    /**
+     * Sends a request to the client and receives a response
+     *
+     * @api
+     *
+     * @return PromiseInterface<mixed>
+     */
+    public function request(#[Language('JavaScript')] string $code): PromiseInterface
+    {
+        return $this->requests->send($code);
     }
 
     /**
