@@ -11,7 +11,7 @@ use Serafim\Boson\Exception\WebViewException;
  *
  * @template-extends \Traversable<non-empty-string, TFunction>
  */
-interface WebViewFunctionsInterface extends \Traversable, \Countable
+interface WebViewFunctionsMapInterface extends \Traversable, \Countable
 {
     /**
      * Binds a function to a new global JavaScript function
@@ -19,17 +19,15 @@ interface WebViewFunctionsInterface extends \Traversable, \Countable
      * Internally, JS glue code is injected to create the JS
      * function by the given name
      *
-     * @template TArgFunction of \Closure
      * @param non-empty-string $function The name of the JS function
-     * @param TArgFunction $callback Callback function
-     * @phpstan-self-out self<TFunction|TArgFunction>
+     * @param TFunction $callback Callback function
      *
      * @throws WebViewException in case of function binding error
      */
     public function add(string $function, \Closure $callback): void;
 
     /**
-     * Removes a binding created with {@see WebViewFunctionsInterface::add()}
+     * Removes a binding created with {@see WebViewFunctionsMapInterface::add()}
      *
      * @param non-empty-string $function The name of the JS function
      *

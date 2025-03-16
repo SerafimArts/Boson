@@ -7,14 +7,14 @@ namespace Serafim\Boson\Core;
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use React\Promise\PromiseInterface;
-use Serafim\Boson\Core\Binding\WebViewFrozenFunctions;
-use Serafim\Boson\Core\Binding\WebViewFunctions;
-use Serafim\Boson\Core\Binding\WebViewFunctionsInterface;
+use Serafim\Boson\Core\Binding\WebViewFrozenFunctionsMap;
+use Serafim\Boson\Core\Binding\WebViewFunctionsMap;
+use Serafim\Boson\Core\Binding\WebViewFunctionsMapInterface;
+use Serafim\Boson\Core\Requests\WebViewRequests;
 use Serafim\Boson\Core\Runtime\WebViewError;
 use Serafim\Boson\Core\Runtime\WebViewHint;
 use Serafim\Boson\Core\Runtime\WebViewLibrary;
 use Serafim\Boson\Exception\WebViewException;
-use Serafim\Boson\Exception\WebViewFunctionAlreadyRegisteredException;
 use Serafim\Boson\Exception\WebViewInternalException;
 
 final class WebView
@@ -28,15 +28,6 @@ final class WebView
      * Pointer to WebView structure
      */
     private readonly CData $webview;
-
-    public int $ptr {
-        get {
-            /** @var object{cdata: int} $ptr */
-            $ptr = $this->api->ffi->cast('intptr_t', $this->webview);
-
-            return $ptr->cdata;
-        }
-    }
 
     /**
      * Contains the title of the WebView window
@@ -111,9 +102,9 @@ final class WebView
     /**
      * Contains a list of registered functions
      *
-     * @var WebViewFunctionsInterface<\Closure>
+     * @var WebViewFunctionsMapInterface<\Closure>
      */
-    public private(set) WebViewFunctionsInterface $functions;
+    public private(set) WebViewFunctionsMapInterface $functions;
 
     /**
      * Contains API for receiving data from the client
@@ -126,7 +117,7 @@ final class WebView
         $this->api = new WebViewLibrary($info->library);
 
         $this->webview = $this->api->webview_create((int) $this->info->debug, null);
-        $this->functions = new WebViewFunctions($this->api, $this->webview);
+        $this->functions = new WebViewFunctionsMap($this->api, $this->webview);
         $this->requests = new WebViewRequests($this);
 
         if ($this->info->title !== '') {
@@ -243,7 +234,10 @@ final class WebView
             throw WebViewInternalException::becauseErrorOccurs('running WebView', $result);
         }
 
-        $this->functions = new WebViewFrozenFunctions($this->functions);
+        // Freeze functions list
+        if ($this->functions instanceof WebViewFunctionsMap) {
+            $this->functions = new WebViewFrozenFunctionsMap($this->functions);
+        }
     }
 
     /**

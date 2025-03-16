@@ -11,10 +11,10 @@ use Serafim\Boson\Exception\WebViewFunctionAlreadyRegisteredException;
 /**
  * @template TFunction of \Closure = \Closure
  *
- * @template-implements WebViewFunctionsInterface<TFunction>
+ * @template-implements WebViewFunctionsMapInterface<TFunction>
  * @template-implements \IteratorAggregate<non-empty-string, TFunction>
  */
-final class WebViewFunctions implements WebViewFunctionsInterface, \IteratorAggregate
+final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \IteratorAggregate
 {
     /**
      * @var array<non-empty-string, WebViewFunction<TFunction>>
@@ -32,7 +32,7 @@ final class WebViewFunctions implements WebViewFunctionsInterface, \IteratorAggr
             throw WebViewFunctionAlreadyRegisteredException::becauseFunctionAlreadyRegistered($function);
         }
 
-        $handler = new WebViewFunction($this->api, $this->webview, $callback(...));
+        $handler = new WebViewFunction($this->api, $this->webview, $callback);
 
         $this->api->webview_bind($this->webview, $function, $handler(...), null);
 

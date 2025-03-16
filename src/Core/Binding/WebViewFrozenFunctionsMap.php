@@ -9,20 +9,19 @@ use Serafim\Boson\Exception\WebViewBindingException;
 /**
  * @template TFunction of \Closure = \Closure
  *
- * @template-implements WebViewFunctionsInterface<TFunction>
+ * @template-implements WebViewFunctionsMapInterface<TFunction>
  * @template-implements \IteratorAggregate<non-empty-string, TFunction>
  */
-final readonly class WebViewFrozenFunctions implements WebViewFunctionsInterface, \IteratorAggregate
+final readonly class WebViewFrozenFunctionsMap implements WebViewFunctionsMapInterface, \IteratorAggregate
 {
     public function __construct(
-        private WebViewFunctions $functions,
+        /**
+         * @var WebViewFunctionsMapInterface<TFunction>
+         */
+        private WebViewFunctionsMapInterface $functions,
     ) {}
 
-    /**
-     * @return never
-     * @phpstan-ignore-next-line : Known issue
-     */
-    public function add(string $function, \Closure $callback): void
+    public function add(string $function, \Closure $callback): never
     {
         throw new WebViewBindingException(\sprintf(
             'Unable to add function "%s" after launching an application',
@@ -30,10 +29,7 @@ final readonly class WebViewFrozenFunctions implements WebViewFunctionsInterface
         ));
     }
 
-    /**
-     * @return never
-     */
-    public function remove(string $function): void
+    public function remove(string $function): never
     {
         throw new WebViewBindingException(\sprintf(
             'Unable to remove function "%s" after app launch',
