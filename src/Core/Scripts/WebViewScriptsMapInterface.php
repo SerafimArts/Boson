@@ -16,6 +16,7 @@ interface WebViewScriptsMapInterface extends \Traversable, \Countable, \Stringab
      *
      * @param non-empty-string $code An initialization JavaScript code
      * @param array-key|null $id An optional script identifier
+     *
      * @return array-key Returns the script identifier
      */
     public function add(#[Language('JavaScript')] string $code, string|int|null $id = null): string|int;

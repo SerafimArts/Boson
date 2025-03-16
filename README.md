@@ -16,6 +16,9 @@
 Why Boson? Because it's not an [Electron](https://www.electronjs.org)! 
 And much easier than that =)
 
+> Also, this repository contains included PHP bindings 
+> [for webview](https://github.com/webview/webview).
+
 - [Simple Example](#simple-example)
 - [Requirements](#requirements)
   - [Windows](#windows)

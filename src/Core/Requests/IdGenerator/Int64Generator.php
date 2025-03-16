@@ -11,14 +11,8 @@ use Serafim\Boson\Exception\IdNotSupportedException;
  */
 final class Int64Generator extends IntGenerator
 {
-    /**
-     * {@inheritDoc}
-     */
     public readonly int $initial;
 
-    /**
-     * {@inheritDoc}
-     */
     public readonly int $maximum;
 
     /**

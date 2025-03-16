@@ -11,14 +11,8 @@ namespace Serafim\Boson\Core\Requests\IdGenerator;
  */
 final class Int32Generator extends IntGenerator
 {
-    /**
-     * {@inheritDoc}
-     */
     public readonly int $initial;
 
-    /**
-     * {@inheritDoc}
-     */
     public readonly int $maximum;
 
     /**

@@ -10,7 +10,6 @@ use Serafim\Boson\Exception\WebViewFunctionAlreadyRegisteredException;
 
 /**
  * @template TFunction of \Closure = \Closure
- *
  * @template-implements WebViewFunctionsMapInterface<TFunction>
  * @template-implements \IteratorAggregate<non-empty-string, TFunction>
  */

@@ -16,6 +16,7 @@ interface WebViewStylesMapInterface extends \Traversable, \Countable, \Stringabl
      *
      * @param non-empty-string $style An initialization CSS code
      * @param array-key|null $id An optional style identifier
+     *
      * @return array-key Returns the style identifier
      */
     public function add(#[Language('CSS')] string $style, string|int|null $id = null): string|int;

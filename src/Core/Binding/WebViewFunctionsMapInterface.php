@@ -8,7 +8,6 @@ use Serafim\Boson\Exception\WebViewException;
 
 /**
  * @template TFunction of \Closure = \Closure
- *
  * @template-extends \Traversable<non-empty-string, TFunction>
  */
 interface WebViewFunctionsMapInterface extends \Traversable, \Countable

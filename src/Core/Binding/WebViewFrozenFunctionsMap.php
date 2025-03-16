@@ -8,7 +8,6 @@ use Serafim\Boson\Exception\WebViewBindingException;
 
 /**
  * @template TFunction of \Closure = \Closure
- *
  * @template-implements WebViewFunctionsMapInterface<TFunction>
  * @template-implements \IteratorAggregate<non-empty-string, TFunction>
  */
