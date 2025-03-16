@@ -1,7 +1,16 @@
 <?php
 
 $files = PhpCsFixer\Finder::create()
-    ->in([__DIR__ . '/src']);
+    ->in([
+        __DIR__ . '/src'
+    ])
+    // broken in v3.72: Abstract properties error (`abstract public T $t { get; }`)
+    ->filter(static fn (\SplFileInfo $file): bool
+        => !\in_array(\realpath($file->getPathname()), [
+            \realpath(__DIR__ . '/src/Core/Requests/IdGenerator/IntGenerator.php'),
+        ], true)
+    )
+;
 
 return (new PhpCsFixer\Config())
     ->setRules([

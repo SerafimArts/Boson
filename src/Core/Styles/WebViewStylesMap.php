@@ -69,6 +69,6 @@ final class WebViewStylesMap implements WebViewStylesMapInterface, \IteratorAggr
 
             {$identifier}();
             document.addEventListener("DOMContentLoaded", {$identifier});
-            JS, \addcslashes($styles, "`"));
+            JS, \addcslashes($styles, '`'));
     }
 }
