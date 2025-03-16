@@ -11,9 +11,13 @@ use Serafim\Boson\Core\Binding\WebViewFrozenFunctionsMap;
 use Serafim\Boson\Core\Binding\WebViewFunctionsMap;
 use Serafim\Boson\Core\Binding\WebViewFunctionsMapInterface;
 use Serafim\Boson\Core\Requests\WebViewRequests;
+use Serafim\Boson\Core\Requests\WebViewRequestsInterface;
 use Serafim\Boson\Core\Runtime\WebViewError;
 use Serafim\Boson\Core\Runtime\WebViewHint;
 use Serafim\Boson\Core\Runtime\WebViewLibrary;
+use Serafim\Boson\Core\Scripts\WebViewFrozenScriptsMap;
+use Serafim\Boson\Core\Scripts\WebViewScriptsMap;
+use Serafim\Boson\Core\Scripts\WebViewScriptsMapInterface;
 use Serafim\Boson\Exception\WebViewException;
 use Serafim\Boson\Exception\WebViewInternalException;
 
@@ -80,31 +84,16 @@ final class WebView
     }
 
     /**
-     * Injects JavaScript code to be executed immediately upon loading a page.
-     *
-     * The code will be executed before `window.onload`
-     *
-     * @lang JavaScript
-     */
-    public string $code = '' {
-        get => $this->code;
-        set(string $code) {
-            $result = $this->api->webview_init($this->webview, $code);
-
-            if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-                throw WebViewInternalException::becauseErrorOccurs('setting init JavaScript', $result);
-            }
-
-            $this->code = $code;
-        }
-    }
-
-    /**
      * Contains a list of registered functions
      *
      * @var WebViewFunctionsMapInterface<\Closure>
      */
     public private(set) WebViewFunctionsMapInterface $functions;
+
+    /**
+     * Contains a list of registered initialization scripts
+     */
+    public private(set) WebViewScriptsMapInterface $scripts;
 
     /**
      * Contains API for receiving data from the client
@@ -118,6 +107,7 @@ final class WebView
 
         $this->webview = $this->api->webview_create((int) $this->info->debug, null);
         $this->functions = new WebViewFunctionsMap($this->api, $this->webview);
+        $this->scripts = new WebViewScriptsMap();
         $this->requests = new WebViewRequests($this);
 
         if ($this->info->title !== '') {
@@ -141,7 +131,7 @@ final class WebView
     }
 
     /**
-     * Sends a request to the client and receives a response
+     * Facade method of {@see WebViewRequestsInterface::send()}
      *
      * @api
      *
@@ -150,6 +140,18 @@ final class WebView
     public function request(#[Language('JavaScript')] string $code): PromiseInterface
     {
         return $this->requests->send($code);
+    }
+
+    /**
+     * Facade method of {@see WebViewScriptsMapInterface::add()}
+     *
+     * @api
+     * @param non-empty-string $code An initialization JavaScript code
+     * @return array-key Returns code identifier
+     */
+    public function evalBeforeLoad(#[Language('JavaScript')] string $code): int|string
+    {
+        return $this->scripts->add($code);
     }
 
     /**
@@ -228,6 +230,14 @@ final class WebView
      */
     public function run(): void
     {
+        // Load initialization script
+        $result = $this->api->webview_init($this->webview, (string) $this->scripts);
+
+        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
+            throw WebViewInternalException::becauseErrorOccurs('setting init JavaScript', $result);
+        }
+
+        // Execute an application
         $result = $this->api->webview_run($this->webview);
 
         if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
@@ -237,6 +247,11 @@ final class WebView
         // Freeze functions list
         if ($this->functions instanceof WebViewFunctionsMap) {
             $this->functions = new WebViewFrozenFunctionsMap($this->functions);
+        }
+
+        // Freeze code list
+        if ($this->scripts instanceof WebViewScriptsMap) {
+            $this->scripts = new WebViewFrozenScriptsMap($this->scripts);
         }
     }
 

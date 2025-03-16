@@ -39,7 +39,7 @@ final readonly class WebViewFrozenFunctionsMap implements WebViewFunctionsMapInt
 
     public function getIterator(): \Traversable
     {
-        return $this->functions->getIterator();
+        return $this->functions;
     }
 
     public function count(): int

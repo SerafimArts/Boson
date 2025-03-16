@@ -36,7 +36,7 @@ interface WebViewFunctionsMapInterface extends \Traversable, \Countable
     public function remove(string $function): void;
 
     /**
-     * The number of registered functions cannot be less than 0
+     * The number of registered functions (cannot be less than 0)
      *
      * @return int<0, max>
      */

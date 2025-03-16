@@ -19,7 +19,7 @@ interface WebViewRequestsInterface extends \Traversable, \Countable
     public function send(#[Language('JavaScript')] string $code): PromiseInterface;
 
     /**
-     * The number of requests cannot be less than 0
+     * The number of requests (cannot be less than 0)
      *
      * @return int<0, max>
      */
