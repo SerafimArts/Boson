@@ -7,7 +7,7 @@ namespace Serafim\Boson\Core\Runtime;
 use FFI\Env\Runtime;
 
 /**
- * @internal this is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson\Core
  */
 final readonly class WebViewLibrary

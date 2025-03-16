@@ -7,7 +7,7 @@ namespace Serafim\Boson\Core\Runtime;
 /**
  * Window size hints.
  *
- * @internal this is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson\Core
  */
 final readonly class WebViewHint

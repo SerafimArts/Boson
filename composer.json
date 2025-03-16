@@ -55,7 +55,7 @@
         "linter:check": "phpstan analyse --configuration phpstan.neon",
         "linter:baseline": "@linter:check --generate-baseline",
         "phpcs:check": "@phpcs:fix --dry-run",
-        "phpcs:fix": "PHP_CS_FIXER_IGNORE_ENV=1 php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --verbose --diff"
+        "phpcs:fix": "php-cs-fixer fix --config=.php-cs-fixer.php --allow-risky=yes --verbose --diff"
     },
     "minimum-stability": "dev",
     "prefer-stable": true

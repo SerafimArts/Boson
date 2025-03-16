@@ -24,6 +24,7 @@ final class WebViewFunctions implements \IteratorAggregate, \Countable
 
     /**
      * @param non-empty-string $name The
+     *
      * @return bool Returns {@see true} in case of function has been
      *         registered or {@see false} instead
      */

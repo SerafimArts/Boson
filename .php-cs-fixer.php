@@ -145,6 +145,7 @@ return (new PhpCsFixer\Config())
         'phpdoc_no_useless_inheritdoc' => true,
         'phpdoc_order' => [
             'order' => [
+                'api',
                 'internal',
                 'psalm-internal',
                 'template',
@@ -166,7 +167,6 @@ return (new PhpCsFixer\Config())
                 'param',
                 'return',
                 'throws',
-                'api',
                 'psalm-suppress',
             ],
         ],
@@ -192,7 +192,7 @@ return (new PhpCsFixer\Config())
                     'phpstan-require-extends',
                 ],
                 ['psalm-taint-sink', 'param'],
-                ['return', 'throws', 'api'],
+                ['return', 'throws'],
                 ['psalm-suppress'],
             ],
         ],

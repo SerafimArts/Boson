@@ -4,6 +4,9 @@ on:
   push:
   pull_request:
 
+env:
+  PHP_CS_FIXER_IGNORE_ENV: 1
+
 jobs:
   psalm:
     name: Code Style

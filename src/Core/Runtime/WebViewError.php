@@ -19,7 +19,7 @@ namespace Serafim\Boson\Core\Runtime;
  *
  * Refer to specific functions regarding handling of other codes.
  *
- * @internal this is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson\Core
  */
 final readonly class WebViewError

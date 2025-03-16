@@ -7,9 +7,9 @@ namespace Serafim\Boson\Core;
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Core\Binding\WebViewFunctions;
-use Serafim\Boson\Core\Runtime\WebViewLibrary;
 use Serafim\Boson\Core\Runtime\WebViewError;
 use Serafim\Boson\Core\Runtime\WebViewHint;
+use Serafim\Boson\Core\Runtime\WebViewLibrary;
 use Serafim\Boson\Exception\WebViewFunctionAlreadyRegisteredException;
 use Serafim\Boson\Exception\WebViewInternalException;
 
@@ -114,6 +114,7 @@ final class WebView
      * Binds an function to a new global JavaScript function
      *
      * @api
+     *
      * @param non-empty-string $function
      */
     public function bind(string $function, callable $callback): void
@@ -129,6 +130,7 @@ final class WebView
      * Remove previously registered function binding
      *
      * @api
+     *
      * @param non-empty-string $function
      */
     public function unbind(string $function): void
@@ -163,6 +165,7 @@ final class WebView
      *    This option has no effect when using GTK 4.
      *
      * @api
+     *
      * @param int<1, 2147483647> $width
      * @param int<1, 2147483647> $height
      */

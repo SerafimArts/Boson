@@ -7,7 +7,7 @@ namespace Serafim\Boson\Core\Runtime;
 /**
  * Native handle kind. The actual type depends on the backend.
  *
- * @internal this is an internal library class, please do not use it in your code.
+ * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson\Core
  */
 final readonly class WebViewNativeHandleKind
