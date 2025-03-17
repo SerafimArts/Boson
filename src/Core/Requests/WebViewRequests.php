@@ -85,7 +85,7 @@ final class WebViewRequests implements WebViewRequestsInterface, \IteratorAggreg
     {
         return \vsprintf('%s("%s", (function() { return %s; })())', [
             self::METHOD_NAME,
-            \addcslashes($id, '"'),
+            \addcslashes((string) $id, '"'),
             $code,
         ]);
     }

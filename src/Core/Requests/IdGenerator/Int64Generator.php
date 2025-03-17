@@ -25,9 +25,9 @@ final class Int64Generator extends IntGenerator
             throw IdNotSupportedException::becauseInvalidPlatform('int64', 'int32');
         }
 
-        parent::__construct($onOverflow);
-
         $this->initial = 0;
         $this->maximum = 0x7FFF_FFFF_FFFF_FFFF;
+
+        parent::__construct($onOverflow);
     }
 }

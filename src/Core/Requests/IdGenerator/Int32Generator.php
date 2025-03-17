@@ -21,9 +21,9 @@ final class Int32Generator extends IntGenerator
     public function __construct(
         OverflowBehaviour $onOverflow = OverflowBehaviour::Reset,
     ) {
-        parent::__construct($onOverflow);
-
         $this->initial = 0;
         $this->maximum = 0x7FFF_FFFF;
+
+        parent::__construct($onOverflow);
     }
 }

@@ -33,7 +33,9 @@ abstract class IntGenerator implements GeneratorInterface
 
     public function __construct(
         private readonly OverflowBehaviour $onOverflow = OverflowBehaviour::Reset,
-    ) {}
+    ) {
+        $this->current = $this->initial;
+    }
 
     /**
      * @throws IdOverflowException
