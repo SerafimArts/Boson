@@ -119,9 +119,11 @@ final class WebView
         $this->styles = new WebViewStylesMap();
         $this->requests = new WebViewRequests($this);
 
-        if ($this->info->title !== '') {
-            $this->title = $this->info->title;
-        }
+        // Load defaults:
+        //  - Title
+        $this->title = $this->info->title;
+        //  - Size
+        $this->resize($this->info->width, $this->info->height);
     }
 
     /**
@@ -222,8 +224,8 @@ final class WebView
      *
      * @api
      *
-     * @param int<1, 2147483647> $width
-     * @param int<1, 2147483647> $height
+     * @param int<0, 2147483647> $width
+     * @param int<0, 2147483647> $height
      */
     public function resize(int $width, int $height, WebViewSizeHint $hint = WebViewSizeHint::Default): void
     {

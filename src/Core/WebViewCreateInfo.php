@@ -55,13 +55,13 @@ final readonly class WebViewCreateInfo
         /**
          * Sets default window width
          *
-         * @var int<0, max>
+         * @var int<0, 2147483647>
          */
         public int $width = self::DEFAULT_WIDTH,
         /**
          * Sets default window height
          *
-         * @var int<0, max>
+         * @var int<0, 2147483647>
          */
         public int $height = self::DEFAULT_HEIGHT,
     ) {
