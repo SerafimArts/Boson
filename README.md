@@ -52,6 +52,8 @@ use Serafim\Boson\Application;
 
 $app = new Application();
 
+$app->webview->resize(300, 300);
+
 $app->webview->html = <<<'HTML'
     <button onclick="foo('HELLO');">Hello</button>
     HTML;
