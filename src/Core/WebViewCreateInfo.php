@@ -12,6 +12,16 @@ use Serafim\Boson\Core\Runtime\Architecture;
 final readonly class WebViewCreateInfo
 {
     /**
+     * Gets default window width
+     */
+    public const int DEFAULT_WIDTH = 800;
+
+    /**
+     * Gets default window height
+     */
+    public const int DEFAULT_HEIGHT = 600;
+
+    /**
      * @var non-empty-string
      */
     private const string DEFAULT_BINARY_DIRECTORY = __DIR__ . '/../../bin';
@@ -42,7 +52,27 @@ final readonly class WebViewCreateInfo
          * Contains the title set for the webview window when created
          */
         public string $title = '',
+        /**
+         * Sets default window width
+         *
+         * @var int<0, max>
+         */
+        public int $width = self::DEFAULT_WIDTH,
+        /**
+         * Sets default window height
+         *
+         * @var int<0, max>
+         */
+        public int $height = self::DEFAULT_HEIGHT,
     ) {
+        assert($width >= 0, new \InvalidArgumentException(
+            message: 'Window width cannot be less than 0',
+        ));
+
+        assert($height >= 0, new \InvalidArgumentException(
+            message: 'Window height cannot be less than 0',
+        ));
+
         $this->debug = $debug ?? self::isDebugEnabledFromEnvironment();
         $this->library = $library ?? self::getRealLibraryPathname();
     }
