@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Core;
 
+use Serafim\Boson\Core\Runtime\Architecture;
+
 /**
  * Information (configuration) about creating a new webview object.
  */
@@ -52,10 +54,27 @@ final readonly class WebViewCreateInfo
      */
     private static function getRealLibraryPathname(): string
     {
-        return match (\PHP_OS_FAMILY) {
-            'Windows' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview.dll',
-            'Darwin' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview.dylib',
-            default => self::DEFAULT_BINARY_DIRECTORY . '/libwebview.so',
+        return match (Architecture::fromEnvironment()) {
+            Architecture::Amd64 => match (\PHP_OS_FAMILY) {
+                'Windows' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-windows-amd64.dll',
+                'Darwin' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-darwin-amd64.dylib',
+                default => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-linux-amd64.so',
+            },
+            Architecture::Arm64 => match (\PHP_OS_FAMILY) {
+                'Windows' => throw new \OutOfRangeException(\sprintf(
+                    'Current architecture (%s) may not be supported for Windows OS',
+                    \php_uname('m'),
+                )),
+                'Darwin' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-darwin-arm64.dylib',
+                default => throw new \OutOfRangeException(\sprintf(
+                    'Current architecture (%s) may not be supported for Linux OS',
+                    \php_uname('m'),
+                )),
+            },
+            default => throw new \OutOfRangeException(\sprintf(
+                'Current architecture (%s) may not be supported',
+                \php_uname('m'),
+            )),
         };
     }
 
