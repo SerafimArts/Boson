@@ -99,6 +99,18 @@ final class WebView
         $this->scripts = new WebViewScriptsMap();
         $this->styles = new WebViewStylesMap();
         $this->requests = new WebViewRequests($this);
+
+        foreach ($info->scripts as $id => $script) {
+            $this->scripts->add($script, $id);
+        }
+
+        foreach ($info->styles as $id => $style) {
+            $this->styles->add($style, $id);
+        }
+
+        foreach ($info->functions as $name => $callback) {
+            $this->functions->add($name, $callback);
+        }
     }
 
     /**

@@ -19,7 +19,7 @@ final readonly class Application
     public function __construct(
         public ApplicationCreateInfo $info = new ApplicationCreateInfo(),
     ) {
-        $this->api = new WebViewLibrary($this->info->library);
+        $this->api = new WebViewLibrary($info->library);
 
         $this->window = new WebViewWindow(
             api: $this->api,
