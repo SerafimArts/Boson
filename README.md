@@ -181,7 +181,7 @@ To change the size, use the `resize()` method.
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->resize(640, 480);
+$app->window->resize(640, 480);
 
 $app->run();
 ```
@@ -194,7 +194,7 @@ To change the max size, use the `resize()` method.
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::MaxBounds);
+$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::MaxBounds);
 
 $app->run();
 ```
@@ -207,7 +207,7 @@ To change the min size, use the `resize()` method.
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::MinBounds);
+$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::MinBounds);
 
 $app->run();
 ```
@@ -220,7 +220,7 @@ To set the fixed size, use the `resize()` method.
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->resize(640, 480, \Serafim\Boson\Core\WebViewSizeHint::Fixed);
+$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::Fixed);
 
 $app->run();
 ```

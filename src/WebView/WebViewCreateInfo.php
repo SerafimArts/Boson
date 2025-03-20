@@ -2,18 +2,19 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson;
+namespace Serafim\Boson\WebView;
 
 use Serafim\Boson\Core\WebView\Architecture;
-use Serafim\Boson\Window\NewWindowCreateInfo;
-use Serafim\Boson\Window\WindowCreateInfo;
 
-final readonly class ApplicationCreateInfo
+/**
+ * Information (configuration) about creating a new webview object.
+ */
+final readonly class WebViewCreateInfo
 {
     /**
      * @var non-empty-string
      */
-    private const string DEFAULT_BINARY_DIRECTORY = __DIR__ . '/../bin';
+    private const string DEFAULT_BINARY_DIRECTORY = __DIR__ . '/../../bin';
 
     /**
      * Contains the full path to the webview library.
@@ -23,21 +24,12 @@ final readonly class ApplicationCreateInfo
     public string $library;
 
     /**
-     * If the value is set to {@see true}, then debugging is enabled
-     * or disabled instead
-     */
-    public bool $debug;
-
-    /**
      * @param non-empty-string|null $library Automatically detects the library
      *        pathname if {@see null}, otherwise it forcibly exposes it
      */
     public function __construct(
-        ?bool $debug = null,
         ?string $library = null,
-        public WindowCreateInfo $window = new NewWindowCreateInfo(),
     ) {
-        $this->debug = $debug ?? self::isDebugEnabledFromEnvironment();
         $this->library = $library ?? self::getRealLibraryPathname();
     }
 
@@ -70,24 +62,5 @@ final readonly class ApplicationCreateInfo
                 \php_uname('m'),
             )),
         };
-    }
-
-    /**
-     * Gets debug value from environment's "zend.assertions" status
-     */
-    private static function isDebugEnabledFromEnvironment(): bool
-    {
-        $debug = false;
-
-        /**
-         * Enable debug mode if "zend.assertions" is 1.
-         *
-         * @link https://www.php.net/manual/en/function.assert.php
-         *
-         * @phpstan-ignore-next-line PHPStan false-positive
-         */
-        assert($debug = true);
-
-        return $debug;
     }
 }

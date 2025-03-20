@@ -7,7 +7,7 @@ $files = PhpCsFixer\Finder::create()
     // broken in v3.72: Abstract properties error (`abstract public T $t { get; }`)
     ->filter(static fn (\SplFileInfo $file): bool
         => !\in_array(\realpath($file->getPathname()), [
-            \realpath(__DIR__ . '/src/Core/Requests/IdGenerator/IntGenerator.php'),
+            \realpath(__DIR__ . '/src/WebView/Requests/IdGenerator/IntGenerator.php'),
         ], true)
     )
 ;

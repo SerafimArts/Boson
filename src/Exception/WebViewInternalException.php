@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Exception;
 
-use Serafim\Boson\Core\Runtime\WebViewError;
+use Serafim\Boson\Core\WebView\WebViewError;
 
 class WebViewInternalException extends WebViewException
 {
