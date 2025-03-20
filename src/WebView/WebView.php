@@ -100,6 +100,11 @@ final class WebView
         $this->styles = new WebViewStylesMap();
         $this->requests = new WebViewRequests($this);
 
+        $this->loadConfiguration($info);
+    }
+
+    private function loadConfiguration(WebViewCreateInfo $info): void
+    {
         foreach ($info->scripts as $id => $script) {
             $this->scripts->add($script, $id);
         }
@@ -110,6 +115,14 @@ final class WebView
 
         foreach ($info->functions as $name => $callback) {
             $this->functions->add($name, $callback);
+        }
+
+        if ($info instanceof ExternalWebViewCreateInfo) {
+            $this->url = $info->url;
+        }
+
+        if ($info instanceof LocalWebViewCreateInfo) {
+            $this->html = $info->html;
         }
     }
 
