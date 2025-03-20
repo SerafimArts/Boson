@@ -4,21 +4,35 @@ declare(strict_types=1);
 
 namespace Serafim\Boson;
 
-use Serafim\Boson\Core\WebView;
+use Serafim\Boson\Core\WebView\WebViewLibrary;
+use Serafim\Boson\WebView\WebView;
+use Serafim\Boson\Window\Bridge\WebViewWindow;
 
 final readonly class Application
 {
+    private WebViewLibrary $api;
+
+    public WebViewWindow $window;
+
     public WebView $webview;
 
     public function __construct(
         public ApplicationCreateInfo $info = new ApplicationCreateInfo(),
     ) {
-        $this->webview = new WebView($this->info->webview);
+        $this->api = new WebViewLibrary($this->info->library);
+
+        $this->window = new WebViewWindow(
+            api: $this->api,
+            info: $info->window,
+            debug: $info->debug,
+        );
+
+        $this->webview = $this->window->webview;
     }
 
     public function quit(): void
     {
-        $this->webview->terminate();
+        $this->api->webview_terminate($this->window->handle->webview);
     }
 
     public function run(): void
@@ -29,6 +43,6 @@ final readonly class Application
             });
         }
 
-        $this->webview->run();
+        $this->window->webview->run();
     }
 }

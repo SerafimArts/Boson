@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Core\Runtime;
+namespace Serafim\Boson\Core\WebView;
 
 use FFI\CData;
 
@@ -100,12 +100,13 @@ class WebViewLibrary
     /**
      * @param WebViewType $w
      */
-    public function webview_get_window(CData $w): mixed {}
+    public function webview_get_window(CData $w): CData {}
 
     /**
+     * @param WebViewType $w
      * @param WebViewNativeHandleKindType $kind
      */
-    public function webview_get_native_handle(int $kind): mixed {}
+    public function webview_get_native_handle(CData $w, int $kind): CData {}
 
     /**
      * @param WebViewType $w

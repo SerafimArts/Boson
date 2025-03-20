@@ -12,6 +12,6 @@ parameters:
   paths:
     - src
   excludePaths:
-    - src/Core/Runtime
+    - src/Core
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true
