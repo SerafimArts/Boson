@@ -38,6 +38,16 @@ final readonly class NewWindowCreateInfo extends WindowCreateInfo
          * @var int<0, 2147483647>
          */
         public int $height = self::DEFAULT_HEIGHT,
+        /**
+         * Enable window dark mode in case of {@see true}
+         * or disable in case of {@see false}
+         *
+         * In case of {@see null} the theme will be
+         * identical to the system one.
+         *
+         * Note: Currently supported only in Windows OS
+         */
+        public ?bool $darkMode = null,
         WebViewCreateInfo $webview = new WebViewCreateInfo(),
     ) {
         // @phpstan-ignore-next-line : DbC invariant
