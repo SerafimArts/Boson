@@ -20,6 +20,6 @@ final readonly class WebViewHandle implements HandleInterface
          * - NSWindow pointer (Cocoa)
          * - HWND (Win32)
          */
-        public CData $handle,
+        public CData $ptr,
     ) {}
 }

@@ -9,6 +9,8 @@ use Serafim\Boson\Core\WebView\WebViewHint;
 use Serafim\Boson\Core\WebView\WebViewLibrary;
 use Serafim\Boson\Exception\WebViewInternalException;
 use Serafim\Boson\WebView\WebView;
+use Serafim\Boson\Window\Bridge\DarkMode\VoidDarkModeDriver;
+use Serafim\Boson\Window\Bridge\DarkMode\WindowsDarkModeDriver;
 use Serafim\Boson\Window\ExternalWindowCreateInfo;
 use Serafim\Boson\Window\NewWindowCreateInfo;
 use Serafim\Boson\Window\WindowCreateInfo;
@@ -46,7 +48,7 @@ final class WebViewWindow implements WindowInterface
 
         $this->handle = new WebViewHandle(
             webview: $webview,
-            handle: $this->api->webview_get_window($webview),
+            ptr: $this->api->webview_get_window($webview),
         );
 
         $this->webview = new WebView(
@@ -58,8 +60,19 @@ final class WebViewWindow implements WindowInterface
         if ($info instanceof NewWindowCreateInfo) {
             // Load title
             $this->title = $info->title;
+
             // Load window sizes if defined
             $this->resize($info->width, $info->height);
+
+            // Enable or disable dark mode
+            if ($info->darkMode !== null) {
+                $driver = match (\PHP_OS_FAMILY) {
+                    'Windows' => new WindowsDarkModeDriver($this),
+                    default => new VoidDarkModeDriver(),
+                };
+
+                $driver->enable($info->darkMode);
+            }
         }
     }
 
