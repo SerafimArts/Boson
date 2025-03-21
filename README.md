@@ -264,6 +264,7 @@ $app->run();
 To set the dark mode (dark theme), use the `$darkMode` window property.
 
 > [Linux]: Currently not supported, this option has no effect
+
 > [MacOS]: Currently not supported, this option has no effect
 
 ```php
