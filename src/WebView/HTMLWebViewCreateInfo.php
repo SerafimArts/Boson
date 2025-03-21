@@ -6,7 +6,7 @@ namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\Language;
 
-final readonly class LocalWebViewCreateInfo extends WebViewCreateInfo
+final readonly class HTMLWebViewCreateInfo extends WebViewCreateInfo
 {
     /**
      * @param iterable<array-key, non-empty-string> $scripts

@@ -9,6 +9,7 @@ use Serafim\Boson\Core\WebView\WebViewHint;
 use Serafim\Boson\Core\WebView\WebViewLibrary;
 use Serafim\Boson\Exception\WebViewInternalException;
 use Serafim\Boson\WebView\WebView;
+use Serafim\Boson\Window\Bridge\DarkMode\DarkModeDriverInterface;
 use Serafim\Boson\Window\Bridge\DarkMode\VoidDarkModeDriver;
 use Serafim\Boson\Window\Bridge\DarkMode\WindowsDarkModeDriver;
 use Serafim\Boson\Window\ExternalWindowCreateInfo;
@@ -23,6 +24,8 @@ final class WebViewWindow implements WindowInterface
 
     public readonly WebView $webview;
 
+    private readonly DarkModeDriverInterface $darkModeDriver;
+
     public string $title = '' {
         get => $this->title;
         set(string $title) {
@@ -33,6 +36,17 @@ final class WebViewWindow implements WindowInterface
             }
 
             $this->title = $title;
+        }
+    }
+
+    public ?bool $darkMode = null {
+        get => $this->darkMode;
+        set {
+            if ($value !== null) {
+                $this->darkModeDriver->enable($value);
+            }
+
+            $this->darkMode = $value;
         }
     }
 
@@ -57,6 +71,11 @@ final class WebViewWindow implements WindowInterface
             info: $info->webview,
         );
 
+        $this->darkModeDriver = match (\PHP_OS_FAMILY) {
+            'Windows' => new WindowsDarkModeDriver($this),
+            default => new VoidDarkModeDriver(),
+        };
+
         if ($info instanceof NewWindowCreateInfo) {
             // Load title
             $this->title = $info->title;
@@ -64,15 +83,8 @@ final class WebViewWindow implements WindowInterface
             // Load window sizes if defined
             $this->resize($info->width, $info->height);
 
-            // Enable or disable dark mode
-            if ($info->darkMode !== null) {
-                $driver = match (\PHP_OS_FAMILY) {
-                    'Windows' => new WindowsDarkModeDriver($this),
-                    default => new VoidDarkModeDriver(),
-                };
-
-                $driver->enable($info->darkMode);
-            }
+            // Setup dark mode
+            $this->darkMode = $info->darkMode;
         }
     }
 

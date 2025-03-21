@@ -35,6 +35,21 @@ interface WindowInterface
     public string $title { get; set; }
 
     /**
+     * Enables (in case of {@see true}) or disables (in case of {@see false})
+     * dark mode (dark theme).
+     */
+    public ?bool $darkMode {
+        /**
+         * In case of receiving {@see null} the theme corresponds to the system
+         */
+        get;
+        /**
+         * In case of {@see null} setting, the value will not be changed
+         */
+        set;
+    }
+
+    /**
      * Updates the size of the native window
      *
      * Note:

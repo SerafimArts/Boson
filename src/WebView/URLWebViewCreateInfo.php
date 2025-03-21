@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView;
 
-final readonly class ExternalWebViewCreateInfo extends WebViewCreateInfo
+final readonly class URLWebViewCreateInfo extends WebViewCreateInfo
 {
     /**
      * @param iterable<array-key, non-empty-string> $scripts
