@@ -46,6 +46,10 @@ final readonly class Application
      */
     public WebView $webview;
 
+    /**
+     * @param non-empty-string|null $library Automatically detects the library
+     *        pathname if {@see null}, otherwise it forcibly exposes it
+     */
     public function __construct(
         ?bool $debug = null,
         ?string $library = null,

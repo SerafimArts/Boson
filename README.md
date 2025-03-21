@@ -34,16 +34,21 @@ And much easier than that =)
     - [Window Max Size](#window-max-size)
     - [Window Min Size](#window-min-size)
     - [Window Fixed Size](#window-fixed-size)
-    - [Window HTML Content](#window-html-content)
-  - **Styles**
-    - [Global Styles](#global-styles)
-  - **JavaScript**
-    - [Global Scripts](#global-scripts)
-    - [Creating Functions](#creating-functions)
-    - [Code Evaluation](#code-evaluation)
-    - [Code Requests](#code-requests)
+    - [Window Dark Mode](#window-dark-mode)
+  - **WebView**
+    - [HTML Content](#webview-html-content)
+    - [Load Content From URL](#webview-url)
+    - **Styles**
+      - [Global Styles](#global-styles)
+    - **JavaScript**
+      - [Global Scripts](#global-scripts)
+      - [Creating Functions](#creating-functions)
+      - [Code Evaluation](#code-evaluation)
+      - [Code Requests](#code-requests)
   - **Misc**
     - [Quit](#quit) 
+    - [Debug Mode](#debug-mode)
+    - [Custom Library](#custom-library)
 
 ## Simple Example
 
@@ -173,6 +178,17 @@ echo 'Current Title: ' . $app->webview->title;
 $app->run();
 ```
 
+Or set title from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        title: 'New Title'
+    ),
+);
+
+$app->run();
+```
 
 ### Window Resizing
 
@@ -186,10 +202,27 @@ $app->window->resize(640, 480);
 $app->run();
 ```
 
+Or set size from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        width: 640,
+        height: 480,
+    ),
+);
+
+$app->run();
+```
 
 ### Window Max Size
 
 To change the max size, use the `resize()` method.
+
+> [Linux/GTK4]: Using `WindowSizeHint::MaxBounds` for setting the maximum window 
+> size is not supported with GTK 4 (Linux platform) because X11-specific 
+> functions such as `gtk_window_set_geometry_hints` were removed.
+> This option has no effect when using GTK 4.
 
 ```php
 $app = new Serafim\Boson\Application();
@@ -226,7 +259,34 @@ $app->run();
 ```
 
 
-### Window HTML Content
+### Window Dark Mode
+
+To set the dark mode (dark theme), use the `$darkMode` window property.
+
+> [Linux]: Currently not supported, this option has no effect
+> [MacOS]: Currently not supported, this option has no effect
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->window->darkMode = true;
+
+$app->run();
+```
+
+Or set dark mode from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        darkMode: true,
+    ),
+);
+
+$app->run();
+```
+
+### WebView HTML Content
 
 To set the content, you should use the `$html` property
 
@@ -234,6 +294,20 @@ To set the content, you should use the `$html` property
 $app = new Serafim\Boson\Application();
 
 $app->webview->html = '<button>Do Not Click Me!</button>';
+
+$app->run();
+```
+
+Or set html content from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        webview: new Serafim\Boson\WebView\HTMLWebViewCreateInfo(
+            html: '<button>Do Not Click Me!</button>',
+        ),
+    ),
+);
 
 $app->run();
 ```
@@ -248,6 +322,33 @@ $app->webview->request('document.body.innerHTML')
     ->then(function (string $html) {
         var_dump($html);
     });
+
+$app->run();
+```
+
+
+### WebView URL
+
+To load content from the URL, you should use the `$url` property
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->url = 'https://nesk.me';
+
+$app->run();
+```
+
+Or set URL from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        webview: new Serafim\Boson\WebView\URLWebViewCreateInfo(
+            url: 'https://nesk.me',
+        ),
+    ),
+);
 
 $app->run();
 ```
@@ -269,6 +370,24 @@ $app->webview->styleBeforeLoad(<<<'CSS'
 $app->run();
 ```
 
+Or set styles from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        webview: new Serafim\Boson\WebView\WebViewCreateInfo(
+            styles: [<<<'CSS'
+                body {
+                    background: #900;
+                }
+                CSS],
+        ),
+    ),
+);
+
+$app->run();
+```
+
 
 ### Global Scripts
 
@@ -284,6 +403,22 @@ $app->webview->evalBeforeLoad(<<<'JS'
 $app->run();
 ```
 
+Or set scripts from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        webview: new Serafim\Boson\WebView\WebViewCreateInfo(
+            scripts: [<<<'JS'
+                alert('hello');
+                JS],
+        ),
+    ),
+);
+
+$app->run();
+```
+
 
 ### Creating Functions
 
@@ -295,6 +430,22 @@ $app = new Serafim\Boson\Application();
 $app->webview->bind('foo', function () { 
     var_dump('Executed!');
 });
+
+$app->run();
+```
+
+Or set functions list from configuration
+
+```php
+$app = new Serafim\Boson\Application(
+    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+        webview: new Serafim\Boson\WebView\WebViewCreateInfo(
+            functions: ['foo' => function () { 
+                var_dump('Executed!');
+            }],
+        ),
+    ),
+);
 
 $app->run();
 ```
@@ -341,6 +492,39 @@ $app->webview->html = '<button onclick="quit()">exit</button>';
 $app->webview->bind('quit', function () use ($app) {
     $app->quit();
 });
+
+$app->run();
+```
+
+
+### Debug Mode
+
+To enable debug mode, you should define the `debug: ?bool` 
+argument of the `Application` instance.
+
+```php
+$app = new Serafim\Boson\Application(
+    // true  - enable debug mode
+    // false - disable debug mode
+    // null  - autodetect debug mode
+    debug: true, 
+);
+
+$app->run();
+```
+
+
+### Custom Library
+
+To define binary, you should define the `library: ?non-empty-string`
+argument of the `Application` instance.
+
+```php
+$app = new Serafim\Boson\Application(
+    // string - defines pathname to the library
+    // null   - autodetect library
+    library: __DIR__ . '/path/to/custom-webview.so',
+);
 
 $app->run();
 ```

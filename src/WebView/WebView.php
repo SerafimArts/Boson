@@ -117,11 +117,11 @@ final class WebView
             $this->functions->add($name, $callback);
         }
 
-        if ($info instanceof ExternalWebViewCreateInfo) {
+        if ($info instanceof URLWebViewCreateInfo) {
             $this->url = $info->url;
         }
 
-        if ($info instanceof LocalWebViewCreateInfo) {
+        if ($info instanceof HTMLWebViewCreateInfo) {
             $this->html = $info->html;
         }
     }
