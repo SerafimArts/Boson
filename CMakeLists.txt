@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 3.30)
+cmake_minimum_required(VERSION 3.28)
 project(webview LANGUAGES C CXX)
 
 set(COPYRIGHT "Copyright (c) Nesmeyanov Kirill")
