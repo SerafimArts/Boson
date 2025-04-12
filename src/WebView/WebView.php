@@ -6,254 +6,111 @@ namespace Serafim\Boson\WebView;
 
 use FFI\CData;
 use JetBrains\PhpStorm\Language;
-use React\Promise\PromiseInterface;
-use Serafim\Boson\Core\WebView\WebViewError;
-use Serafim\Boson\Core\WebView\WebViewLibrary;
-use Serafim\Boson\Exception\WebViewException;
-use Serafim\Boson\Exception\WebViewInternalException;
-use Serafim\Boson\WebView\Binding\WebViewFrozenFunctionsMap;
-use Serafim\Boson\WebView\Binding\WebViewFunctionsMap;
-use Serafim\Boson\WebView\Binding\WebViewFunctionsMapInterface;
-use Serafim\Boson\WebView\Requests\WebViewRequests;
-use Serafim\Boson\WebView\Requests\WebViewRequestsInterface;
-use Serafim\Boson\WebView\Scripts\WebViewFrozenScriptsMap;
-use Serafim\Boson\WebView\Scripts\WebViewScriptsMap;
-use Serafim\Boson\WebView\Scripts\WebViewScriptsMapInterface;
-use Serafim\Boson\WebView\Styles\WebViewFrozenStylesMap;
-use Serafim\Boson\WebView\Styles\WebViewStylesMap;
-use Serafim\Boson\WebView\Styles\WebViewStylesMapInterface;
+use Serafim\Boson\WebView\Uri\MemoizedUriParser;
+use Serafim\Boson\WebView\Uri\Uri;
+use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\WebView\Uri\NativeUriParser;
+use Serafim\Boson\WebView\Uri\UriParserInterface;
+use Serafim\Boson\Window\Window;
 
-final class WebView
+final class WebView implements WebViewInterface
 {
     /**
-     * Load HTML content into the WebView
+     * Window's webview pointer (handle).
      */
-    public string $html {
-        set(string $html) {
-            $result = $this->api->webview_set_html($this->webview, $html);
+    private readonly CData $ptr;
 
-            if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-                throw WebViewInternalException::becauseErrorOccurs('loading HTML', $result);
+    /**
+     * Contains current non-memoized webview url string.
+     */
+    private string $urlString {
+        /**
+         * Gets current non-memoized webview url string.
+         */
+        get {
+            $result = $this->api->saucer_webview_url($this->ptr);
+
+            try {
+                return \FFI::string($result);
+            } finally {
+                \FFI::free($result);
             }
         }
     }
 
-    /**
-     * Navigates WebView to the given URL.
-     *
-     * URL may be a properly encoded data URI:
-     *
-     * ```
-     * $webview->url = 'https://github.com/webview/webview';
-     * $webview->url = 'data:text/html,%3Ch1%3EHello%3C%2Fh1%3E';
-     * $webview->url = 'data:text/html;base64,PGgxPkhlbGxvPC9oMT4=';
-     * ```
-     */
-    public string $url {
-        set(string $url) {
-            $result = $this->api->webview_navigate($this->webview, $url);
+    private UriParserInterface $uriParser;
 
-            if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-                throw WebViewInternalException::becauseErrorOccurs('navigation to URL', $result);
-            }
+    public Uri $uri {
+        get {
+            return $this->uriParser->parse($this->urlString);
+        }
+        set(Uri|\Stringable|string $value) {
+            $this->api->saucer_webview_set_url($this->ptr, (string) $value);
         }
     }
 
     /**
-     * Contains a list of registered functions
+     * Contains unique index filename
      *
-     * @var WebViewFunctionsMapInterface<\Closure>
+     * @var non-empty-string
      */
-    public private(set) WebViewFunctionsMapInterface $functions;
-
-    /**
-     * Contains a list of registered initialization scripts
-     */
-    public private(set) WebViewScriptsMapInterface $scripts;
-
-    /**
-     * Contains a list of registered initialization styles
-     */
-    public private(set) WebViewStylesMapInterface $styles;
-
-    /**
-     * Contains API for receiving data from the client
-     */
-    public readonly WebViewRequests $requests;
+    private readonly string $index;
 
     public function __construct(
         /**
-         * An API library for working with WebView
+         * Contains shared WebView API library.
          */
-        private readonly WebViewLibrary $api,
+        private readonly LibSaucer $api,
         /**
-         * Pointer to WebView structure
+         * Provides parent window instance.
          */
-        private readonly CData $webview,
+        public readonly Window $window,
         /**
-         * WebView creation info DTO
+         * WebView creation info DTO.
          */
         public readonly WebViewCreateInfo $info = new WebViewCreateInfo(),
     ) {
-        $this->functions = new WebViewFunctionsMap($this->api, $this->webview);
-        $this->scripts = new WebViewScriptsMap();
-        $this->styles = new WebViewStylesMap();
-        $this->requests = new WebViewRequests($this);
+        $this->uriParser = new MemoizedUriParser(
+            delegate: new NativeUriParser(),
+        );
 
-        $this->loadConfiguration($info);
+        // The WebView handle pointer is the same as the Window pointer.
+        $this->ptr = $this->window->id->ptr;
+
+        $this->index = \spl_object_hash($this) . '/index.html';
     }
 
-    private function loadConfiguration(WebViewCreateInfo $info): void
+    public function loadHtml(#[Language('HTML')] string $html): void
     {
-        foreach ($info->scripts as $id => $script) {
-            $this->scripts->add($script, $id);
-        }
+        $this->window->fs->mount($this->index, $html, 'text/html');
 
-        foreach ($info->styles as $id => $style) {
-            $this->styles->add($style, $id);
-        }
-
-        foreach ($info->functions as $name => $callback) {
-            $this->functions->add($name, $callback);
-        }
-
-        if ($info instanceof URLWebViewCreateInfo) {
-            $this->url = $info->url;
-        }
-
-        if ($info instanceof HTMLWebViewCreateInfo) {
-            $this->html = $info->html;
-        }
+        $this->loadFromVirtualFilesystem($this->index);
     }
 
-    /**
-     * You really don't need this
-     *
-     * @api
-     *
-     * @param callable():void $callback
-     */
-    public function dispatch(callable $callback): void
+    public function loadFromVirtualFilesystem(string $name): void
     {
-        $result = $this->api->webview_dispatch($this->webview, $callback, null);
-
-        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-            throw WebViewInternalException::becauseErrorOccurs('dispatching callback', $result);
-        }
+        $this->api->saucer_webview_serve($this->ptr, $name);
     }
 
-    /**
-     * Facade method of {@see WebViewRequestsInterface::send()}
-     *
-     * @api
-     *
-     * @return PromiseInterface<mixed>
-     */
-    public function request(#[Language('JavaScript')] string $code): PromiseInterface
+    public function loadFromLocalFilesystem(string $pathname): void
     {
-        return $this->requests->send($code);
+        $this->window->fs->mountFromPathname($this->index, $pathname, 'text/html');
+
+        $this->loadFromVirtualFilesystem($this->index);
     }
 
-    /**
-     * Facade method of {@see WebViewScriptsMapInterface::add()}
-     *
-     * @api
-     *
-     * @param non-empty-string $code An initialization JavaScript code
-     *
-     * @return array-key Returns code identifier
-     */
-    public function evalBeforeLoad(#[Language('JavaScript')] string $code): int|string
+    public function forward(): void
     {
-        return $this->scripts->add($code);
+        $this->api->saucer_webview_forward($this->ptr);
     }
 
-    /**
-     * Facade method of {@see WebViewStylesMapInterface::add()}
-     *
-     * @api
-     *
-     * @param non-empty-string $style An initialization CSS styles
-     *
-     * @return array-key Returns code identifier
-     */
-    public function styleBeforeLoad(#[Language('CSS')] string $style): int|string
+    public function back(): void
     {
-        return $this->styles->add($style);
+        $this->api->saucer_webview_back($this->ptr);
     }
 
-    /**
-     * Binds an function to a new global JavaScript function
-     *
-     * @api
-     *
-     * @param non-empty-string $function
-     *
-     * @throws WebViewException in case of function binding error
-     */
-    public function bind(string $function, callable $callback): void
+    public function reload(): void
     {
-        $this->functions->add($function, $callback(...));
-    }
-
-    /**
-     * Evaluates arbitrary JavaScript code
-     *
-     * Use {@see WebView::bind()} bindings if you need to communicate
-     * the result of the evaluation
-     *
-     * @api
-     */
-    public function eval(#[Language('JavaScript')] string $code): void
-    {
-        $result = $this->api->webview_eval($this->webview, $code);
-
-        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-            throw WebViewInternalException::becauseErrorOccurs('evaluating JavaScript', $result);
-        }
-    }
-
-    /**
-     * @internal
-     */
-    public function run(): void
-    {
-        // Load initialization script (after navigation)
-        $result = $this->api->webview_init($this->webview, \vsprintf("%s\n%s", [
-            (string) $this->styles,
-            (string) $this->scripts,
-        ]));
-
-        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-            throw WebViewInternalException::becauseErrorOccurs('setting init CSS and JavaScript', $result);
-        }
-
-        // Apply styles on current HTML
-        $this->eval(\vsprintf("%s\n%s", [
-            (string) $this->styles,
-            (string) $this->scripts,
-        ]));
-
-        // Execute an application
-        $result = $this->api->webview_run($this->webview);
-
-        if ($result !== WebViewError::WEBVIEW_ERROR_OK) {
-            throw WebViewInternalException::becauseErrorOccurs('running WebView', $result);
-        }
-
-        // Freeze functions list
-        if ($this->functions instanceof WebViewFunctionsMap) {
-            $this->functions = new WebViewFrozenFunctionsMap($this->functions);
-        }
-
-        // Freeze code list
-        if ($this->scripts instanceof WebViewScriptsMap) {
-            $this->scripts = new WebViewFrozenScriptsMap($this->scripts);
-        }
-
-        // Freeze styles list
-        if ($this->styles instanceof WebViewStylesMap) {
-            $this->styles = new WebViewFrozenStylesMap($this->styles);
-        }
+        $this->api->saucer_webview_reload($this->ptr);
     }
 }

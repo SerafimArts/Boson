@@ -4,7 +4,9 @@ includes:
 parameters:
   level: max
   scanFiles:
-    - resources/stubs/webview.php
+    - resources/stubs/advapi32.stub.php
+    - resources/stubs/dwmapi.stub.php
+    - resources/stubs/saucer.stub.php
   strictRules:
     allRules: true
   fileExtensions:
@@ -12,6 +14,8 @@ parameters:
   paths:
     - src
   excludePaths:
-    - src/Core
+    - src/Kernel/Saucer/LibSaucer.php
+    - src/Kernel/Win32/AdvancedBaseApi/LibAdvapi32.php
+    - src/Kernel/Win32/DesktopWindowManager/LibDwmApi.php
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true

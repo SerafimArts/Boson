@@ -164,6 +164,9 @@ It appears that no additional dependencies are required.
 
 ## Usage
 
+> This documentation corresponds to the latest release (see https://github.com/SerafimArts/Boson/tags). 
+> Behavior and code in the `master` branch may differ from what is shown below.
+
 ### Window Title
 
 To get or update the title, you should change the `$title` property
