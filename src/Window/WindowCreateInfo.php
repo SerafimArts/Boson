@@ -7,7 +7,7 @@ namespace Serafim\Boson\Window;
 use Serafim\Boson\WebView\WebViewCreateInfo;
 
 /**
- * Information (configuration) for creating a new physical window
+ * Information (configuration) DTO for creating a new physical window.
  */
 final readonly class WindowCreateInfo
 {

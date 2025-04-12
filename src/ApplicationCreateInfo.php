@@ -6,6 +6,9 @@ namespace Serafim\Boson;
 
 use Serafim\Boson\Window\WindowCreateInfo;
 
+/**
+ * Information (configuration) DTO for creating a new application.
+ */
 final readonly class ApplicationCreateInfo
 {
     /**
@@ -42,7 +45,7 @@ final readonly class ApplicationCreateInfo
          */
         public ?string $library = null,
         /**
-         * Main (default) window configuration.
+         * Main (default) window configuration DTO.
          */
         public WindowCreateInfo $window = new WindowCreateInfo(),
     ) {}
