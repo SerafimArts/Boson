@@ -16,8 +16,8 @@
     },
     "require-dev": {
         "ffi/var-dumper": "^1.0",
+        "friendsofphp/php-cs-fixer": "^3.75",
         "jetbrains/phpstorm-attributes": "^1.2",
-        "friendsofphp/php-cs-fixer": "^3.72",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-strict-rules": "^2.0",
         "phpunit/phpunit": "^12.0",

@@ -1,6 +1,5 @@
 # IDE
 /.idea
-/build
 
 # Composer
 /composer.lock
@@ -8,3 +7,6 @@
 
 # Testing
 test.php
+
+# Toolset
+*.phar

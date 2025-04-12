@@ -4,121 +4,207 @@ declare(strict_types=1);
 
 namespace Serafim\Boson;
 
-use Serafim\Boson\Core\WebView\Architecture;
-use Serafim\Boson\Core\WebView\WebViewLibrary;
-use Serafim\Boson\WebView\WebView;
-use Serafim\Boson\Window\Bridge\WebViewWindow;
-use Serafim\Boson\Window\NewWindowCreateInfo;
+use FFI\CData;
+use Serafim\Boson\Application\DebugEnvResolver;
+use Serafim\Boson\Application\QuitHandler\PcntlQuitHandler;
+use Serafim\Boson\Application\QuitHandler\QuitHandlerInterface;
+use Serafim\Boson\Application\QuitHandler\WindowsQuitHandler;
+use Serafim\Boson\Application\ThreadsCountResolver;
+use Serafim\Boson\Shared\RequiresDealloc;
+use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\Vfs\VirtualFileSystemInterface;
+use Serafim\Boson\WebView\WebViewInterface;
+use Serafim\Boson\Window\Manager\WindowFactoryInterface;
+use Serafim\Boson\Window\Manager\WindowManager;
+use Serafim\Boson\Window\Manager\WindowManagerInterface;
 use Serafim\Boson\Window\WindowCreateInfo;
+use Serafim\Boson\Window\WindowInterface;
 
-final readonly class Application
+final class Application
 {
     /**
-     * @var non-empty-string
-     */
-    private const string DEFAULT_BINARY_DIRECTORY = __DIR__ . '/../bin';
-
-    /**
-     * Contains the full path to the webview library.
+     * Contains default application name.
      *
      * @var non-empty-string
      */
-    public string $library;
+    public const string DEFAULT_APPLICATION_NAME = 'boson';
+
+    /**
+     * An application identifier.
+     */
+    public readonly ApplicationId $id;
 
     /**
      * If the value is set to {@see true}, then debugging is enabled
-     * or disabled instead
+     * or disabled instead.
      */
-    public bool $debug;
+    public readonly bool $debug;
 
     /**
-     * Shared WebView API library
+     * Shared WebView API library.
+     *
+     * @internal If you see this, I forgot to make this field private
+     *           while debugging the app =)
      */
-    private WebViewLibrary $api;
+    public readonly LibSaucer $api;
 
     /**
-     * Gets application window instance
+     * Gets application running state.
      */
-    public WebViewWindow $window;
+    public private(set) bool $running = false;
 
     /**
-     * Gets application webview instance
+     * Gets status of quit handler registration.
      */
-    public WebView $webview;
+    private bool $quitHandlerIsRegistered = false;
 
     /**
+     * Contains windows list and methods for working with windows.
+     */
+    public readonly WindowManagerInterface&WindowFactoryInterface $windows;
+
+    /**
+     * Gets default (main) application Window.
+     *
+     * Note: Property will throw an {@see \LogicException} in case the default
+     *       Window was already closed and removed earlier.
+     */
+    public WindowInterface $window {
+        get => $this->windows->default ?? throw new \LogicException(
+            message: 'There is no default window available,'
+                . ' perhaps it was removed (closed) earlier',
+        );
+    }
+
+    /**
+     * Gets WebView of the default (main) application Window.
+     *
+     * Note: Property will throw an {@see \LogicException} in case the default
+     *       Window was already closed and removed earlier.
+     */
+    public WebViewInterface $webview {
+        get => $this->window->webview;
+    }
+
+    /**
+     * Gets VFS of the default (main) application window.
+     *
+     * Note: Property will throw an {@see \LogicException} in case the default
+     *       Window was already closed and removed earlier.
+     */
+    public VirtualFileSystemInterface $fs {
+        get => $this->window->fs;
+    }
+
+    /**
+     * @param non-empty-string $name Sets an application name.
+     * @param int<1, 32767>|null $threads Sets an application threads count.
+     *        The number of threads will be determined automatically if it
+     *        is not explicitly specified (defined as {@see null}).
      * @param non-empty-string|null $library Automatically detects the library
      *        pathname if {@see null}, otherwise it forcibly exposes it
      */
     public function __construct(
+        string $name = self::DEFAULT_APPLICATION_NAME,
+        ?int $threads = null,
         ?bool $debug = null,
         ?string $library = null,
-        public WindowCreateInfo $info = new NewWindowCreateInfo(),
+        WindowCreateInfo $window = new WindowCreateInfo(),
     ) {
-        $this->debug = $debug ?? self::isDebugEnabledFromEnvironment();
-        $this->library = $library ?? self::getRealLibraryPathname();
-
-        $this->api = new WebViewLibrary($this->library);
-        $this->window = new WebViewWindow($this->api, $info, $this->debug);
-        $this->webview = $this->window->webview;
+        $this->api = new LibSaucer($library);
+        $this->debug = DebugEnvResolver::resolve($debug);
+        $this->id = $this->createApplicationId($name, $threads);
+        $this->windows = new WindowManager($this->api, $this, $window);
     }
 
     /**
-     * Returns the autodetected library path
+     * Creates a new application ID
      *
-     * @return non-empty-string
+     * @param non-empty-string $name
+     * @param int<1, 32767>|null $threads
      */
-    private static function getRealLibraryPathname(): string
+    private function createApplicationId(string $name, ?int $threads): ApplicationId
     {
-        return match (Architecture::fromEnvironment()) {
-            Architecture::Amd64 => match (\PHP_OS_FAMILY) {
-                'Windows' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-windows-amd64.dll',
-                'Darwin' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-darwin-amd64.dylib',
-                default => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-linux-amd64.so',
-            },
-            Architecture::Arm64 => match (\PHP_OS_FAMILY) {
-                'Windows' => throw new \OutOfRangeException(\sprintf(
-                    'Current architecture (%s) may not be supported for Windows OS',
-                    \php_uname('m'),
-                )),
-                'Darwin' => self::DEFAULT_BINARY_DIRECTORY . '/libwebview-darwin-arm64.dylib',
-                default => throw new \OutOfRangeException(\sprintf(
-                    'Current architecture (%s) may not be supported for Linux OS',
-                    \php_uname('m'),
-                )),
-            },
-            default => throw new \OutOfRangeException(\sprintf(
-                'Current architecture (%s) may not be supported',
-                \php_uname('m'),
-            )),
-        };
+        return ApplicationId::fromAppHandle(
+            api: $this->api,
+            handle: $this->createApplicationPointer($name, $threads),
+            name: $name,
+        );
     }
 
     /**
-     * Gets debug value from environment's "zend.assertions" status
+     * Creates a new application instance pointer.
+     *
+     * @param non-empty-string $name
+     * @param int<1, 32767>|null $threads
      */
-    private static function isDebugEnabledFromEnvironment(): bool
+    #[RequiresDealloc]
+    private function createApplicationPointer(string $name, ?int $threads): CData
     {
-        $debug = false;
+        $options = $this->createApplicationOptionsPointer($name, $threads);
 
-        /**
-         * Enable debug mode if "zend.assertions" is 1.
-         *
-         * @link https://www.php.net/manual/en/function.assert.php
-         *
-         * @phpstan-ignore-next-line PHPStan false-positive
-         */
-        assert($debug = true);
-
-        return $debug;
+        try {
+            return $this->api->saucer_application_init($options);
+        } finally {
+            $this->api->saucer_options_free($options);
+        }
     }
 
     /**
+     * Creates a new application options pointer.
+     *
+     * @param non-empty-string $name
+     * @param int<1, 32767>|null $threads
+     */
+    #[RequiresDealloc]
+    private function createApplicationOptionsPointer(string $name, ?int $threads): CData
+    {
+        $options = $this->api->saucer_options_new($name);
+
+        if ($threads !== null) {
+            $threads = ThreadsCountResolver::resolve($threads);
+
+            $this->api->saucer_options_set_threads($options, $threads);
+        }
+
+        return $options;
+    }
+
+    /**
+     * Stops an application execution.
+     *
      * @api
      */
     public function quit(): void
     {
-        $this->api->webview_terminate($this->window->handle->webview);
+        $this->api->saucer_application_quit($this->id->ptr);
+        $this->running = false;
+    }
+
+    /**
+     * @return iterable<array-key, QuitHandlerInterface>
+     */
+    private function getQuitHandlers(): iterable
+    {
+        yield new WindowsQuitHandler();
+        yield new PcntlQuitHandler();
+    }
+
+    private function registerQuitHandlersIfNotRegistered(): void
+    {
+        if ($this->quitHandlerIsRegistered) {
+            return;
+        }
+
+        foreach ($this->getQuitHandlers() as $handler) {
+            if ($handler->isSupported === false) {
+                continue;
+            }
+
+            $handler->register($this->quit(...));
+        }
+
+        $this->quitHandlerIsRegistered = true;
     }
 
     /**
@@ -126,12 +212,23 @@ final readonly class Application
      */
     public function run(): void
     {
-        if (\function_exists('\\sapi_windows_set_ctrl_handler')) {
-            \sapi_windows_set_ctrl_handler(function () {
-                $this->quit();
-            });
+        if ($this->running) {
+            return;
         }
 
-        $this->window->webview->run();
+        $this->running = true;
+
+        $this->registerQuitHandlersIfNotRegistered();
+
+        while ($this->running) {
+            $this->api->saucer_application_run_once($this->id->ptr);
+            \usleep(1);
+        }
+    }
+
+    public function __destruct()
+    {
+        $this->api->saucer_application_quit($this->id->ptr);
+        $this->api->saucer_application_free($this->id->ptr);
     }
 }
