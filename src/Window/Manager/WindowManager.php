@@ -6,6 +6,8 @@ namespace Serafim\Boson\Window\Manager;
 
 use FFI\CData;
 use Serafim\Boson\Application;
+use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Dispatcher\EventDispatcherInterface;
 use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowCreateInfo;
@@ -36,11 +38,16 @@ final class WindowManager implements
      */
     private array $windows = [];
 
+    private readonly DelegateEventListener $events;
+
     public function __construct(
         private readonly LibSaucer $api,
         private readonly Application $app,
         WindowCreateInfo $info,
+        EventDispatcherInterface $dispatcher,
     ) {
+        $this->events = new DelegateEventListener($dispatcher);
+
         $this->create($info);
     }
 
@@ -49,7 +56,8 @@ final class WindowManager implements
         return $this->windows[] = new Window(
             api: $this->api,
             app: $this->app,
-            info: $info
+            info: $info,
+            dispatcher: $this->events,
         );
     }
 

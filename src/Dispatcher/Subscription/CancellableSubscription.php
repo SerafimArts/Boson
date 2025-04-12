@@ -1,0 +1,43 @@
+<?php
+
+declare(strict_types=1);
+
+namespace Serafim\Boson\Dispatcher\Subscription;
+
+/**
+ * @template T of object
+ * @template-extends Subscription<T>
+ * @template-implements CancellableSubscriptionInterface<T>
+ */
+final class CancellableSubscription extends Subscription implements CancellableSubscriptionInterface
+{
+    public private(set) bool $isCancelled = false;
+
+    /**
+     * @var \Closure(SubscriptionInterface<T>):void
+     */
+    private readonly \Closure $canceller;
+
+    /**
+     * @param class-string<T> $name
+     * @param callable(SubscriptionInterface<T>):void $canceller
+     */
+    public function __construct(
+        string $name,
+        callable $canceller,
+    ) {
+        parent::__construct($name);
+
+        $this->canceller = $canceller(...);
+    }
+
+    public function cancel(): void
+    {
+        if ($this->isCancelled === true) {
+            return;
+        }
+
+        ($this->canceller)($this);
+        $this->isCancelled = true;
+    }
+}
