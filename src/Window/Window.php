@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window;
 
 use FFI\CData;
+use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Application;
+use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Shared\RequiresDealloc;
 use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\Vfs\VirtualFileSystem;
@@ -120,6 +122,8 @@ final class Window implements WindowInterface
         }
     }
 
+    private readonly DelegateEventListener $events;
+
     public function __construct(
         /**
          * Contains shared WebView API library.
@@ -133,15 +137,15 @@ final class Window implements WindowInterface
          * See {@see WindowInterface::$info} property description.
          */
         public readonly WindowCreateInfo $info,
+        EventDispatcherInterface $dispatcher,
     ) {
         $this->id = $this->createWindowId($this->info);
 
+        $this->events = new DelegateEventListener($dispatcher);
         $this->size = new ManagedWindowSize($this->api, $this->id->ptr);
         $this->min = new ManagedWindowMinBounds($this->api, $this->id->ptr);
         $this->max = new ManagedWindowMaxBounds($this->api, $this->id->ptr);
-
-        $this->webview = new WebView($this->api, $this, $this->info->webview);
-
+        $this->webview = new WebView($this->api, $this, $this->info->webview, $this->events);
         $this->fs = new VirtualFileSystem($this->api, $this->id);
 
         if ($this->info->visible) {

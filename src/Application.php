@@ -5,11 +5,14 @@ declare(strict_types=1);
 namespace Serafim\Boson;
 
 use FFI\CData;
+use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Serafim\Boson\Application\DebugEnvResolver;
 use Serafim\Boson\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Application\QuitHandler\QuitHandlerInterface;
 use Serafim\Boson\Application\QuitHandler\WindowsQuitHandler;
 use Serafim\Boson\Application\ThreadsCountResolver;
+use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Shared\RequiresDealloc;
 use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\Vfs\VirtualFileSystemInterface;
@@ -17,18 +20,10 @@ use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Manager\WindowFactoryInterface;
 use Serafim\Boson\Window\Manager\WindowManager;
 use Serafim\Boson\Window\Manager\WindowManagerInterface;
-use Serafim\Boson\Window\WindowCreateInfo;
 use Serafim\Boson\Window\WindowInterface;
 
 final class Application
 {
-    /**
-     * Contains default application name.
-     *
-     * @var non-empty-string
-     */
-    public const string DEFAULT_APPLICATION_NAME = 'boson';
-
     /**
      * An application identifier.
      */
@@ -97,24 +92,34 @@ final class Application
     }
 
     /**
-     * @param non-empty-string $name Sets an application name.
-     * @param int<1, 32767>|null $threads Sets an application threads count.
-     *        The number of threads will be determined automatically if it
-     *        is not explicitly specified (defined as {@see null}).
-     * @param non-empty-string|null $library Automatically detects the library
-     *        pathname if {@see null}, otherwise it forcibly exposes it
+     * Contains application aware event subscriptions.
      */
+    private readonly EventListener $events;
+
     public function __construct(
-        string $name = self::DEFAULT_APPLICATION_NAME,
-        ?int $threads = null,
-        ?bool $debug = null,
-        ?string $library = null,
-        WindowCreateInfo $window = new WindowCreateInfo(),
+        public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
+        ?PsrEventDispatcherInterface $dispatcher = null,
     ) {
-        $this->api = new LibSaucer($library);
-        $this->debug = DebugEnvResolver::resolve($debug);
-        $this->id = $this->createApplicationId($name, $threads);
-        $this->windows = new WindowManager($this->api, $this, $window);
+        $this->api = new LibSaucer($this->info->library);
+        $this->debug = DebugEnvResolver::resolve($this->info->debug);
+        $this->events = $this->createEventListener($dispatcher);
+        $this->id = $this->createApplicationId($this->info->name, $this->info->threads);
+
+        $this->windows = new WindowManager(
+            api: $this->api,
+            app: $this,
+            info: $this->info->window,
+            dispatcher: $this->events,
+        );
+    }
+
+    private function createEventListener(?PsrEventDispatcherInterface $dispatcher): EventListener
+    {
+        if ($dispatcher === null) {
+            return new EventListener();
+        }
+
+        return new DelegateEventListener($dispatcher);
     }
 
     /**
