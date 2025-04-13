@@ -4,6 +4,7 @@
 # Composer
 /composer.lock
 /vendor
+/build
 
 # Testing
 test.php
