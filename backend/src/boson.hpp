@@ -8,9 +8,7 @@ extern "C"
 {
 #endif
 
-
-BOSON_EXPORT const char* boson_version();
-
+BOSON_API const char* boson_version();
 
 #ifdef __cplusplus
 }
