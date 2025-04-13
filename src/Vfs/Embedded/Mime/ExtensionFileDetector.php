@@ -10,6 +10,7 @@ final readonly class ExtensionFileDetector implements FileDetectorInterface
      * List of supported by the Chromium project mime types.
      *
      * @var non-empty-array<non-empty-string, non-empty-string>
+     *
      * @link https://github.com/chromium/chromium/blob/137.0.7122.1/net/base/mime_util.cc#L95-L255
      */
     public const array MIME_TYPES_FOR_EXTENSIONS = [

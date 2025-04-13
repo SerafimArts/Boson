@@ -11,6 +11,7 @@ interface SubscriptionInterface
 {
     /**
      * @var class-string<TEvent>
+     *
      * @readonly
      */
     public string $name { get; }

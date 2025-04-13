@@ -13,6 +13,7 @@ use Serafim\Boson\Shared\ValueObject\IntValueObjectInterface;
  *       representation features.
  *
  * @template-covariant T of int = int
+ *
  * @template-extends IntValueObjectInterface<T>
  */
 interface IntIdInterface extends

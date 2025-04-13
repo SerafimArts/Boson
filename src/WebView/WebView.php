@@ -8,11 +8,11 @@ use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\Shared\Saucer\SaucerWebEvent;
 use Serafim\Boson\WebView\Uri\MemoizedUriParser;
-use Serafim\Boson\WebView\Uri\Uri;
-use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\WebView\Uri\NativeUriParser;
+use Serafim\Boson\WebView\Uri\Uri;
 use Serafim\Boson\WebView\Uri\UriParserInterface;
 use Serafim\Boson\Window\Window;
 

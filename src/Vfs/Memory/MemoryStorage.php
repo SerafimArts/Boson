@@ -49,6 +49,7 @@ final readonly class MemoryStorage
      * Load payload from the local filesystem by passed pathname.
      *
      * @api
+     *
      * @param non-empty-string $pathname
      *
      * @throws FileNotReadableStorageException In case of file not found

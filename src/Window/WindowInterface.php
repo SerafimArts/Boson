@@ -7,9 +7,9 @@ namespace Serafim\Boson\Window;
 use Serafim\Boson\Application;
 use Serafim\Boson\Vfs\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebView;
+use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\Size;
 use Serafim\Boson\Window\Size\SizeInterface;
-use Serafim\Boson\Window\Size\MutableSizeInterface;
 
 interface WindowInterface
 {

@@ -42,7 +42,7 @@ final readonly class EmbeddedStorage
      * Load payload from passed data (RAW bytes) as embedding.
      *
      * @api
-     * @param non-empty-string $pathname
+     *
      * @param non-empty-string|null $mime
      */
     public function load(string $data, ?string $mime = null): Embedding
@@ -58,6 +58,7 @@ final readonly class EmbeddedStorage
      * Load payload from the local filesystem by passed pathname as embedding.
      *
      * @api
+     *
      * @param non-empty-string $pathname
      * @param non-empty-string|null $mime
      */

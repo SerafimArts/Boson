@@ -47,4 +47,3 @@ final readonly class SaucerWindowEvent
 
     private function __construct() {}
 }
-

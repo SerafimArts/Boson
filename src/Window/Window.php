@@ -55,6 +55,7 @@ final class Window implements WindowInterface
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowSize) {
                 $this->size = $size;
+
                 return;
             }
 
@@ -70,6 +71,7 @@ final class Window implements WindowInterface
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMinBounds) {
                 $this->min = $size;
+
                 return;
             }
 
@@ -85,6 +87,7 @@ final class Window implements WindowInterface
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMaxBounds) {
                 $this->max = $size;
+
                 return;
             }
 

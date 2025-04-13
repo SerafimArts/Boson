@@ -155,8 +155,6 @@ return (new PhpCsFixer\Config())
         'phpdoc_order' => [
             'order' => [
                 'api',
-                'internal',
-                'psalm-internal',
                 'template',
                 'template-extends',
                 'extends',
@@ -169,6 +167,8 @@ return (new PhpCsFixer\Config())
                 'phpstan-require-implements',
                 'psalm-require-extends',
                 'phpstan-require-extends',
+                'internal',
+                'psalm-internal',
                 'mixin',
                 'readonly',
                 'psalm-readonly',
@@ -199,6 +199,7 @@ return (new PhpCsFixer\Config())
                     'phpstan-require-implements',
                     'psalm-require-extends',
                     'phpstan-require-extends',
+                    'mixin',
                 ],
                 ['psalm-taint-sink', 'param'],
                 ['return', 'throws'],

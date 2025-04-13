@@ -28,6 +28,7 @@ final readonly class ApplicationId extends StructPointerId
      * `saucer_application*` struct pointer and application name.
      *
      * @api
+     *
      * @param non-empty-string $name
      */
     final public static function fromAppHandle(LibSaucer $api, CData $handle, string $name): self

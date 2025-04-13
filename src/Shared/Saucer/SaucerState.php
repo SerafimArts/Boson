@@ -15,4 +15,3 @@ final readonly class SaucerState
 
     private function __construct() {}
 }
-

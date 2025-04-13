@@ -16,6 +16,7 @@ final readonly class FlagsListFormatter
      * Converts a list of flags into a normalized string representation.
      *
      * @param iterable<array-key, string|float|bool|int|list<string|float|bool|int>> $flags
+     *
      * @return iterable<array-key, non-empty-string>
      */
     public static function format(iterable $flags): iterable
@@ -36,6 +37,7 @@ final readonly class FlagsListFormatter
 
     /**
      * @return non-empty-string
+     *
      * @phpstan-return ($name is non-empty-string ? non-empty-string : never)
      */
     private static function formatFlagName(string $name): string
@@ -51,6 +53,7 @@ final readonly class FlagsListFormatter
 
     /**
      * @param array-key $name
+     *
      * @return non-empty-string
      */
     private static function formatFlagValue(int|string $name, mixed $value): string
@@ -73,6 +76,7 @@ final readonly class FlagsListFormatter
     /**
      * @param array-key $name
      * @param list<string|float|bool|int> $values
+     *
      * @return non-empty-string
      */
     private static function formatFlagsListValue(int|string $name, array $values): string

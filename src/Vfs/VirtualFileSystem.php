@@ -38,7 +38,6 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
 
             unset($this->files[$name]);
 
-
             return true;
         }
 
