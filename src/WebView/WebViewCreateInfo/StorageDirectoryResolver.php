@@ -47,11 +47,14 @@ final readonly class StorageDirectoryResolver
     {
         $cwd = match (true) {
             ($cwd = \getcwd()) !== false => $cwd,
-            isset($_SERVER['SCRIPT_FILENAME']) => \dirname($_SERVER['SCRIPT_FILENAME']),
-            isset($_SERVER['SCRIPT_NAME']) => \dirname($_SERVER['SCRIPT_NAME']),
-            isset($_SERVER['PHP_SELF']) => \dirname($_SERVER['PHP_SELF']),
-            isset($_SERVER['PATH_TRANSLATED']) => \dirname($_SERVER['PATH_TRANSLATED']),
-            isset($_SERVER['USERPROFILE']) => $_SERVER['PATH_TRANSLATED'],
+            isset($_SERVER['SCRIPT_FILENAME']) && \is_string($_SERVER['SCRIPT_FILENAME'])
+                => \dirname($_SERVER['SCRIPT_FILENAME']),
+            isset($_SERVER['SCRIPT_NAME']) && \is_string($_SERVER['SCRIPT_NAME'])
+                => \dirname($_SERVER['SCRIPT_NAME']),
+            isset($_SERVER['PHP_SELF']) && \is_string($_SERVER['PHP_SELF'])
+                => \dirname($_SERVER['PHP_SELF']),
+            isset($_SERVER['PATH_TRANSLATED']) && \is_string($_SERVER['PATH_TRANSLATED'])
+                => \dirname($_SERVER['PATH_TRANSLATED']),
             default => '.',
         };
 
