@@ -166,9 +166,8 @@ final class Application
     {
         $options = $this->api->saucer_options_new($name);
 
+        $threads = ThreadsCountResolver::resolve($threads);
         if ($threads !== null) {
-            $threads = ThreadsCountResolver::resolve($threads);
-
             $this->api->saucer_options_set_threads($options, $threads);
         }
 
