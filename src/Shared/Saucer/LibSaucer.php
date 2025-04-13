@@ -9,10 +9,10 @@ use Serafim\Boson\Shared\Env\Architecture;
 use Serafim\Boson\Shared\Env\OperatingSystem;
 
 /**
+ * @mixin \FFI
+ *
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson
- *
- * @mixin \FFI
  */
 final readonly class LibSaucer
 {
@@ -30,7 +30,21 @@ final readonly class LibSaucer
             code: \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
             lib: $library ?? match ($os = OperatingSystem::current()) {
                 OperatingSystem::Windows => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => __DIR__ . '/../../../backend/bin/libboson-windows-amd64.dll',
+                    Architecture::Amd64 => __DIR__ . '/../../../bin/libboson-windows-amd64.dll',
+                    default => throw new \LogicException(\sprintf(
+                        'Unsupported CPU architecture %s',
+                        $arch->name,
+                    )),
+                },
+                OperatingSystem::Linux => match ($arch = Architecture::current()) {
+                    Architecture::Amd64 => __DIR__ . '/../../../bin/libboson-linux-amd64.dll',
+                    default => throw new \LogicException(\sprintf(
+                        'Unsupported CPU architecture %s',
+                        $arch->name,
+                    )),
+                },
+                OperatingSystem::MacOS => match ($arch = Architecture::current()) {
+                    Architecture::Arm64 => __DIR__ . '/../../../bin/libboson-darwin-arm64.dylib',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,
