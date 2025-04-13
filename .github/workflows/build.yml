@@ -1,0 +1,75 @@
+name: Build Boson binaries
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    runs-on: ${{ matrix.os }}
+    container: ${{ matrix.container }}
+    env:
+      BUILD_DIR: ./build
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: Linux
+            backend: WebKitGtk
+            build_type: Release
+            container: archlinux:base-devel
+          - os: windows-latest
+            platform: Windows
+            backend: WebView2
+            build_type: Release
+            cmake-args: "-Dsaucer_package_all=ON -Dsaucer_serializer=Rflpp"
+          - os: macos-latest
+            platform: MacOs
+            backend: WebKit
+            build_type: Release
+            cmake-args: '-DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"'
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up build directory
+        run: mkdir -p ${{ env.BUILD_DIR }}
+
+      - name: 📋 Install Base Dependencies
+        shell: bash
+        if: matrix.platform == 'Linux'
+        run: "pacman --noconfirm -Syu cmake gcc git xorg-server-xvfb xorg-xwd openssh tmate"
+
+      - name: 📋 Install WebKitGtk
+        shell: bash
+        if: matrix.backend == 'WebKitGtk'
+        run: "pacman --noconfirm -Syu gtk4 libadwaita webkitgtk-6.0"
+
+      - name: Compile
+        run: |
+          cmake -B ${{ env.BUILD_DIR }} -S ./backend -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -Dsaucer_backend=${{ matrix.backend }} -Dsaucer_tests=ON -Dsaucer_examples=ON ${{ matrix.cmake-args }}
+
+      - name: Build
+        run: cmake --build ${{ env.BUILD_DIR }} --target boson --config ${{ matrix.build_type }}
+
+      - name: Run Tests
+        working-directory: ${{ env.BUILD_DIR }}
+        run: ctest --build-config ${{ matrix.build_type }}
+
+      - name: List build artifacts
+        if: matrix.platform != 'Windows'
+        run: ls -la ${{ env.BUILD_DIR }}/bin/
+      - name: List build artifacts (Only windows)
+        if: matrix.platform == 'Windows'
+        run: ls -Force ${{ env.BUILD_DIR }}/bin
+
+      - name: Upload Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: boson-${{ matrix.os }}
+          path: ${{ env.BUILD_DIR }}/bin/
