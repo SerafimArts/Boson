@@ -42,6 +42,7 @@ final readonly class ReactiveWeakSet implements \IteratorAggregate, \Countable
      *
      * @param TArgEntry $entry
      * @param callable(TArgEntry):void $onRelease
+     *
      * @return TArgEntry
      */
     public function watch(object $entry, callable $onRelease): object

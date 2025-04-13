@@ -83,6 +83,7 @@ readonly class WebViewCreateInfo
          * This option may be set to customize "user-agent" browser header.
          *
          * @link https://developer.mozilla.org/ru/docs/Web/HTTP/Reference/Headers/User-Agent
+         *
          * @var non-empty-string|null
          */
         public ?string $userAgent = null,

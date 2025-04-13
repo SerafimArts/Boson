@@ -15,4 +15,3 @@ final readonly class SaucerLaunch
 
     private function __construct() {}
 }
-

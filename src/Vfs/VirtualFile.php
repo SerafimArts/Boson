@@ -73,6 +73,7 @@ final class VirtualFile
      * Format and normalize virtual file name.
      *
      * @param non-empty-string $name
+     *
      * @return non-empty-string
      */
     public static function formatName(string $name): string

@@ -45,6 +45,7 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
      * @param TKey $key
      * @param TValue $value
      * @param callable(TValue):void $onRelease
+     *
      * @return TArgKey
      */
     public function watch(object $key, object $value, callable $onRelease): object
@@ -56,6 +57,7 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
 
     /**
      * @param TKey $key
+     *
      * @return TValue|null
      */
     public function find(object $key): ?object

@@ -15,4 +15,3 @@ final readonly class SaucerWebFrame
 
     private function __construct() {}
 }
-

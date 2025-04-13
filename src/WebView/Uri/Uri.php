@@ -208,7 +208,7 @@ final class Uri implements \Stringable
         $uri .= $this->path;
 
         if ($this->query !== null) {
-            $uri .= '?'.$this->query;
+            $uri .= '?' . $this->query;
         }
 
         if ($this->fragment !== null) {

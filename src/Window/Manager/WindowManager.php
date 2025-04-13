@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window\Manager;
 
-use FFI\CData;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;

@@ -10,7 +10,6 @@ use Psr\EventDispatcher\StoppableEventInterface;
  * Any hook object is an intent to perform an event.
  *
  * @template TSubject of object
- *
  * @template-extends Event<TSubject>
  */
 abstract class Intention extends Event implements StoppableEventInterface

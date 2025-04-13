@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\Language;
-use Serafim\Boson\Vfs\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\Uri\Uri;
 use Serafim\Boson\Window\WindowInterface;
 

@@ -28,6 +28,7 @@ final readonly class OnDestructor
      *
      * @param TArgEntry $entry
      * @param callable(TArgEntry):void $onRelease
+     *
      * @return self<TArgEntry>
      */
     public static function create(object $entry, callable $onRelease): self

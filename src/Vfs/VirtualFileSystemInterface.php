@@ -13,7 +13,7 @@ interface VirtualFileSystemInterface extends \Traversable, \Countable
      * Unmount virtual file from WebView`s VFS and return {@see true}
      * in success (file has been defined) or {@see false} instead.
      *
-     * @param non-empty-string $name The name of the virtual file.
+     * @param non-empty-string $name the name of the virtual file
      */
     public function unmount(string $name): bool;
 
@@ -26,9 +26,9 @@ interface VirtualFileSystemInterface extends \Traversable, \Countable
      * $webview->uri = $file->uri;
      * ```
      *
-     * @param non-empty-string $name The name of the virtual file.
-     * @param non-empty-string|null $mime Optional mime file type for correct
-     *        WebView representation.
+     * @param non-empty-string $name the name of the virtual file
+     * @param non-empty-string|null $mime optional mime file type for correct
+     *        WebView representation
      */
     public function mount(string $name, string $data, ?string $mime = null): VirtualFile;
 
@@ -41,10 +41,10 @@ interface VirtualFileSystemInterface extends \Traversable, \Countable
      * $webview->uri = $file->uri;
      * ```
      *
-     * @param non-empty-string $name The name of the virtual file.
-     * @param non-empty-string $pathname Physical real pathname to the file.
-     * @param non-empty-string|null $mime Optional mime file type for correct
-     *        WebView representation.
+     * @param non-empty-string $name the name of the virtual file
+     * @param non-empty-string $pathname physical real pathname to the file
+     * @param non-empty-string|null $mime optional mime file type for correct
+     *        WebView representation
      */
     public function mountFromPathname(string $name, string $pathname, ?string $mime = null): VirtualFile;
 
