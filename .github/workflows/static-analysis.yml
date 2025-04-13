@@ -1,11 +1,11 @@
-name: static-analysis
+name: Static Analysis
 
 on:
   push:
   pull_request:
 
 jobs:
-  psalm:
+  phpstan:
     name: Linter
     runs-on: ${{ matrix.os }}
     strategy:
