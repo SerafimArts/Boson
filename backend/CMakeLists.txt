@@ -20,6 +20,10 @@ else()
     set(OUTPUT_NAME "${OUTPUT_NAME}-linux")
 endif()
 
+if(APPLE)
+  set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE STRING "Build universal binary" FORCE)
+endif()
+
 if(CMAKE_SYSTEM_PROCESSOR MATCHES "x86_64|AMD64")
     set(OUTPUT_NAME "${OUTPUT_NAME}-amd64")
 elseif(CMAKE_SYSTEM_PROCESSOR MATCHES "i[3-6]86|^x86$")
@@ -34,8 +38,8 @@ endif()
 
 set(CMAKE_CXX_STANDARD 23)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY $<1:${CMAKE_SOURCE_DIR}/bin>)
-set(CMAKE_LIBRARY_OUTPUT_DIRECTORY $<1:${CMAKE_SOURCE_DIR}/bin>)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY "${CMAKE_BINARY_DIR}/lib")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
@@ -47,6 +51,17 @@ include(FetchContent)
 
 set(saucer_static ON CACHE BOOL "Build a static library" FORCE)
 set(saucer_modules OFF CACHE BOOL "Disable module support" FORCE)
+
+set(ENV{GIT_TERMINAL_PROMPT} 0)
+
+FetchContent_Declare(
+    lockpp
+    GIT_REPOSITORY https://github.com/Curve/lockpp
+    GIT_TAG v3.0
+)
+FetchContent_MakeAvailable(lockpp)
+
+include_directories(${lockpp_SOURCE_DIR}/include)
 
 FetchContent_Declare(
     saucer
@@ -65,6 +80,10 @@ FetchContent_MakeAvailable(saucer-bindings)
 # --------------------------------------------------------------------------------------------------------
 
 add_library(${PROJECT_NAME} SHARED "src/boson.cpp")
+
+target_compile_definitions(${PROJECT_NAME} PRIVATE BOSON_BUILD)
+
+target_link_libraries(${PROJECT_NAME} PRIVATE cr::lockpp)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE saucer::saucer)
 
@@ -95,6 +114,9 @@ endif()
 # --------------------------------------------------------------------------------------------------------
 # Include directories
 # --------------------------------------------------------------------------------------------------------
+
+target_include_directories(${PROJECT_NAME} PRIVATE ${lockpp_SOURCE_DIR}/include)
+target_include_directories(saucer PRIVATE ${lockpp_SOURCE_DIR}/include)
 
 target_include_directories(${PROJECT_NAME} PUBLIC
     $<BUILD_INTERFACE:${saucer-bindings_SOURCE_DIR}/include>)
