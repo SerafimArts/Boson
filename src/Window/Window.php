@@ -10,10 +10,19 @@ use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Shared\RequiresDealloc;
 use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\Shared\Saucer\SaucerPolicy;
+use Serafim\Boson\Shared\Saucer\SaucerWindowEvent;
 use Serafim\Boson\Vfs\VirtualFileSystem;
 use Serafim\Boson\Vfs\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\WebView\WebViewCreateInfo\FlagsListFormatter;
+use Serafim\Boson\Window\Event\WindowClosed;
+use Serafim\Boson\Window\Event\WindowClosing;
+use Serafim\Boson\Window\Event\WindowDecorated;
+use Serafim\Boson\Window\Event\WindowFocused;
+use Serafim\Boson\Window\Event\WindowMaximized;
+use Serafim\Boson\Window\Event\WindowMinimized;
+use Serafim\Boson\Window\Event\WindowResized;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowMaxBounds;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowMinBounds;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowSize;
@@ -22,6 +31,18 @@ use Serafim\Boson\Window\Size\SizeInterface;
 
 final class Window implements WindowInterface
 {
+    private const string CALLBACKS_STRUCT = <<<'CDATA'
+         struct {
+             void (*onDecorated)(const saucer_handle *, bool decorated);
+             void (*onMaximize)(const saucer_handle *, bool state);
+             void (*onMinimize)(const saucer_handle *, bool state);
+             SAUCER_POLICY (*onClosing)(const saucer_handle *);
+             void (*onClosed)(const saucer_handle *);
+             void (*onResize)(const saucer_handle *, int width, int height);
+             void (*onFocus)(const saucer_handle *, bool focus);
+         }
+         CDATA;
+
     /**
      * See {@see WindowInterface::$id} property description.
      */
@@ -151,9 +172,79 @@ final class Window implements WindowInterface
         $this->webview = new WebView($this->api, $this, $this->info->webview, $this->events);
         $this->fs = new VirtualFileSystem($this->api, $this->id);
 
+        $this->createEventListener();
+
         if ($this->info->visible) {
             $this->show();
         }
+    }
+
+    private function onDecorated(CData $_, bool $decorated): void
+    {
+        $this->events->dispatch(new WindowDecorated($this, $decorated));
+    }
+
+    private function onMaximize(CData $_, bool $state): void
+    {
+        $this->events->dispatch(new WindowMaximized($this, $state));
+    }
+
+    private function onMinimize(CData $_, bool $state): void
+    {
+        $this->events->dispatch(new WindowMinimized($this, $state));
+    }
+
+    /**
+     * @return SaucerPolicy::SAUCER_POLICY_*
+     */
+    private function onClosing(CData $_): int
+    {
+        $event = $this->events->dispatch(new WindowClosing($this));
+
+        return $event->isCancelled
+            ? SaucerPolicy::SAUCER_POLICY_BLOCK
+            : SaucerPolicy::SAUCER_POLICY_ALLOW;
+    }
+
+    private function onClosed(CData $_): void
+    {
+        $this->events->dispatch(new WindowClosed($this));
+    }
+
+    /**
+     * @param int<0, 2147483647> $width
+     * @param int<0, 2147483647> $height
+     */
+    private function onResize(CData $_, int $width, int $height): void
+    {
+        $this->events->dispatch(new WindowResized($this, $width, $height));
+    }
+
+    private function onFocus(CData $_, bool $focus): void
+    {
+        $this->events->dispatch(new WindowFocused($this, $focus));
+    }
+
+    private function createEventListener(): void
+    {
+        $ptr = $this->id->ptr;
+
+        $struct = $this->api->new(self::CALLBACKS_STRUCT);
+        $struct->onDecorated = $this->onDecorated(...);
+        $struct->onMaximize = $this->onMaximize(...);
+        $struct->onMinimize = $this->onMinimize(...);
+        $struct->onClosing = $this->onClosing(...);
+        $struct->onClosed = $this->onClosed(...);
+        $struct->onResize = $this->onResize(...);
+        $struct->onFocus = $this->onFocus(...);
+
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_DECORATED, $struct->onDecorated);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_MAXIMIZE, $struct->onMaximize);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_MINIMIZE, $struct->onMinimize);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_CLOSE, $struct->onClosing);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_CLOSED, $struct->onClosed);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_RESIZE, $struct->onResize);
+        $this->api->saucer_window_on($ptr, SaucerWindowEvent::SAUCER_WINDOW_EVENT_FOCUS, $struct->onFocus);
     }
 
     /**

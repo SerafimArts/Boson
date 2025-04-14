@@ -9,7 +9,18 @@ use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\Shared\Saucer\SaucerPolicy;
+use Serafim\Boson\Shared\Saucer\SaucerState;
 use Serafim\Boson\Shared\Saucer\SaucerWebEvent;
+use Serafim\Boson\WebView\Event\WebViewDomReady;
+use Serafim\Boson\WebView\Event\WebViewFaviconChanged;
+use Serafim\Boson\WebView\Event\WebViewFaviconChanging;
+use Serafim\Boson\WebView\Event\WebViewLoaded;
+use Serafim\Boson\WebView\Event\WebViewLoading;
+use Serafim\Boson\WebView\Event\WebViewNavigated;
+use Serafim\Boson\WebView\Event\WebViewNavigating;
+use Serafim\Boson\WebView\Event\WebViewTitleChanged;
+use Serafim\Boson\WebView\Event\WebViewTitleChanging;
 use Serafim\Boson\WebView\Uri\MemoizedUriParser;
 use Serafim\Boson\WebView\Uri\NativeUriParser;
 use Serafim\Boson\WebView\Uri\Uri;
@@ -22,17 +33,12 @@ final class WebView implements WebViewInterface
          struct {
              void (*onDomReady)(const saucer_handle *);
              void (*onNavigated)(const saucer_handle *, const char *);
-             void (*onNavigate)(const saucer_handle *, const saucer_navigation *);
+             SAUCER_POLICY (*onNavigating)(const saucer_handle *, const saucer_navigation *);
              void (*onFaviconChanged)(const saucer_handle *, const saucer_icon *);
              void (*onTitleChanged)(const saucer_handle *, const char *);
              void (*onLoad)(const saucer_handle *, const SAUCER_STATE *);
          }
          CDATA;
-
-    /**
-     * Contains managed struct that contain list of event listeners.
-     */
-    private readonly CData $callbacks;
 
     /**
      * Window's webview pointer (handle).
@@ -77,13 +83,18 @@ final class WebView implements WebViewInterface
 
     private readonly DelegateEventListener $events;
 
+    /**
+     * @var State
+     */
+    public private(set) State $state = State::Loading;
+
     public function __construct(
         /**
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
         /**
-         * Provides parent window instance.
+         * Provides parent Window instance.
          */
         public readonly Window $window,
         /**
@@ -104,64 +115,95 @@ final class WebView implements WebViewInterface
         $this->createEventListener();
     }
 
-    /**
-     * @param SaucerWebEvent::SAUCER_WEB_EVENT_* $event
-     */
-    private function listen(int $event, CData $callback): void
+    private function onDomReady(CData $_): void
     {
-        $this->api->saucer_webview_on($this->ptr, $event, $callback);
+        $this->events->dispatch(new WebViewDomReady($this));
     }
 
-    private function onDomReady(mixed $ptr): void
+    private function onNavigated(CData $_, string $url): void
     {
-        // dump(__FUNCTION__);
+        $this->events->dispatch(new WebViewNavigated($this, $this->uriParser->parse($url)));
     }
 
-    private function onNavigated(mixed $ptr, string $url): void
+    private function onNavigating(CData $_, CData $navigation): int
     {
-        // dump(__FUNCTION__ . ' -> ' . $url);
+        $this->state = State::Navigating;
+
+        $uri = $this->uriParser->parse(
+            uri: \FFI::string($this->api->saucer_navigation_url($navigation)),
+        );
+
+        $intention = $this->events->dispatch(new WebViewNavigating(
+            subject: $this,
+            uri: $uri,
+            isNewWindow: $this->api->saucer_navigation_new_window($navigation),
+            isRedirection: $this->api->saucer_navigation_redirection($navigation),
+            isUserInitiated: $this->api->saucer_navigation_user_initiated($navigation),
+        ));
+
+        $this->api->saucer_navigation_free($navigation);
+
+        return $intention->isCancelled
+            ? SaucerPolicy::SAUCER_POLICY_BLOCK
+            : SaucerPolicy::SAUCER_POLICY_ALLOW;
     }
 
-    private function onNavigate(mixed $ptr, mixed $navigation): void
+    private function onFaviconChanged(CData $ptr, CData $icon): void
     {
-        // dump(__FUNCTION__ . ' -> ' . \FFI::string($this->api->saucer_navigation_url($navigation)));
+        $intention = $this->events->dispatch(new WebViewFaviconChanging($this));
+
+        try {
+            if ($intention->isCancelled) {
+                return;
+            }
+
+            $this->api->saucer_window_set_icon($ptr, $icon);
+            $this->events->dispatch(new WebViewFaviconChanged($this));
+        } finally {
+            $this->api->saucer_icon_free($icon);
+        }
     }
 
-    private function onFaviconChanged(mixed $ptr, mixed $icon): void
+    private function onTitleChanged(CData $ptr, string $title): void
     {
-        $this->api->saucer_window_set_icon($ptr, $icon);
-        // dump(__FUNCTION__);
-    }
+        $intention = $this->events->dispatch(new WebViewTitleChanging($this, $title));
 
-    private function onTitleChanged(mixed $ptr, string $title): void
-    {
+        if ($intention->isCancelled) {
+            return;
+        }
+
         $this->api->saucer_window_set_title($ptr, $title);
-        // dump(__FUNCTION__ . ' -> ' . $title);
+        $this->events->dispatch(new WebViewTitleChanged($this, $title));
     }
 
-    private function onLoad(mixed $ptr, CData $state): void
+    private function onLoad(CData $_, CData $state): void
     {
-        // dump(__FUNCTION__ . ' -> ' . $state[0]);
+        if ($state[0] === SaucerState::SAUCER_STATE_STARTED) {
+            $this->state = State::Loading;
+            $this->events->dispatch(new WebViewLoading($this));
+            return;
+        }
+
+        $this->state = State::Ready;
+        $this->events->dispatch(new WebViewLoaded($this));
     }
 
-    private function createEventListener(): CData
+    private function createEventListener(): void
     {
         $struct = $this->api->new(self::CALLBACKS_STRUCT);
         $struct->onDomReady = $this->onDomReady(...);
         $struct->onNavigated = $this->onNavigated(...);
-        $struct->onNavigate = $this->onNavigate(...);
+        $struct->onNavigating = $this->onNavigating(...);
         $struct->onFaviconChanged = $this->onFaviconChanged(...);
         $struct->onTitleChanged = $this->onTitleChanged(...);
         $struct->onLoad = $this->onLoad(...);
 
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_DOM_READY, $struct->onDomReady);
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_NAVIGATED, $struct->onNavigated);
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_NAVIGATE, $struct->onNavigate);
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_FAVICON, $struct->onFaviconChanged);
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_TITLE, $struct->onTitleChanged);
-        $this->listen(SaucerWebEvent::SAUCER_WEB_EVENT_LOAD, $struct->onLoad);
-
-        return $struct;
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_DOM_READY, $struct->onDomReady);
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_NAVIGATED, $struct->onNavigated);
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_NAVIGATE, $struct->onNavigating);
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_FAVICON, $struct->onFaviconChanged);
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_TITLE, $struct->onTitleChanged);
+        $this->api->saucer_webview_on($this->ptr, SaucerWebEvent::SAUCER_WEB_EVENT_LOAD, $struct->onLoad);
     }
 
     public function loadHtml(#[Language('HTML')] string $html): void

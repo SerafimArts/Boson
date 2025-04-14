@@ -73,6 +73,13 @@ interface WebViewInterface
     }
 
     /**
+     * Contains WebView document status.
+     *
+     * @readonly
+     */
+    public State $state { get; }
+
+    /**
      * Load WebView content from passed html string.
      */
     public function loadHtml(#[Language('HTML')] string $html): void;
