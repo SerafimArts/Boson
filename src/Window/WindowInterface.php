@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window;
 
 use Serafim\Boson\Application;
+use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
@@ -69,6 +71,16 @@ interface WindowInterface
     public WebView $webview {
         /**
          * Gets {@see WebView} instance attached to the current window.
+         */
+        get;
+    }
+
+    /**
+     * Provides access to window event and intention subscriptions.
+     */
+    public EventListenerInterface $events {
+        /**
+         * Gets the event listener object.
          */
         get;
     }

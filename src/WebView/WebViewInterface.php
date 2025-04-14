@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\Language;
+use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\WebView\Uri\Uri;
 use Serafim\Boson\Window\WindowInterface;
 
@@ -30,6 +31,16 @@ interface WebViewInterface
     public WindowInterface $window {
         /**
          * Gets WebView`s application window instance.
+         */
+        get;
+    }
+
+    /**
+     * Provides access to WebView event and intention subscriptions.
+     */
+    public EventListenerInterface $events {
+        /**
+         * Gets the event listener object.
          */
         get;
     }

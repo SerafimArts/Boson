@@ -15,7 +15,7 @@ use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\Kernel\LibSaucer;
-use Serafim\Boson\Shared\RequiresDealloc;
+use Serafim\Boson\Shared\Attribute\RequiresDealloc;
 use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Manager\WindowFactoryInterface;
 use Serafim\Boson\Window\Manager\WindowManager;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Kernel;
+namespace Serafim\Boson\Kernel\Saucer;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
