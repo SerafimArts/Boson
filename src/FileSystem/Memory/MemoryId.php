@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Memory;
+namespace Serafim\Boson\FileSystem\Memory;
 
 use FFI\CData;
 use Serafim\Boson\Shared\Saucer\LibSaucer;

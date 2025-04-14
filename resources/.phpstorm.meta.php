@@ -75,25 +75,25 @@ registerArgumentsSet('boson_mime_types',
     'video/mpeg'
 );
 
-expectedArguments(\Serafim\Boson\Vfs\Embedded\EmbeddedStorage::load(), 1,
+expectedArguments(\Serafim\Boson\FileSystem\Embedded\EmbeddedStorage::load(), 1,
     argumentsSet('boson_mime_types'));
-expectedArguments(\Serafim\Boson\Vfs\Embedded\EmbeddedStorage::loadFromPathname(), 1,
-    argumentsSet('boson_mime_types'));
-
-expectedReturnValues(\Serafim\Boson\Vfs\Embedded\Mime\FileDetectorInterface::detectByFile(),
-    argumentsSet('boson_mime_types'));
-expectedReturnValues(\Serafim\Boson\Vfs\Embedded\Mime\DataDetectorInterface::detectByData(),
-    argumentsSet('boson_mime_types'));
-expectedReturnValues(\Serafim\Boson\Vfs\Embedded\Mime\ExtensionFileDetector::detectByFile(),
-    argumentsSet('boson_mime_types'));
-expectedReturnValues(\Serafim\Boson\Vfs\Embedded\Mime\FileInfoDetector::detectByFile(),
-    argumentsSet('boson_mime_types'));
-expectedReturnValues(\Serafim\Boson\Vfs\Embedded\Mime\FileInfoDetector::detectByData(),
+expectedArguments(\Serafim\Boson\FileSystem\Embedded\EmbeddedStorage::loadFromPathname(), 1,
     argumentsSet('boson_mime_types'));
 
-expectedArguments(\Serafim\Boson\Vfs\VirtualFileSystemInterface::mount(), 2,
+expectedReturnValues(\Serafim\Boson\FileSystem\Embedded\Mime\FileDetectorInterface::detectByFile(),
     argumentsSet('boson_mime_types'));
-expectedArguments(\Serafim\Boson\Vfs\VirtualFileSystem::mount(), 2,
+expectedReturnValues(\Serafim\Boson\FileSystem\Embedded\Mime\DataDetectorInterface::detectByData(),
+    argumentsSet('boson_mime_types'));
+expectedReturnValues(\Serafim\Boson\FileSystem\Embedded\Mime\ExtensionFileDetector::detectByFile(),
+    argumentsSet('boson_mime_types'));
+expectedReturnValues(\Serafim\Boson\FileSystem\Embedded\Mime\FileInfoDetector::detectByFile(),
+    argumentsSet('boson_mime_types'));
+expectedReturnValues(\Serafim\Boson\FileSystem\Embedded\Mime\FileInfoDetector::detectByData(),
+    argumentsSet('boson_mime_types'));
+
+expectedArguments(\Serafim\Boson\FileSystem\VirtualFileSystemInterface::mount(), 2,
+    argumentsSet('boson_mime_types'));
+expectedArguments(\Serafim\Boson\FileSystem\VirtualFileSystem::mount(), 2,
     argumentsSet('boson_mime_types'));
 
 

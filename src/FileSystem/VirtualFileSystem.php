@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs;
+namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\Shared\Saucer\SaucerLaunch;
-use Serafim\Boson\Vfs\Embedded\EmbeddedStorage;
-use Serafim\Boson\Vfs\Embedded\Embedding;
+use Serafim\Boson\FileSystem\Embedded\EmbeddedStorage;
+use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Window\WindowId;
 
 /**

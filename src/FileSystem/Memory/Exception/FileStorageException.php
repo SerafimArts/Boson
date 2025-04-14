@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Memory\Exception;
+namespace Serafim\Boson\FileSystem\Memory\Exception;
 
 abstract class FileStorageException extends StorageException
 {

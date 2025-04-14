@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Embedded\Mime;
+namespace Serafim\Boson\FileSystem\Embedded\Mime;
 
 final readonly class ExtensionFileDetector implements FileDetectorInterface
 {
