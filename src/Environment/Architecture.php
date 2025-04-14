@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Shared\Env;
+namespace Serafim\Boson\Environment;
 
 enum Architecture
 {
