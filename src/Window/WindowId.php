@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window;
 
 use FFI\CData;
-use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\Kernel\LibSaucer;
 use Serafim\Boson\Shared\ValueObject\Id\StructPointerId;
 
 final readonly class WindowId extends StructPointerId

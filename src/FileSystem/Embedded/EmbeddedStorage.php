@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\FileSystem\Embedded;
 
-use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\FileSystem\Embedded\Mime\DataDetectorInterface;
 use Serafim\Boson\FileSystem\Embedded\Mime\ExtensionFileDetector;
 use Serafim\Boson\FileSystem\Embedded\Mime\FileDetectorInterface;
 use Serafim\Boson\FileSystem\Embedded\Mime\FileInfoDetector;
 use Serafim\Boson\FileSystem\Memory\Memory;
 use Serafim\Boson\FileSystem\Memory\MemoryStorage;
+use Serafim\Boson\Kernel\LibSaucer;
 
 final readonly class EmbeddedStorage
 {

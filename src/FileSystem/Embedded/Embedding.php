@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\FileSystem\Embedded;
 
-use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\FileSystem\Memory\Memory;
+use Serafim\Boson\Kernel\LibSaucer;
 
 /**
  * Reference to the embedded entry.

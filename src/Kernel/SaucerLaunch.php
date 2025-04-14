@@ -2,16 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Shared\Saucer;
+namespace Serafim\Boson\Kernel;
 
 /**
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson
  */
-final readonly class SaucerPolicy
+final readonly class SaucerLaunch
 {
-    public const int SAUCER_POLICY_ALLOW = 0;
-    public const int SAUCER_POLICY_BLOCK = 1;
+    public const int SAUCER_LAUNCH_SYNC = 0;
+    public const int SAUCER_LAUNCH_ASYNC = 1;
 
     private function __construct() {}
 }

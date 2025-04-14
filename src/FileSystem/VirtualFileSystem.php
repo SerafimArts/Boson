@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\FileSystem;
 
-use Serafim\Boson\Shared\Saucer\LibSaucer;
-use Serafim\Boson\Shared\Saucer\SaucerLaunch;
 use Serafim\Boson\FileSystem\Embedded\EmbeddedStorage;
 use Serafim\Boson\FileSystem\Embedded\Embedding;
+use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Kernel\SaucerLaunch;
 use Serafim\Boson\Window\WindowId;
 
 /**

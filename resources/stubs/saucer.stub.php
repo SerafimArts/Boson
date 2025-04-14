@@ -2,11 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Shared\Saucer;
+namespace Serafim\Boson\Kernel;
 
 use FFI\CData;
 use FFI\CType;
-use FFI\ParserException;
 
 /**
  * @mixin \FFI
