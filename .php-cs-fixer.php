@@ -4,10 +4,10 @@ $files = PhpCsFixer\Finder::create()
     ->in([
         __DIR__ . '/src'
     ])
-    // broken in v3.72: Abstract properties error (`abstract public T $t { get; }`)
     ->filter(static fn (\SplFileInfo $file): bool
         => !\in_array(\realpath($file->getPathname()), [
-            \realpath(__DIR__ . '/src/WebView/Requests/IdGenerator/IntGenerator.php'),
+            // "public private(set) ?WindowInterface $default" detects as ternary operator
+            \realpath(__DIR__ . '/src/Window/Manager/WindowManager.php'),
         ], true)
     )
 ;
