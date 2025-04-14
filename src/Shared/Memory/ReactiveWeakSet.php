@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Memory;
+namespace Serafim\Boson\Shared\Memory;
 
 /**
  * Allows to store a set of objects and track their

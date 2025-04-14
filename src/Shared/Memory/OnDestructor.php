@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Memory;
+namespace Serafim\Boson\Shared\Memory;
 
 /**
  * @template TEntry of object

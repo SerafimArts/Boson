@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Shared\Saucer;
+namespace Serafim\Boson\Kernel;
 
 use FFI\Env\Runtime;
 use Serafim\Boson\Environment\Architecture;
@@ -27,24 +27,24 @@ final readonly class LibSaucer
         Runtime::assertAvailable();
 
         $this->ffi = \FFI::cdef(
-            code: \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
+            code: (string) \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
             lib: $library ?? match ($os = OperatingSystem::current()) {
                 OperatingSystem::Windows => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => __DIR__ . '/../../../bin/libboson-windows-amd64.dll',
+                    Architecture::Amd64 => __DIR__ . '/../../bin/libboson-windows-amd64.dll',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,
                     )),
                 },
                 OperatingSystem::Linux => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => __DIR__ . '/../../../bin/libboson-linux-amd64.dll',
+                    Architecture::Amd64 => __DIR__ . '/../../bin/libboson-linux-amd64.dll',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,
                     )),
                 },
                 OperatingSystem::MacOS => match ($arch = Architecture::current()) {
-                    Architecture::Arm64 => __DIR__ . '/../../../bin/libboson-darwin-arm64.dylib',
+                    Architecture::Arm64 => __DIR__ . '/../../bin/libboson-darwin-arm64.dylib',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,

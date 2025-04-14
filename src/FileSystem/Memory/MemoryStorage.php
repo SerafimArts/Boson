@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serafim\Boson\FileSystem\Memory;
 
 use FFI\CData;
-use Serafim\Boson\Shared\Saucer\LibSaucer;
 use Serafim\Boson\FileSystem\Memory\Exception\FileNotReadableStorageException;
+use Serafim\Boson\Kernel\LibSaucer;
 
 /**
  * Provides raw data storage

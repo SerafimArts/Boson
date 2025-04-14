@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Shared\ValueObject\Id;
 
 use FFI\CData;
-use Serafim\Boson\Shared\Saucer\LibSaucer;
+use Serafim\Boson\Kernel\LibSaucer;
 use Serafim\Boson\Shared\ValueObject\ValueObjectInterface;
 
 /**
