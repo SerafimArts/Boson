@@ -1,0 +1,493 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Class Serafim\\Boson\\Internal\\Saucer\\LibSaucer does not have a constructor and must be instantiated without any parameters\.$#'
+			identifier: new.noConstructor
+			count: 1
+			path: src/Application.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Dispatcher\\DelegateEventListener\:\:dispatch\(\) should return TArgEvent of object but returns object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Dispatcher/DelegateEventListener.php
+
+		-
+			message: '#^Parameter \$canceller of class Serafim\\Boson\\Dispatcher\\Subscription\\CancellableSubscription constructor expects callable\(Serafim\\Boson\\Dispatcher\\Subscription\\SubscriptionInterface\<TArgEvent\>\)\: void, Closure\(Serafim\\Boson\\Dispatcher\\Subscription\\CancellableSubscriptionInterface\<object\>\)\: void given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Dispatcher/EventListener.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Dispatcher\\EventListener\:\:\$listeners \(array\<class\-string\<object\>, array\<callable\(object\)\: void\>\>\) does not accept non\-empty\-array\<class\-string\<object\>, array\<\(callable\(object\)\: void\)\|\(Closure\(TArgEvent\)\: void\)\>\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Dispatcher/EventListener.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Environment\\Architecture\:\:current\(\) should return Serafim\\Boson\\Environment\\Architecture but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Environment/Architecture.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Environment\\OperatingSystem\:\:current\(\) should return Serafim\\Boson\\Environment\\OperatingSystem but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Environment/OperatingSystem.php
+
+		-
+			message: '#^Strict comparison using \=\=\= between non\-empty\-string and '''' will always evaluate to false\.$#'
+			identifier: identical.alwaysFalse
+			count: 1
+			path: src/FileSystem/Embedded/Mime/FileInfoDetector.php
+
+		-
+			message: '#^Parameter \#1 \$pathname of class Serafim\\Boson\\FileSystem\\Memory\\Exception\\FileNotReadableStorageException constructor expects non\-empty\-string, string given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/FileSystem/Memory/Exception/FileNotReadableStorageException.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\FileSystem\\Memory\\Memory\:\:\$size should return int\<0, max\> but returns int\<\-32768, max\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/FileSystem/Memory/Memory.php
+
+		-
+			message: '#^Property Serafim\\Boson\\FileSystem\\Memory\\Memory\:\:\$size \(int\<0, max\>\) does not accept int\<\-32768, max\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/FileSystem/Memory/Memory.php
+
+		-
+			message: '#^Parameter \#1 \$data of method Serafim\\Boson\\FileSystem\\Memory\\MemoryStorage\:\:load\(\) expects string, string\|false given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/FileSystem/Memory/MemoryStorage.php
+
+		-
+			message: '#^Parameter \#2 \$size of method Serafim\\Boson\\Internal\\Saucer\\LibSaucer\:\:saucer_stash_from\(\) expects int\<\-32768, 32767\>, int\<0, max\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/FileSystem/Memory/MemoryStorage.php
+
+		-
+			message: '#^Method Serafim\\Boson\\FileSystem\\VirtualFile\:\:formatName\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/FileSystem/VirtualFile.php
+
+		-
+			message: '#^Call to an undefined method Serafim\\Boson\\Internal\\Saucer\\LibSaucer\:\:saucer_webview_clear_embedded\(\)\.$#'
+			identifier: method.notFound
+			count: 1
+			path: src/FileSystem/VirtualFileSystem.php
+
+		-
+			message: '#^Call to function assert\(\) with true will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 1
+			path: src/Internal/Application/DebugEnvResolver.php
+
+		-
+			message: '#^Comparison operation "\<\=" between int\<1, 32767\> and 32767 is always true\.$#'
+			identifier: smallerOrEqual.alwaysTrue
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<1, 32767\> and 1 is always true\.$#'
+			identifier: greaterOrEqual.alwaysTrue
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\Application\\ThreadsCountResolver\:\:assertValidMaxThreadsCountBound\(\) returns void but does not have any side effects\.$#'
+			identifier: void.pure
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\Application\\ThreadsCountResolver\:\:assertValidMinThreadsCountBound\(\) returns void but does not have any side effects\.$#'
+			identifier: void.pure
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\Application\\ThreadsCountResolver\:\:resolve\(\) should return int\<1, 32767\>\|null but returns int\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Parameter \#1 \$threads of static method Serafim\\Boson\\Internal\\Application\\ThreadsCountResolver\:\:assertValidMaxThreadsCountBound\(\) expects int\<1, 32767\>, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Parameter \#1 \$threads of static method Serafim\\Boson\\Internal\\Application\\ThreadsCountResolver\:\:assertValidMinThreadsCountBound\(\) expects int\<1, 32767\>, int given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Unreachable statement \- code above always terminates\.$#'
+			identifier: deadCode.unreachable
+			count: 2
+			path: src/Internal/Application/ThreadsCountResolver.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\Memory\\ReactiveWeakMap\:\:find\(\) never returns null so it can be removed from the return type\.$#'
+			identifier: return.unusedType
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakMap.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\Memory\\ReactiveWeakMap\:\:watch\(\) should return TArgKey of TKey of object but returns TKey of object\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakMap.php
+
+		-
+			message: '#^Template type TArgKey of method Serafim\\Boson\\Internal\\Memory\\ReactiveWeakMap\:\:watch\(\) is not referenced in a parameter\.$#'
+			identifier: method.templateTypeNotInParameter
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakMap.php
+
+		-
+			message: '#^Using nullsafe property access on non\-nullable type Serafim\\Boson\\Internal\\Memory\\OnDestructor\<TValue of object\>\. Use \-\> instead\.$#'
+			identifier: nullsafe.neverNull
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakMap.php
+
+		-
+			message: '#^Cannot assign offset TArgEntry of TEntry of object to WeakMap\<TEntry of object, Serafim\\Boson\\Internal\\Memory\\OnDestructor\<TEntry of object\>\>\.$#'
+			identifier: offsetAssign.dimType
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakSet.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Internal\\Memory\\ReactiveWeakSet\<TEntry of object\>\:\:\$memory \(WeakMap\<TEntry of object, Serafim\\Boson\\Internal\\Memory\\OnDestructor\<TEntry of object\>\>\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakSet.php
+
+		-
+			message: '#^WeakMap\<TEntry of object, Serafim\\Boson\\Internal\\Memory\\OnDestructor\<TEntry of object\>\> does not accept Serafim\\Boson\\Internal\\Memory\\OnDestructor\<TArgEntry of TEntry of object\>\.$#'
+			identifier: offsetAssign.valueType
+			count: 1
+			path: src/Internal/Memory/ReactiveWeakSet.php
+
+		-
+			message: '#^Class Serafim\\Boson\\Internal\\ValueObject\\Id\\RawStructPointerId has @implements tag, but does not implement any interface\.$#'
+			identifier: generics.noParent
+			count: 1
+			path: src/Internal/ValueObject/Id/RawStructPointerId.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$cdata\.$#'
+			identifier: property.notFound
+			count: 1
+			path: src/Internal/ValueObject/Id/StructPointerId.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\ValueObject\\Id\\StructPointerId\:\:__toString\(\) should return non\-empty\-string&numeric\-string but returns non\-falsy\-string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Internal/ValueObject/Id/StructPointerId.php
+
+		-
+			message: '#^Method Serafim\\Boson\\Internal\\ValueObject\\Id\\StructPointerId\:\:getPointerIntValue\(\) should return int but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Internal/ValueObject/Id/StructPointerId.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onDomReady\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onFaviconChanged\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onLoad\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onNavigated\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onNavigating\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onTitleChanged\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Parameter \#3 \$callback of method Serafim\\Boson\\Internal\\Saucer\\LibSaucer\:\:saucer_webview_on\(\) expects \(callable\(\)\: mixed\)\|FFI\\CData, mixed given\.$#'
+			identifier: argument.type
+			count: 6
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Internal\\WebView\\WebViewEventHandler\:\:\$state is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Internal/WebView/WebViewEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onClosed\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onClosing\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onDecorated\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onFocus\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onMaximize\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onMinimize\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$onResize\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Parameter \#3 \$callback of method Serafim\\Boson\\Internal\\Saucer\\LibSaucer\:\:saucer_window_on\(\) expects \(callable\(\)\: mixed\)\|FFI\\CData, mixed given\.$#'
+			identifier: argument.type
+			count: 7
+			path: src/Internal/Window/WindowEventHandler.php
+
+		-
+			message: '#^Property Serafim\\Boson\\WebView\\WebView\:\:\$handler is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/WebView/WebView.php
+
+		-
+			message: '#^Property Serafim\\Boson\\WebView\\WebViewCreateInfo\:\:\$flags \(array\<non\-empty\-string, bool\|float\|int\|string\>\) does not accept array\<non\-empty\-string, bool\|float\|int\|list\<bool\|float\|int\|string\>\|string\>\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/WebView/WebViewCreateInfo.php
+
+		-
+			message: '#^Method Serafim\\Boson\\WebView\\WebViewCreateInfo\\FlagsListFormatter\:\:formatFlagValue\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/WebView/WebViewCreateInfo/FlagsListFormatter.php
+
+		-
+			message: '#^Method Serafim\\Boson\\WebView\\WebViewCreateInfo\\FlagsListFormatter\:\:formatFlagsListValue\(\) should return non\-empty\-string but returns string\.$#'
+			identifier: return.type
+			count: 1
+			path: src/WebView/WebViewCreateInfo/FlagsListFormatter.php
+
+		-
+			message: '#^Parameter \#2 \$values of static method Serafim\\Boson\\WebView\\WebViewCreateInfo\\FlagsListFormatter\:\:formatFlagsListValue\(\) expects list\<bool\|float\|int\|string\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/WebView/WebViewCreateInfo/FlagsListFormatter.php
+
+		-
+			message: '#^Method Serafim\\Boson\\WebView\\WebViewCreateInfo\\StorageDirectoryResolver\:\:getCurrentWorkingDirectory\(\) should return non\-empty\-string but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/WebView/WebViewCreateInfo/StorageDirectoryResolver.php
+
+		-
+			message: '#^Class Serafim\\Boson\\Window\\Manager\\WindowManager has @extends tag, but does not extend any class\.$#'
+			identifier: generics.noParent
+			count: 1
+			path: src/Window/Manager/WindowManager.php
+
+		-
+			message: '#^Class Serafim\\Boson\\Window\\Manager\\WindowManager implements generic interface IteratorAggregate but does not specify its types\: TKey, TValue$#'
+			identifier: missingType.generics
+			count: 1
+			path: src/Window/Manager/WindowManager.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\Window\\Manager\\WindowManager\:\:\$default should return Serafim\\Boson\\Window\\WindowInterface but returns null\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Window/Manager/WindowManager.php
+
+		-
+			message: '#^Access to an undefined property FFI\\CData\:\:\$cdata\.$#'
+			identifier: property.notFound
+			count: 2
+			path: src/Window/Size/Managed/ManagedSize.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\Window\\Size\\Managed\\ManagedSize\:\:\$height should return int\<0, 2147483647\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Window/Size/Managed/ManagedSize.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\Window\\Size\\Managed\\ManagedSize\:\:\$width should return int\<0, 2147483647\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Window/Size/Managed/ManagedSize.php
+
+		-
+			message: '#^Cannot call static method get\(\) on int\<0, 2147483647\>\.$#'
+			identifier: staticMethod.nonObject
+			count: 2
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Cannot call static method set\(\) on int\<0, 2147483647\>\.$#'
+			identifier: staticMethod.nonObject
+			count: 2
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\Window\\Size\\Managed\\MemoizedManagedSize\:\:\$height should return int\<0, 2147483647\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Get hook for property Serafim\\Boson\\Window\\Size\\Managed\\MemoizedManagedSize\:\:\$width should return int\<0, 2147483647\> but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Window\\Size\\Managed\\MemoizedManagedSize\:\:\$height \(int\<0, 2147483647\>\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Window\\Size\\Managed\\MemoizedManagedSize\:\:\$width \(int\<0, 2147483647\>\) does not accept mixed\.$#'
+			identifier: assign.propertyType
+			count: 1
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Static access to instance property Serafim\\Boson\\Window\\Size\\Managed\\ManagedSize\:\:\$height\.$#'
+			identifier: property.staticAccess
+			count: 2
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Static access to instance property Serafim\\Boson\\Window\\Size\\Managed\\ManagedSize\:\:\$width\.$#'
+			identifier: property.staticAccess
+			count: 2
+			path: src/Window/Size/Managed/MemoizedManagedSize.php
+
+		-
+			message: '#^Call to function assert\(\) with true and InvalidArgumentException will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: src/Window/Size/Size.php
+
+		-
+			message: '#^Comparison operation "\<\=" between int\<0, 2147483647\> and 2147483647 is always true\.$#'
+			identifier: smallerOrEqual.alwaysTrue
+			count: 2
+			path: src/Window/Size/Size.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<0, 2147483647\> and 0 is always true\.$#'
+			identifier: greaterOrEqual.alwaysTrue
+			count: 2
+			path: src/Window/Size/Size.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 2
+			path: src/Window/Size/Size.php
+
+		-
+			message: '#^Property Serafim\\Boson\\Window\\Window\:\:\$handler is never read, only written\.$#'
+			identifier: property.onlyWritten
+			count: 1
+			path: src/Window/Window.php
+
+		-
+			message: '#^Set hook for non\-virtual property Serafim\\Boson\\Window\\Window\:\:\$max does not always assign value to it\.$#'
+			identifier: propertySetHook.noAssign
+			count: 1
+			path: src/Window/Window.php
+
+		-
+			message: '#^Set hook for non\-virtual property Serafim\\Boson\\Window\\Window\:\:\$min does not always assign value to it\.$#'
+			identifier: propertySetHook.noAssign
+			count: 1
+			path: src/Window/Window.php
+
+		-
+			message: '#^Set hook for non\-virtual property Serafim\\Boson\\Window\\Window\:\:\$size does not always assign value to it\.$#'
+			identifier: propertySetHook.noAssign
+			count: 1
+			path: src/Window/Window.php
+
+		-
+			message: '#^Call to function assert\(\) with true and InvalidArgumentException will always evaluate to true\.$#'
+			identifier: function.alreadyNarrowedType
+			count: 2
+			path: src/Window/WindowCreateInfo.php
+
+		-
+			message: '#^Comparison operation "\<\=" between int\<0, 2147483647\> and 2147483647 is always true\.$#'
+			identifier: smallerOrEqual.alwaysTrue
+			count: 2
+			path: src/Window/WindowCreateInfo.php
+
+		-
+			message: '#^Comparison operation "\>\=" between int\<0, 2147483647\> and 0 is always true\.$#'
+			identifier: greaterOrEqual.alwaysTrue
+			count: 2
+			path: src/Window/WindowCreateInfo.php
+
+		-
+			message: '#^Result of && is always true\.$#'
+			identifier: booleanAnd.alwaysTrue
+			count: 2
+			path: src/Window/WindowCreateInfo.php

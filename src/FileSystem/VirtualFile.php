@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\FileSystem\Embedded\Embedding;
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\WindowId;
 
 final class VirtualFile

@@ -37,11 +37,9 @@ class EventListener implements EventListenerInterface, EventDispatcherInterface
     {
         $subscription = new CancellableSubscription(
             name: $event,
-            // @phpstan-ignore-next-line
             canceller: $this->removeEventListener(...),
         );
 
-        // @phpstan-ignore-next-line
         $this->listeners[$event][$this->getId($subscription)] = $listener(...);
 
         return $subscription;

@@ -6,8 +6,8 @@ namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\FileSystem\Embedded\EmbeddedStorage;
 use Serafim\Boson\FileSystem\Embedded\Embedding;
-use Serafim\Boson\Kernel\LibSaucer;
-use Serafim\Boson\Kernel\Saucer\SaucerLaunch;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
+use Serafim\Boson\Internal\Saucer\SaucerLaunch;
 use Serafim\Boson\Window\WindowId;
 
 /**
