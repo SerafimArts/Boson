@@ -37,6 +37,8 @@ interface WebViewInterface
 
     /**
      * Provides access to WebView event and intention subscriptions.
+     *
+     * @readonly
      */
     public EventListenerInterface $events {
         /**
