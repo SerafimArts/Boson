@@ -6,6 +6,13 @@ namespace Serafim\Boson\Kernel;
 
 use FFI\CData;
 use FFI\CType;
+use Serafim\Boson\Kernel\Saucer\SaucerLaunch;
+use Serafim\Boson\Kernel\Saucer\SaucerLoadTime;
+use Serafim\Boson\Kernel\Saucer\SaucerSchemeError;
+use Serafim\Boson\Kernel\Saucer\SaucerWebEvent;
+use Serafim\Boson\Kernel\Saucer\SaucerWebFrame;
+use Serafim\Boson\Kernel\Saucer\SaucerWindowEdge;
+use Serafim\Boson\Kernel\Saucer\SaucerWindowEvent;
 
 /**
  * @mixin \FFI
