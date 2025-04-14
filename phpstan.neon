@@ -1,5 +1,4 @@
 includes:
-  #- phpstan-baseline.neon
   - phar://phpstan.phar/conf/bleedingEdge.neon
   - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
