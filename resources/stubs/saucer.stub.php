@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Serafim\Boson\Shared\Saucer;
 
 use FFI\CData;
+use FFI\CType;
+use FFI\ParserException;
 
 /**
  * @mixin \FFI
@@ -33,6 +35,16 @@ use FFI\CData;
  */
 final readonly class LibSaucer
 {
+    /**
+     * @param CType|non-empty-string $type
+     */
+    public function new(CType|string $type, bool $owned = true, bool $persistent = false): CData {}
+
+    /**
+     * @param CType|non-empty-string $type
+     */
+    public function cast(CType|string $type, CData|int|float|bool|null $ptr): CData {}
+
     /**
      * @return non-empty-string
      */
