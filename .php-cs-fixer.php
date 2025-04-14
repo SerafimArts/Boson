@@ -20,8 +20,6 @@ return (new PhpCsFixer\Config())
         'no_empty_statement' => false,
         // broken in v3.70.2 (`public private(set) Some $x` -> `public private(set) public Some $x`)
         'visibility_required' => false,
-        // broken in v3.70.2 (invalid indentation of property accessors/mutators)
-        'statement_indentation' => false,
         'strict_param' => true,
         'align_multiline_comment' => true,
         'array_syntax' => [
