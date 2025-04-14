@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Serafim\Boson\Shared\Saucer;
 
 use FFI\Env\Runtime;
-use Serafim\Boson\Shared\Env\Architecture;
-use Serafim\Boson\Shared\Env\OperatingSystem;
+use Serafim\Boson\Environment\Architecture;
+use Serafim\Boson\Environment\OperatingSystem;
 
 /**
  * @mixin \FFI
