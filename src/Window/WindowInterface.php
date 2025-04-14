@@ -276,6 +276,24 @@ interface WindowInterface
     }
 
     /**
+     * Contains window closed state.
+     */
+    public bool $isClosed {
+        /**
+         * Gets current window closed state.
+         *
+         * ```
+         * if ($window->isClosed) {
+         *     echo 'Window is closed';
+         * } else {
+         *     echo 'Window is not closed';
+         * }
+         * ```
+         */
+        get;
+    }
+
+    /**
      * Makes this window visible.
      *
      * Note: The same can be done using the window's visibility

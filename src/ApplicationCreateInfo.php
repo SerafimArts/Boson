@@ -45,6 +45,11 @@ final readonly class ApplicationCreateInfo
          */
         public ?string $library = null,
         /**
+         * Automatically terminates the application if
+         * all windows have been closed.
+         */
+        public bool $quitOnClose = true,
+        /**
          * Main (default) window configuration DTO.
          */
         public WindowCreateInfo $window = new WindowCreateInfo(),
