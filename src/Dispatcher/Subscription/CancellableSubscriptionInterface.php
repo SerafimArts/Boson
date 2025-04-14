@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Dispatcher\Subscription;
 
 /**
- * @template TEvent of object
+ * @template TEvent of object = object
  * @template-extends SubscriptionInterface<TEvent>
  */
 interface CancellableSubscriptionInterface extends SubscriptionInterface
@@ -13,8 +13,6 @@ interface CancellableSubscriptionInterface extends SubscriptionInterface
     /**
      * Returns {@see true} in case of the event is
      * cancelled, {@see false} otherwise.
-     *
-     * @readonly
      */
     public bool $isCancelled { get; }
 

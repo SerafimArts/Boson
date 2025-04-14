@@ -20,6 +20,7 @@ enum OperatingSystem
             default => self::Unknown,
         };
 
+        /** @var self */
         return $current;
     }
 }

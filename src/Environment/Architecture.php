@@ -62,6 +62,7 @@ enum Architecture
     {
         static $current = self::getArchitectureCaseFromEnvironment();
 
+        /** @var self */
         return $current;
     }
 }

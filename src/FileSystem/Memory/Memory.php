@@ -14,10 +14,10 @@ final class Memory
     /**
      * Gets size of loaded payload in bytes.
      *
-     * @var int<0, max>
+     * @var int<0, 32767>
      */
     public int $size {
-        get => $this->size ??= $this->api->saucer_stash_size($this->id->ptr);
+        get => $this->size ??= \max(0, $this->api->saucer_stash_size($this->id->ptr));
     }
 
     /**

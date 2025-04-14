@@ -6,6 +6,7 @@ namespace Serafim\Boson\FileSystem\Memory;
 
 use FFI\CData;
 use Serafim\Boson\FileSystem\Memory\Exception\FileNotReadableStorageException;
+use Serafim\Boson\FileSystem\Memory\Exception\StorageException;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 
 /**
@@ -13,6 +14,8 @@ use Serafim\Boson\Internal\Saucer\LibSaucer;
  */
 final readonly class MemoryStorage
 {
+    private const int MEMORY_MAX_SIZE = 32767;
+
     public function __construct(
         private LibSaucer $api,
     ) {}
@@ -38,7 +41,17 @@ final readonly class MemoryStorage
         $string = $this->loadCString($data);
         $uint8Array = $this->api->cast('uint8_t*', \FFI::addr($string));
 
-        $stashId = $this->api->saucer_stash_from($uint8Array, \strlen($data));
+        $length = \strlen($data);
+
+        if ($length > self::MEMORY_MAX_SIZE) {
+            throw new StorageException(\sprintf(
+                'The file size must not exceed %d bytes, %d bytes given',
+                self::MEMORY_MAX_SIZE,
+                $length,
+            ));
+        }
+
+        $stashId = $this->api->saucer_stash_from($uint8Array, $length);
 
         $storageId = MemoryId::fromStashHandle($this->api, $stashId);
 
@@ -62,9 +75,9 @@ final readonly class MemoryStorage
         }
 
         if (!\is_readable($pathname)) {
-            throw FileNotReadableStorageException::becauseFileNotFound($pathname);
+            throw FileNotReadableStorageException::becauseFileNotReadable($pathname);
         }
 
-        return $this->load(\file_get_contents($pathname));
+        return $this->load((string) \file_get_contents($pathname));
     }
 }

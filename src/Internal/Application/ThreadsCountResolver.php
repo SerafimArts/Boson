@@ -36,7 +36,7 @@ final readonly class ThreadsCountResolver
     }
 
     /**
-     * @param int<1, 32767> $threads
+     * @return ($threads is int<1, max> ? void : never)
      */
     private static function assertValidMinThreadsCountBound(int $threads): void
     {
@@ -52,7 +52,7 @@ final readonly class ThreadsCountResolver
     }
 
     /**
-     * @param int<1, 32767> $threads
+     * @return ($threads is int<min, 32767> ? void : never)
      */
     private static function assertValidMaxThreadsCountBound(int $threads): void
     {

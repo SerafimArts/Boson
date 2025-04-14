@@ -23,7 +23,11 @@ final readonly class FlagsListFormatter
     {
         foreach ($flags as $name => $value) {
             if (!\is_string($value)) {
-                yield self::formatFlagValue($name, $value);
+                $result = self::formatFlagValue($name, $value);
+
+                if ($result !== '') {
+                    yield $result;
+                }
 
                 continue;
             }
@@ -53,8 +57,6 @@ final readonly class FlagsListFormatter
 
     /**
      * @param array-key $name
-     *
-     * @return non-empty-string
      */
     private static function formatFlagValue(int|string $name, mixed $value): string
     {
@@ -75,9 +77,7 @@ final readonly class FlagsListFormatter
 
     /**
      * @param array-key $name
-     * @param list<string|float|bool|int> $values
-     *
-     * @return non-empty-string
+     * @param array<array-key, mixed> $values
      */
     private static function formatFlagsListValue(int|string $name, array $values): string
     {

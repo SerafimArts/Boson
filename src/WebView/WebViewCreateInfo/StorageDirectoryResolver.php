@@ -58,6 +58,7 @@ final readonly class StorageDirectoryResolver
             default => '.',
         };
 
+        /** @var non-empty-string */
         return $cwd === '' ? '.' : $cwd;
     }
 }

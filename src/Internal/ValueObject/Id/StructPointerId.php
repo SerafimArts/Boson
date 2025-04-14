@@ -34,6 +34,7 @@ abstract readonly class StructPointerId implements IntIdInterface
         // to integer pointer (`intptr_t`) value.
         $id = $api->cast('intptr_t', $handle);
 
+        /** @var int */
         return $id->cdata;
     }
 
@@ -76,13 +77,10 @@ abstract readonly class StructPointerId implements IntIdInterface
     }
 
     /**
-     * @return numeric-string&non-empty-string
+     * @return non-empty-string
      */
     public function __toString(): string
     {
-        return \vsprintf('%s(%s)', [
-            static::class,
-            $this->toString(),
-        ]);
+        return \sprintf('%s(%s)', static::class, $this->toString());
     }
 }

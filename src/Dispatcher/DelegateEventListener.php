@@ -14,8 +14,8 @@ final class DelegateEventListener extends EventListener
 
     public function dispatch(object $event): object
     {
-        return $this->delegate->dispatch(
-            event: parent::dispatch($event),
-        );
+        $this->delegate->dispatch(parent::dispatch($event));
+
+        return $event;
     }
 }

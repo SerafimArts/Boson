@@ -9,8 +9,6 @@ abstract class FileStorageException extends StorageException
     public function __construct(
         /**
          * Path to the file that was trying to be read.
-         *
-         * @var non-empty-string
          */
         public readonly string $pathname,
         string $message,

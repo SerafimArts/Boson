@@ -38,6 +38,7 @@ final class Window implements WindowInterface
 
     public MutableSizeInterface $size {
         get => $this->size;
+        /** @phpstan-ignore-next-line : PHPStan does not support properties correctly */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowSize) {
                 $this->size = $size;
@@ -51,6 +52,7 @@ final class Window implements WindowInterface
 
     public MutableSizeInterface $min {
         get => $this->min;
+        /** @phpstan-ignore-next-line : PHPStan does not support properties correctly */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMinBounds) {
                 $this->min = $size;
@@ -64,6 +66,7 @@ final class Window implements WindowInterface
 
     public MutableSizeInterface $max {
         get => $this->max;
+        /** @phpstan-ignore-next-line : PHPStan does not support properties correctly */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMaxBounds) {
                 $this->max = $size;
@@ -111,6 +114,8 @@ final class Window implements WindowInterface
     /**
      * Contains an internal bridge between system {@see LibSaucer} events
      * and the PSR {@see Window::$events} dispatcher.
+     *
+     * @phpstan-ignore property.onlyWritten
      */
     private readonly WindowEventHandler $handler;
 

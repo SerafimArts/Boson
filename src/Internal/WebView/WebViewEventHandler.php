@@ -45,6 +45,8 @@ final class WebViewEventHandler
 
     /**
      * Contains managed struct with event handlers.
+     *
+     * @phpstan-var CSaucerWebViewEventsStruct
      */
     private readonly CData $handlers;
 
@@ -53,6 +55,9 @@ final class WebViewEventHandler
         private readonly WebView $webview,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly UrlParserInterface $uriParser,
+        /**
+         * @phpstan-ignore property.onlyWritten
+         */
         private State &$state,
     ) {
         $this->handlers = $this->createEventHandlers();

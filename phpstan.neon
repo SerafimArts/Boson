@@ -1,11 +1,13 @@
 includes:
-  - phpstan-baseline.neon
+  #- phpstan-baseline.neon
   - phar://phpstan.phar/conf/bleedingEdge.neon
   - vendor/phpstan/phpstan-strict-rules/rules.neon
 parameters:
   level: max
   scanFiles:
     - resources/stubs/saucer.stub.php
+    - resources/stubs/saucer-webview-events.stub.php
+    - resources/stubs/saucer-window-events.stub.php
   strictRules:
     allRules: true
   fileExtensions:
@@ -16,3 +18,10 @@ parameters:
     - src/Internal/Saucer/LibSaucer.php
   tmpDir: vendor/.cache.phpstan
   reportUnmatchedIgnoredErrors: true
+  treatPhpDocTypesAsCertain: false
+  ignoreErrors:
+    # PHPStan does not support FFI
+    - '#^Access to an undefined property FFI\\CData#'
+    - '#does not accept FFI\\CData#'
+    # PHPStan does not support DbC invariants
+    - '#will always evaluate to true#'
