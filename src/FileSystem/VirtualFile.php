@@ -6,6 +6,7 @@ namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
+use Serafim\Boson\Window\Exception\WindowAlreadyClosedException;
 use Serafim\Boson\Window\Window;
 
 final class VirtualFile
@@ -109,7 +110,7 @@ final class VirtualFile
     public function unmount(): void
     {
         if ($this->window->isClosed) {
-            throw new \LogicException('Could not unmount file, window is closed');
+            throw new WindowAlreadyClosedException('Could not unmount file, window is closed');
         }
 
         $this->api->saucer_webview_clear_embedded_file($this->window->id->ptr, $this->name);
