@@ -93,7 +93,7 @@ readonly class WebViewCreateInfo
          * Enable or disable default webview context menu (right mouse button).
          *
          * If {@see null} is passed (by default), the behavior depends
-         * on the application's debug ({@see Application::$debug}) settings:
+         * on the application's debug ({@see Application::$isDebug}) settings:
          *  - Context menu will be enabled if debug mode is enabled.
          *  - Context menu will bew disabled if debug mode is disabled.
          */
@@ -102,7 +102,7 @@ readonly class WebViewCreateInfo
          * Enable or disable default webview dev tools (F12 key).
          *
          * If {@see null} is passed (by default), the behavior depends
-         * on the application's debug ({@see Application::$debug}) settings:
+         * on the application's debug ({@see Application::$isDebug}) settings:
          *  - Dev Tools will be enabled if debug mode is enabled.
          *  - Dev Tools will bew disabled if debug mode is disabled.
          */

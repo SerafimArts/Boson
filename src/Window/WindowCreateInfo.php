@@ -62,6 +62,11 @@ final readonly class WindowCreateInfo
          */
         public bool $resizable = true,
         /**
+         * Enable or disable window decorations (title bar, minimize, maximize
+         * and exit buttons).
+         */
+        public bool $decorated = true,
+        /**
          * Information (configuration) about creating a new webview object
          * that will be attached to the window.
          */

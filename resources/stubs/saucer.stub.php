@@ -34,6 +34,10 @@ use FFI\CType;
  */
 final readonly class LibSaucer
 {
+    public function __construct(
+        ?string $library = null,
+    ) {}
+
     /**
      * @param CType|non-empty-string $type
      */

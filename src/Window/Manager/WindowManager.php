@@ -16,7 +16,6 @@ use Serafim\Boson\Window\WindowInterface;
  * @template-extends \Traversable<array-key, WindowInterface>
  */
 final class WindowManager implements
-    WindowFactoryInterface,
     WindowManagerInterface,
     \IteratorAggregate
 {

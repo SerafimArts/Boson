@@ -16,6 +16,11 @@ use Serafim\Boson\Environment\OperatingSystem;
  */
 final readonly class LibSaucer
 {
+    /**
+     * @var non-empty-string
+     */
+    private const string DEFAULT_BIN_DIR = __DIR__ . '/../../../bin';
+
     private \FFI $ffi;
 
     /**
@@ -30,21 +35,21 @@ final readonly class LibSaucer
             code: (string) \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
             lib: $library ?? match ($os = OperatingSystem::current()) {
                 OperatingSystem::Windows => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => __DIR__ . '/../../bin/libboson-windows-amd64.dll',
+                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-windows-amd64.dll',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,
                     )),
                 },
                 OperatingSystem::Linux => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => __DIR__ . '/../../bin/libboson-linux-amd64.dll',
+                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-linux-amd64.dll',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,
                     )),
                 },
                 OperatingSystem::MacOS => match ($arch = Architecture::current()) {
-                    Architecture::Arm64 => __DIR__ . '/../../bin/libboson-darwin-arm64.dylib',
+                    Architecture::Arm64 => self::DEFAULT_BIN_DIR . '/libboson-darwin-arm64.dylib',
                     default => throw new \LogicException(\sprintf(
                         'Unsupported CPU architecture %s',
                         $arch->name,

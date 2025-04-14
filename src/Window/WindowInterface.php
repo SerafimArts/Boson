@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window;
 
-use Serafim\Boson\Application;
+use Serafim\Boson\ApplicationInterface;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebView;
@@ -15,90 +15,40 @@ use Serafim\Boson\Window\Size\SizeInterface;
 interface WindowInterface
 {
     /**
-     * Contains an identifier of the window.
-     *
-     * @readonly
+     * Gets an identifier of the window.
      */
-    public WindowId $id {
-        /**
-         * Gets window identifier.
-         */
-        get;
-    }
+    public WindowId $id { get; }
 
     /**
-     * An information DTO about the window with which it was created.
-     *
-     * @readonly
+     * Gets an information DTO about the window with which it was created.
      */
-    public WindowCreateInfo $info {
-        /**
-         * Gets window creation info.
-         */
-        get;
-    }
+    public WindowCreateInfo $info { get; }
 
     /**
-     * An application to which this window belongs.
-     *
-     * @readonly
+     * Gets parent application instance to which this window belongs.
      */
-    public Application $app {
-        /**
-         * Gets window's application instance.
-         */
-        get;
-    }
+    public ApplicationInterface $app { get; }
 
     /**
-     * Contains virtual filesystem attached to the Window and WebView.
-     *
-     * @readonly
+     * Get virtual filesystem belongs to the window instance.
      */
-    public VirtualFileSystemInterface $fs {
-        /**
-         * Gets the VFS.
-         */
-        get;
-    }
+    public VirtualFileSystemInterface $fs { get; }
 
     /**
-     * Contains {@see WebView} instance attached to the window.
-     *
-     * @readonly
+     * Gets child webview instance attached to the window.
      */
-    public WebView $webview {
-        /**
-         * Gets {@see WebView} instance attached to the current window.
-         */
-        get;
-    }
+    public WebView $webview { get; }
 
     /**
-     * Provides access to window event and intention subscriptions.
-     *
-     * @readonly
+     * Gets access to the listener of the window events
+     * and intention subscriptions.
      */
-    public EventListenerInterface $events {
-        /**
-         * Gets the event listener object.
-         */
-        get;
-    }
+    public EventListenerInterface $events { get; }
 
     /**
      * The title of the specified window encoded as UTF-8.
      */
-    public string $title {
-        /**
-         * Gets window title value.
-         */
-        get;
-        /**
-         * Allows to update window title value.
-         */
-        set;
-    }
+    public string $title { get; set; }
 
     /**
      * Contains current window size.
@@ -269,11 +219,58 @@ interface WindowInterface
     public bool $isVisible {
         /**
          * Gets current window visibility state.
+         *
+         * ```
+         * if ($window->isVisible) {
+         *     echo 'Window is visible';
+         * } else {
+         *     echo 'Window is hidden';
+         * }
+         * ```
          */
         get;
         /**
          * Show the window in case of property will be set to {@see true}
          * or hide in case of {@see false}.
+         *
+         * ```
+         * // Show window
+         * $window->isVisible = true;
+         *
+         * // Hide window
+         * $window->isVisible = false;
+         * ```
+         */
+        set;
+    }
+
+    /**
+     * Contains window decorated option.
+     */
+    public bool $isDecorated {
+        /**
+         * Gets current window decorated state.
+         *
+         * ```
+         * if ($window->isDecorated) {
+         *     echo 'Window is decorated';
+         * } else {
+         *     echo 'Window is not decorated';
+         * }
+         * ```
+         */
+        get;
+        /**
+         * Enable window decorations in case of {@see true} or
+         * disable in case of {@see false}.
+         *
+         * ```
+         * // Enable window decorations
+         * $window->isDecorated = true;
+         *
+         * // Disable window decorations
+         * $window->isDecorated = false;
+         * ```
          */
         set;
     }
