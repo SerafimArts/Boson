@@ -67,12 +67,10 @@ final readonly class WindowCreateInfo
          */
         public WebViewCreateInfo $webview = new WebViewCreateInfo(),
     ) {
-        // @phpstan-ignore-next-line : DbC invariant
         assert($width >= 0 && $width <= 2147483647, new \InvalidArgumentException(
             message: 'Window width CAN NOT be less than 0 or greater than 2147483647',
         ));
 
-        // @phpstan-ignore-next-line : DbC invariant
         assert($height >= 0 && $height <= 2147483647, new \InvalidArgumentException(
             message: 'Window height CAN NOT be less than 0 or greater than 2147483647',
         ));

@@ -10,7 +10,7 @@ use Serafim\Boson\FileSystem\Embedded\Mime\FileDetectorInterface;
 use Serafim\Boson\FileSystem\Embedded\Mime\FileInfoDetector;
 use Serafim\Boson\FileSystem\Memory\Memory;
 use Serafim\Boson\FileSystem\Memory\MemoryStorage;
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 
 final readonly class EmbeddedStorage
 {

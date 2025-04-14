@@ -7,7 +7,7 @@ namespace Serafim\Boson\Window\Manager;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowCreateInfo;
 use Serafim\Boson\Window\WindowInterface;

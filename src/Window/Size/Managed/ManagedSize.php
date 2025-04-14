@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window\Size\Managed;
 
 use FFI\CData;
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\SizeStringableProvider;
 

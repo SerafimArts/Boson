@@ -6,7 +6,7 @@ namespace Serafim\Boson\FileSystem\Memory;
 
 use FFI\CData;
 use Serafim\Boson\FileSystem\Memory\Exception\FileNotReadableStorageException;
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 
 /**
  * Provides raw data storage

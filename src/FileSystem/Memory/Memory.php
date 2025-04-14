@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\FileSystem\Memory;
 
-use Serafim\Boson\Kernel\LibSaucer;
+use Serafim\Boson\Internal\Saucer\LibSaucer;
 
 /**
  * An allocated memory object.
