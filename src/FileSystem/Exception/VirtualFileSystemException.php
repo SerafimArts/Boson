@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Exception;
+namespace Serafim\Boson\FileSystem\Exception;
 
 use Serafim\Boson\Exception\BosonException;
 

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs;
+namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\Shared\Saucer\LibSaucer;
-use Serafim\Boson\Vfs\Embedded\Embedding;
+use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Window\WindowId;
 
 final class VirtualFile

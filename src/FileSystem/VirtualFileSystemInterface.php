@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs;
+namespace Serafim\Boson\FileSystem;
 
 /**
  * @template-extends \Traversable<array-key, VirtualFile>

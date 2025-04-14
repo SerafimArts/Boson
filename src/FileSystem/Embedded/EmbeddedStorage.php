@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Embedded;
+namespace Serafim\Boson\FileSystem\Embedded;
 
 use Serafim\Boson\Shared\Saucer\LibSaucer;
-use Serafim\Boson\Vfs\Embedded\Mime\DataDetectorInterface;
-use Serafim\Boson\Vfs\Embedded\Mime\ExtensionFileDetector;
-use Serafim\Boson\Vfs\Embedded\Mime\FileDetectorInterface;
-use Serafim\Boson\Vfs\Embedded\Mime\FileInfoDetector;
-use Serafim\Boson\Vfs\Memory\Memory;
-use Serafim\Boson\Vfs\Memory\MemoryStorage;
+use Serafim\Boson\FileSystem\Embedded\Mime\DataDetectorInterface;
+use Serafim\Boson\FileSystem\Embedded\Mime\ExtensionFileDetector;
+use Serafim\Boson\FileSystem\Embedded\Mime\FileDetectorInterface;
+use Serafim\Boson\FileSystem\Embedded\Mime\FileInfoDetector;
+use Serafim\Boson\FileSystem\Memory\Memory;
+use Serafim\Boson\FileSystem\Memory\MemoryStorage;
 
 final readonly class EmbeddedStorage
 {

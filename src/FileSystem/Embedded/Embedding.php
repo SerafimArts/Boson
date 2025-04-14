@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Vfs\Embedded;
+namespace Serafim\Boson\FileSystem\Embedded;
 
 use Serafim\Boson\Shared\Saucer\LibSaucer;
-use Serafim\Boson\Vfs\Memory\Memory;
+use Serafim\Boson\FileSystem\Memory\Memory;
 
 /**
  * Reference to the embedded entry.

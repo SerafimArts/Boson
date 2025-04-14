@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window;
 
 use Serafim\Boson\Application;
-use Serafim\Boson\Vfs\VirtualFileSystemInterface;
+use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\Size;
