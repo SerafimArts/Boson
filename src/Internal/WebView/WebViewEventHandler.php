@@ -54,7 +54,7 @@ final class WebViewEventHandler
         private readonly LibSaucer $api,
         private readonly WebView $webview,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly UrlParserInterface $uriParser,
+        private readonly UrlParserInterface $urlParser,
         /**
          * @phpstan-ignore property.onlyWritten
          */
@@ -107,7 +107,7 @@ final class WebViewEventHandler
     {
         $this->dispatcher->dispatch(new WebViewNavigated(
             subject: $this->webview,
-            uri: $this->uriParser->parse($url),
+            url: $this->urlParser->parse($url),
         ));
     }
 
@@ -115,13 +115,13 @@ final class WebViewEventHandler
     {
         $this->changeState(State::Navigating);
 
-        $uri = $this->uriParser->parse(
+        $uri = $this->urlParser->parse(
             url: \FFI::string($this->api->saucer_navigation_url($navigation)),
         );
 
         $intention = $this->dispatcher->dispatch(new WebViewNavigating(
             subject: $this->webview,
-            uri: $uri,
+            url: $uri,
             isNewWindow: $this->api->saucer_navigation_new_window($navigation),
             isRedirection: $this->api->saucer_navigation_redirection($navigation),
             isUserInitiated: $this->api->saucer_navigation_user_initiated($navigation),

@@ -11,7 +11,7 @@ final class WebViewNavigating extends WebViewIntention
 {
     public function __construct(
         WebView $subject,
-        public readonly Url $uri,
+        public readonly Url $url,
         public readonly bool $isNewWindow,
         public readonly bool $isRedirection,
         public readonly bool $isUserInitiated,
