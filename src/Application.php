@@ -73,6 +73,11 @@ final class Application implements ApplicationInterface
             dispatcher: $this->events,
         );
 
+        $this->registerDefaultEventListeners();
+    }
+
+    private function registerDefaultEventListeners(): void
+    {
         $this->events->addEventListener(WindowClosed::class, $this->onWindowClose(...));
     }
 

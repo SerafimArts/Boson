@@ -10,6 +10,8 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
+use Serafim\Boson\WebView\Binding\FunctionsMap;
+use Serafim\Boson\WebView\Scripts\ScriptsMap;
 use Serafim\Boson\WebView\Url\MemoizedUrlParser;
 use Serafim\Boson\WebView\Url\NativeUrlParser;
 use Serafim\Boson\WebView\Url\Url;
@@ -28,6 +30,10 @@ final class WebView implements WebViewInterface
     }
 
     public readonly DelegateEventListener $events;
+
+    public readonly ScriptsMap $scripts;
+
+    public readonly FunctionsMap $functions;
 
     public private(set) State $state = State::Loading;
 
@@ -88,6 +94,16 @@ final class WebView implements WebViewInterface
         $this->index = \spl_object_hash($this) . '/index.html';
         // The WebView handle pointer is the same as the Window pointer.
         $this->ptr = $this->window->id->ptr;
+
+        $this->scripts = new ScriptsMap(
+            api: $this->api,
+            webview: $this,
+        );
+
+        $this->functions = new FunctionsMap(
+            scripts: $this->scripts,
+            events: $this->events,
+        );
 
         $this->handler = new WebViewEventHandler(
             api: $this->api,

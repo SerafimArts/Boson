@@ -6,6 +6,8 @@ namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
+use Serafim\Boson\WebView\Binding\FunctionsMapInterface;
+use Serafim\Boson\WebView\Scripts\ScriptsMapInterface;
 use Serafim\Boson\WebView\Url\Url;
 use Serafim\Boson\Window\WindowInterface;
 
@@ -26,6 +28,16 @@ interface WebViewInterface
      * and intention subscriptions.
      */
     public EventListenerInterface $events { get; }
+
+    /**
+     * Gets access to the scripts list of the webview.
+     */
+    public ScriptsMapInterface $scripts { get; }
+
+    /**
+     * Gets access to the functions list of the webview.
+     */
+    public FunctionsMapInterface $functions { get; }
 
     /**
      * Contains webview URI instance.
