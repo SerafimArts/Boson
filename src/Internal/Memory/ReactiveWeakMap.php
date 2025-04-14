@@ -62,6 +62,7 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
     {
         /**
          * @var TValue|null
+         *
          * @phpstan-ignore-next-line : PHPStan does not support WeakMaps correctly
          */
         return $this->memory[$key]?->entry;
