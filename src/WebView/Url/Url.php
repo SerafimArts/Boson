@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\WebView\Uri;
+namespace Serafim\Boson\WebView\Url;
 
-final class Uri implements \Stringable
+final class Url implements \Stringable
 {
     /**
-     * Contains the user information component of the URI.
+     * Contains the user information component of the URI/URL.
      *
      * If no scheme is present, this method MUST return a {@see null} value.
      *
@@ -23,7 +23,7 @@ final class Uri implements \Stringable
     }
 
     /**
-     * Contains the authority component of the URI.
+     * Contains the authority component of the URI/URL.
      *
      * If no scheme is present, this method MUST return a {@see null} value.
      *
@@ -38,7 +38,7 @@ final class Uri implements \Stringable
 
     public function __construct(
         /**
-         * Contains the scheme component of the URI.
+         * Contains the scheme component of the URI/URL.
          *
          * If no scheme is present, this method MUST return a {@see null} value.
          *
@@ -52,16 +52,16 @@ final class Uri implements \Stringable
          */
         public readonly ?string $scheme,
         /**
-         * Contains the user component of the URI.
+         * Contains the user component of the URI/URL.
          */
         public readonly ?string $user,
         /**
-         * Contains the password component of the URI.
+         * Contains the password component of the URI/URL.
          */
         #[\SensitiveParameter]
         public readonly ?string $password,
         /**
-         * Contains the host component of the URI.
+         * Contains the host component of the URI/URL.
          *
          * If no host is present this method MUST return a {@see null} value.
          *
@@ -72,7 +72,7 @@ final class Uri implements \Stringable
          */
         public readonly ?string $host,
         /**
-         * Contains the port component of the URI.
+         * Contains the port component of the URI/URL.
          *
          * If a port is present, and it is non-standard for the current scheme,
          * this method MUST return it as an integer. If the port is the standard port
@@ -88,7 +88,7 @@ final class Uri implements \Stringable
          */
         public readonly ?int $port,
         /**
-         * Contains the path component of the URI.
+         * Contains the path component of the URI/URL.
          *
          * The path can either be empty or absolute (starting with a slash) or
          * rootless (not starting with a slash). Implementations MUST support all
@@ -113,7 +113,7 @@ final class Uri implements \Stringable
          */
         public readonly string $path,
         /**
-         * Contains the query string of the URI.
+         * Contains the query string of the URI/URL.
          *
          * If no host is present this method MUST return a {@see null} value.
          *
@@ -133,7 +133,7 @@ final class Uri implements \Stringable
          */
         public readonly ?string $query,
         /**
-         * Contains the fragment component of the URI.
+         * Contains the fragment component of the URI/URL.
          *
          * If no host is present this method MUST return a {@see null} value.
          *
@@ -148,11 +148,11 @@ final class Uri implements \Stringable
          */
         public readonly ?string $fragment,
         /**
-         * An optional full URI value. Required for string {@see __toString()}
+         * An optional full URI/URLURI/URL value. Required for string {@see __toString()}
          * conversion.
          *
          * If value is defined as {@see null}, it will be created based
-         * on the current state of the URI instance.
+         * on the current state of the URI/URL instance.
          */
         private ?string $value = null,
     ) {}

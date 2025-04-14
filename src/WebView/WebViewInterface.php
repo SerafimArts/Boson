@@ -6,7 +6,7 @@ namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
-use Serafim\Boson\WebView\Uri\Uri;
+use Serafim\Boson\WebView\Url\Url;
 use Serafim\Boson\Window\WindowInterface;
 
 interface WebViewInterface
@@ -30,7 +30,7 @@ interface WebViewInterface
     /**
      * Contains webview URI instance.
      */
-    public Uri $uri {
+    public Url $url {
         /**
          * Gets current webview URI instance.
          *
@@ -62,7 +62,7 @@ interface WebViewInterface
          * $webview->uri = new Psr7\AnyUri('http://example.com');
          * ```
          */
-        set(Uri|\Stringable|string $url);
+        set(Url|\Stringable|string $url);
     }
 
     /**
