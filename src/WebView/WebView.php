@@ -10,19 +10,19 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
-use Serafim\Boson\WebView\Uri\MemoizedUriParser;
-use Serafim\Boson\WebView\Uri\NativeUriParser;
-use Serafim\Boson\WebView\Uri\Uri;
-use Serafim\Boson\WebView\Uri\UriParserInterface;
+use Serafim\Boson\WebView\Url\MemoizedUrlParser;
+use Serafim\Boson\WebView\Url\NativeUrlParser;
+use Serafim\Boson\WebView\Url\Url;
+use Serafim\Boson\WebView\Url\UrlParserInterface;
 use Serafim\Boson\Window\Window;
 
 final class WebView implements WebViewInterface
 {
-    public Uri $uri {
+    public Url $url {
         get {
             return $this->uriParser->parse($this->urlString);
         }
-        set(Uri|\Stringable|string $value) {
+        set(Url|\Stringable|string $value) {
             $this->api->saucer_webview_set_url($this->ptr, (string) $value);
         }
     }
@@ -54,7 +54,7 @@ final class WebView implements WebViewInterface
     /**
      * Contains WebView URI parser.
      */
-    private UriParserInterface $uriParser;
+    private UrlParserInterface $uriParser;
 
     /**
      * Contains unique index filename
@@ -78,8 +78,8 @@ final class WebView implements WebViewInterface
         public readonly WebViewCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
-        $this->uriParser = new MemoizedUriParser(
-            delegate: new NativeUriParser(),
+        $this->uriParser = new MemoizedUrlParser(
+            delegate: new NativeUrlParser(),
         );
 
         $this->events = new DelegateEventListener($dispatcher);

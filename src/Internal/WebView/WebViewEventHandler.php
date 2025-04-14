@@ -20,7 +20,7 @@ use Serafim\Boson\WebView\Event\WebViewNavigating;
 use Serafim\Boson\WebView\Event\WebViewTitleChanged;
 use Serafim\Boson\WebView\Event\WebViewTitleChanging;
 use Serafim\Boson\WebView\State;
-use Serafim\Boson\WebView\Uri\UriParserInterface;
+use Serafim\Boson\WebView\Url\UrlParserInterface;
 use Serafim\Boson\WebView\WebView;
 
 /**
@@ -52,7 +52,7 @@ final class WebViewEventHandler
         private readonly LibSaucer $api,
         private readonly WebView $webview,
         private readonly EventDispatcherInterface $dispatcher,
-        private readonly UriParserInterface $uriParser,
+        private readonly UrlParserInterface $uriParser,
         private State &$state,
     ) {
         $this->handlers = $this->createEventHandlers();
@@ -111,7 +111,7 @@ final class WebViewEventHandler
         $this->changeState(State::Navigating);
 
         $uri = $this->uriParser->parse(
-            uri: \FFI::string($this->api->saucer_navigation_url($navigation)),
+            url: \FFI::string($this->api->saucer_navigation_url($navigation)),
         );
 
         $intention = $this->dispatcher->dispatch(new WebViewNavigating(

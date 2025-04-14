@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\WebView\Uri;
+namespace Serafim\Boson\WebView\Url;
 
 /**
  * @phpstan-type ComponentsArrayType array{
@@ -16,7 +16,7 @@ namespace Serafim\Boson\WebView\Uri;
  *     fragment: string|null
  * }
  */
-final readonly class NativeUriParser implements UriParserInterface
+final readonly class NativeUrlParser implements UrlParserInterface
 {
     /**
      * Default URI component values.
@@ -34,9 +34,9 @@ final readonly class NativeUriParser implements UriParserInterface
         'fragment' => null,
     ];
 
-    public function parse(string $uri): Uri
+    public function parse(string $url): Url
     {
-        $components = \parse_url($uri);
+        $components = \parse_url($url);
 
         if ($components === false) {
             $components = self::URI_COMPONENTS;
@@ -44,7 +44,7 @@ final readonly class NativeUriParser implements UriParserInterface
             $components += self::URI_COMPONENTS;
         }
 
-        return self::createFromComponents($uri, $components);
+        return self::createFromComponents($url, $components);
     }
 
     private static function formatPath(string $path): string
@@ -58,9 +58,9 @@ final readonly class NativeUriParser implements UriParserInterface
     /**
      * @param ComponentsArrayType $components
      */
-    private static function createFromComponents(string $uri, array $components): Uri
+    private static function createFromComponents(string $uri, array $components): Url
     {
-        return new Uri(
+        return new Url(
             scheme: $components['scheme'],
             user: $components['user'],
             password: $components['pass'],
