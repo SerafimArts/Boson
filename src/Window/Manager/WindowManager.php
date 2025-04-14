@@ -38,9 +38,15 @@ final class WindowManager implements
         $this->windows = new \SplObjectStorage();
 
         $this->events = new DelegateEventListener($dispatcher);
-        $this->events->addEventListener(WindowClosed::class, $this->onWindowClosed(...));
+
+        $this->registerDefaultEventListeners();
 
         $this->default = $this->create($info);
+    }
+
+    private function registerDefaultEventListeners(): void
+    {
+        $this->events->addEventListener(WindowClosed::class, $this->onWindowClosed(...));
     }
 
     private function onWindowClosed(WindowClosed $event): void
