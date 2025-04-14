@@ -11,7 +11,7 @@ final class WebViewNavigated extends WebViewEvent
 {
     public function __construct(
         WebView $subject,
-        public readonly Url $uri,
+        public readonly Url $url,
         ?int $time = null,
     ) {
         parent::__construct($subject, $time);

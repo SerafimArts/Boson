@@ -20,7 +20,7 @@ final class WebView implements WebViewInterface
 {
     public Url $url {
         get {
-            return $this->uriParser->parse($this->urlString);
+            return $this->urlParser->parse($this->urlString);
         }
         set(Url|\Stringable|string $value) {
             $this->api->saucer_webview_set_url($this->ptr, (string) $value);
@@ -54,7 +54,7 @@ final class WebView implements WebViewInterface
     /**
      * Contains WebView URI parser.
      */
-    private UrlParserInterface $uriParser;
+    private UrlParserInterface $urlParser;
 
     /**
      * Contains unique index filename
@@ -80,7 +80,7 @@ final class WebView implements WebViewInterface
         public readonly WebViewCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
-        $this->uriParser = new MemoizedUrlParser(
+        $this->urlParser = new MemoizedUrlParser(
             delegate: new NativeUrlParser(),
         );
 
@@ -93,7 +93,7 @@ final class WebView implements WebViewInterface
             api: $this->api,
             webview: $this,
             dispatcher: $this->events,
-            uriParser: $this->uriParser,
+            urlParser: $this->urlParser,
             state: $this->state,
         );
     }

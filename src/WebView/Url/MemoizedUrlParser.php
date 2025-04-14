@@ -9,12 +9,12 @@ final class MemoizedUrlParser implements UrlParserInterface
     /**
      * Contains last parsed input uri string.
      */
-    private ?string $lastUri = null;
+    private ?string $lastUrlString = null;
 
     /**
      * Contains last parsed output uri instance.
      */
-    private ?Url $lastParsedUri = null;
+    private ?Url $lastUrl = null;
 
     public function __construct(
         private readonly UrlParserInterface $delegate,
@@ -22,12 +22,12 @@ final class MemoizedUrlParser implements UrlParserInterface
 
     public function parse(string $url): Url
     {
-        if ($url === $this->lastUri && $this->lastParsedUri !== null) {
-            return $this->lastParsedUri;
+        if ($url === $this->lastUrlString && $this->lastUrl !== null) {
+            return $this->lastUrl;
         }
 
-        $this->lastUri = $url;
+        $this->lastUrlString = $url;
 
-        return $this->lastParsedUri = $this->delegate->parse($url);
+        return $this->lastUrl = $this->delegate->parse($url);
     }
 }
