@@ -12,7 +12,7 @@ namespace Serafim\Boson\Internal\Memory;
  */
 final readonly class OnDestructor
 {
-    private function __construct(
+    public function __construct(
         /**
          * @var TEntry
          */
@@ -22,19 +22,6 @@ final readonly class OnDestructor
          */
         private \Closure $onRelease,
     ) {}
-
-    /**
-     * @template TArgEntry of object
-     *
-     * @param TArgEntry $entry
-     * @param callable(TArgEntry):void $onRelease
-     *
-     * @return self<TArgEntry>
-     */
-    public static function create(object $entry, callable $onRelease): self
-    {
-        return new self($entry, $onRelease(...));
-    }
 
     public function __destruct()
     {

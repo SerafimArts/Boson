@@ -8,8 +8,6 @@ interface EventListenerProviderInterface
 {
     /**
      * Contains local event listeners.
-     *
-     * @readonly
      */
     public EventListenerInterface $events { get; }
 }

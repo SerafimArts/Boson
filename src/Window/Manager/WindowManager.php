@@ -13,13 +13,13 @@ use Serafim\Boson\Window\WindowCreateInfo;
 use Serafim\Boson\Window\WindowInterface;
 
 /**
- * @template-extends \Traversable<array-key, WindowInterface>
+ * @template-implements \IteratorAggregate<array-key, WindowInterface>
  */
 final class WindowManager implements
     WindowManagerInterface,
     \IteratorAggregate
 {
-    public WindowInterface $default {
+    public ?WindowInterface $default {
         get {
             $first = \reset($this->windows);
 

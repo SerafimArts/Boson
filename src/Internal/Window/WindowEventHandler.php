@@ -41,6 +41,8 @@ final readonly class WindowEventHandler
 
     /**
      * Contains managed struct with event handlers.
+     *
+     * @phpstan-var CSaucerWindowEventsStruct
      */
     private CData $handlers;
 

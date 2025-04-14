@@ -20,8 +20,8 @@ namespace Serafim\Boson\Internal\Memory;
  * ));
  * ```
  *
- * @template TKey of object
- * @template TValue of object
+ * @template TKey of object = object
+ * @template TValue of object = object
  * @template-implements \IteratorAggregate<TKey, TValue>
  *
  * @internal this is an internal library class, please do not use it in your code
@@ -40,17 +40,15 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @template TArgKey of TKey
-     *
      * @param TKey $key
      * @param TValue $value
-     * @param callable(TValue):void $onRelease
+     * @param \Closure(TValue):void $onRelease
      *
-     * @return TArgKey
+     * @return TKey
      */
-    public function watch(object $key, object $value, callable $onRelease): object
+    public function watch(object $key, object $value, \Closure $onRelease): object
     {
-        $this->memory[$key] = OnDestructor::create($value, $onRelease);
+        $this->memory[$key] = new OnDestructor($value, $onRelease);
 
         return $key;
     }
@@ -62,6 +60,10 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
      */
     public function find(object $key): ?object
     {
+        /**
+         * @var TValue|null
+         * @phpstan-ignore-next-line : PHPStan does not support WeakMaps correctly
+         */
         return $this->memory[$key]?->entry;
     }
 

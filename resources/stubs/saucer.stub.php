@@ -701,6 +701,11 @@ final readonly class LibSaucer
     /**
      * @param SaucerHandleType $handle
      */
+    public function saucer_webview_clear_embedded(CData $handle): void {}
+
+    /**
+     * @param SaucerHandleType $handle
+     */
     public function saucer_webview_clear_embedded_file(CData $handle, string $file): void {}
 
     /**

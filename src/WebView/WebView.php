@@ -66,6 +66,8 @@ final class WebView implements WebViewInterface
     /**
      * Contains an internal bridge between system {@see LibSaucer} events
      * and the PSR {@see WebView::$events} dispatcher.
+     *
+     * @phpstan-ignore property.onlyWritten
      */
     private readonly WebViewEventHandler $handler;
 

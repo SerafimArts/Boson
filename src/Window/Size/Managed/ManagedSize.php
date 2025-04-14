@@ -24,6 +24,7 @@ abstract class ManagedSize implements MutableSizeInterface
         get {
             $this->syncSizeValues();
 
+            /** @var int<0, 2147483647> */
             return $this->unmanagedWidthValue->cdata;
         }
         set {
@@ -40,6 +41,7 @@ abstract class ManagedSize implements MutableSizeInterface
         get {
             $this->syncSizeValues();
 
+            /** @var int<0, 2147483647> */
             return $this->unmanagedHeightValue->cdata;
         }
         set {

@@ -19,7 +19,7 @@ namespace Serafim\Boson\Internal\Memory;
  * ));
  * ```
  *
- * @template TEntry of object
+ * @template TEntry of object = object
  * @template-implements \IteratorAggregate<array-key, TEntry>
  *
  * @internal this is an internal library class, please do not use it in your code
@@ -38,16 +38,14 @@ final readonly class ReactiveWeakSet implements \IteratorAggregate, \Countable
     }
 
     /**
-     * @template TArgEntry of TEntry
+     * @param TEntry $entry
+     * @param \Closure(TEntry):void $onRelease
      *
-     * @param TArgEntry $entry
-     * @param callable(TArgEntry):void $onRelease
-     *
-     * @return TArgEntry
+     * @return TEntry
      */
-    public function watch(object $entry, callable $onRelease): object
+    public function watch(object $entry, \Closure $onRelease): object
     {
-        $this->memory[$entry] = OnDestructor::create($entry, $onRelease);
+        $this->memory[$entry] = new OnDestructor($entry, $onRelease);
 
         return $entry;
     }

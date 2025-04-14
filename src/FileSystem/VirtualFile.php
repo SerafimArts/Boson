@@ -96,6 +96,10 @@ final class VirtualFile
             }
         }
 
+        if ($segments === []) {
+            throw new \InvalidArgumentException('File name must not be empty');
+        }
+
         return \implode(self::DEFAULT_VFS_PATH_DELIMITER, $segments);
     }
 

@@ -56,10 +56,7 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
     {
         return $this->loadEmbedding(
             name: $name,
-            embedding: $this->embeddings->load(
-                data: $data,
-                mime: $mime,
-            ),
+            embedding: $this->embeddings->load($data, $mime),
         );
     }
 
@@ -67,10 +64,7 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
     {
         return $this->loadEmbedding(
             name: $name,
-            embedding: $this->embeddings->loadFromPathname(
-                pathname: $pathname,
-                mime: $mime,
-            ),
+            embedding: $this->embeddings->loadFromPathname($pathname, $mime),
         );
     }
 

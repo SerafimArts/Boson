@@ -10,7 +10,7 @@ use Serafim\Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 /**
  * Information (configuration) about creating a new webview object.
  */
-readonly class WebViewCreateInfo
+final readonly class WebViewCreateInfo
 {
     /**
      * Path to directory with temporary files (WebView configuration
@@ -61,7 +61,7 @@ readonly class WebViewCreateInfo
      *       ]);
      *       ```
      *
-     * @var array<non-empty-string, string|float|bool|int>
+     * @var array<non-empty-string, string|float|bool|int|list<string|float|bool|int>>
      */
     public array $flags;
 
