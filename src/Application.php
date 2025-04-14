@@ -18,6 +18,7 @@ use Serafim\Boson\Internal\Application\ThreadsCountResolver;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\WebView\WebViewInterface;
+use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
 use Serafim\Boson\Window\WindowInterface;
 
@@ -71,6 +72,15 @@ final class Application implements ApplicationInterface
             info: $this->info->window,
             dispatcher: $this->events,
         );
+
+        $this->events->addEventListener(WindowClosed::class, $this->onWindowClose(...));
+    }
+
+    private function onWindowClose(): void
+    {
+        if ($this->info->quitOnClose && $this->windows->count() === 0) {
+            $this->quit();
+        }
     }
 
     private function createEventListener(?PsrEventDispatcherInterface $dispatcher): EventListener
@@ -141,8 +151,8 @@ final class Application implements ApplicationInterface
      */
     public function quit(): void
     {
-        $this->api->saucer_application_quit($this->id->ptr);
         $this->isRunning = false;
+        $this->api->saucer_application_quit($this->id->ptr);
     }
 
     /**
@@ -184,10 +194,10 @@ final class Application implements ApplicationInterface
 
         $this->registerQuitHandlersIfNotRegistered();
 
-        while ($this->isRunning) {
+        do {
             $this->api->saucer_application_run_once($this->id->ptr);
             \usleep(1);
-        }
+        } while ($this->isRunning);
     }
 
     public function __destruct()

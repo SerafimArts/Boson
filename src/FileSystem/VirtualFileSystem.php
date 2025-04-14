@@ -8,7 +8,7 @@ use Serafim\Boson\FileSystem\Embedded\EmbeddedStorage;
 use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Saucer\SaucerLaunch;
-use Serafim\Boson\Window\WindowId;
+use Serafim\Boson\Window\Window;
 
 /**
  * @template-implements \IteratorAggregate<array-key, VirtualFile>
@@ -24,7 +24,7 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
 
     public function __construct(
         private readonly LibSaucer $api,
-        private readonly WindowId $windowId,
+        private readonly Window $window,
     ) {
         $this->embeddings = new EmbeddedStorage($this->api);
     }
@@ -76,7 +76,7 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
         $name = VirtualFile::formatName($name);
 
         $this->api->saucer_webview_embed_file(
-            $this->windowId->ptr,
+            $this->window->id->ptr,
             $name,
             $embedding->id->ptr,
             SaucerLaunch::SAUCER_LAUNCH_SYNC,
@@ -84,7 +84,7 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
 
         return $this->files[$name] = new VirtualFile(
             api: $this->api,
-            windowId: $this->windowId,
+            window: $this->window,
             name: $name,
             embedding: $embedding,
         );
@@ -102,6 +102,12 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
 
     public function __destruct()
     {
-        $this->api->saucer_webview_clear_embedded($this->windowId->ptr);
+        // The window pointer may be invalid if the
+        // window is already closed.
+        if ($this->window->isClosed) {
+            return;
+        }
+
+        $this->api->saucer_webview_clear_embedded($this->window->id->ptr);
     }
 }

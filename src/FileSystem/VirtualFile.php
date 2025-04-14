@@ -6,6 +6,7 @@ namespace Serafim\Boson\FileSystem;
 
 use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
+use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowId;
 
 final class VirtualFile
@@ -57,7 +58,7 @@ final class VirtualFile
          * An identifier of the window (and webview) that owns
          * the specified file.
          */
-        private readonly WindowId $windowId,
+        private readonly Window $window,
         /**
          * The name of the file, unique within the window (webview).
          *
@@ -108,11 +109,21 @@ final class VirtualFile
      */
     public function unmount(): void
     {
-        $this->api->saucer_webview_clear_embedded_file($this->windowId->ptr, $this->name);
+        if ($this->window->isClosed) {
+            throw new \LogicException('Could not unmount file, window is closed');
+        }
+
+        $this->api->saucer_webview_clear_embedded_file($this->window->id->ptr, $this->name);
     }
 
     public function __destruct()
     {
+        // The window pointer may be invalid if the
+        // window is already closed.
+        if ($this->window->isClosed) {
+            return;
+        }
+
         $this->unmount();
     }
 }

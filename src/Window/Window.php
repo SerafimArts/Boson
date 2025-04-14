@@ -25,7 +25,7 @@ final class Window implements WindowInterface
 {
     public readonly WindowId $id;
 
-    public readonly VirtualFileSystemInterface $fs;
+    public private(set) VirtualFileSystemInterface $fs;
 
     public readonly WebView $webview;
 
@@ -109,6 +109,8 @@ final class Window implements WindowInterface
         }
     }
 
+    public private(set) bool $isClosed = false;
+
     public readonly DelegateEventListener $events;
 
     /**
@@ -135,7 +137,7 @@ final class Window implements WindowInterface
         $this->min = new ManagedWindowMinBounds($this->api, $this->id->ptr);
         $this->max = new ManagedWindowMaxBounds($this->api, $this->id->ptr);
         $this->webview = new WebView($this->api, $this, $this->info->webview, $this->events);
-        $this->fs = new VirtualFileSystem($this->api, $this->id);
+        $this->fs = new VirtualFileSystem($this->api, $this);
         $this->handler = new WindowEventHandler($this->api, $this, $this->events);
 
         if ($this->info->visible) {
@@ -254,11 +256,17 @@ final class Window implements WindowInterface
 
     public function close(): void
     {
+        $this->isClosed = true;
         $this->api->saucer_window_close($this->id->ptr);
     }
 
     public function __destruct()
     {
+        // The filesystem dependency must be
+        // destroyed BEFORE the window.
+        unset($this->fs);
+
+        $this->isClosed = true;
         $this->api->saucer_free($this->id->ptr);
     }
 }
