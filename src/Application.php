@@ -8,6 +8,7 @@ use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
+use Serafim\Boson\Exception\NoDefaultWindowException;
 use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\Internal\Application\DebugEnvResolver;
 use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
@@ -17,91 +18,50 @@ use Serafim\Boson\Internal\Application\ThreadsCountResolver;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\WebView\WebViewInterface;
-use Serafim\Boson\Window\Manager\WindowFactoryInterface;
 use Serafim\Boson\Window\Manager\WindowManager;
-use Serafim\Boson\Window\Manager\WindowManagerInterface;
 use Serafim\Boson\Window\WindowInterface;
 
-final class Application
+final class Application implements ApplicationInterface
 {
-    /**
-     * An application identifier.
-     */
     public readonly ApplicationId $id;
 
-    /**
-     * If the value is set to {@see true}, then debugging is enabled
-     * or disabled instead.
-     */
-    public readonly bool $debug;
+    public readonly WindowManager $windows;
+
+    public readonly EventListener $events;
+
+    public WindowInterface $window {
+        get => $this->windows->default
+            ?? throw NoDefaultWindowException::becauseNoDefaultWindow();
+    }
+
+    public WebViewInterface $webview {
+        get => $this->window->webview;
+    }
+
+    public VirtualFileSystemInterface $fs {
+        get => $this->window->fs;
+    }
+
+    public readonly bool $isDebug;
+
+    public private(set) bool $isRunning = false;
 
     /**
      * Shared WebView API library.
-     *
-     * @internal If you see this, I forgot to make this field private
-     *           while debugging the app =)
      */
-    public readonly LibSaucer $api;
-
-    /**
-     * Gets application running state.
-     */
-    public private(set) bool $running = false;
+    private readonly LibSaucer $api;
 
     /**
      * Gets status of quit handler registration.
      */
     private bool $quitHandlerIsRegistered = false;
 
-    /**
-     * Contains windows list and methods for working with windows.
-     */
-    public readonly WindowManagerInterface&WindowFactoryInterface $windows;
-
-    /**
-     * Gets default (main) application Window.
-     *
-     * Note: Property will throw an {@see \LogicException} in case the default
-     *       Window was already closed and removed earlier.
-     */
-    public WindowInterface $window {
-        get => $this->windows->default ?? throw new \LogicException(
-            message: 'There is no default window available,'
-                . ' perhaps it was removed (closed) earlier',
-        );
-    }
-
-    /**
-     * Gets WebView of the default (main) application Window.
-     *
-     * Note: Property will throw an {@see \LogicException} in case the default
-     *       Window was already closed and removed earlier.
-     */
-    public WebViewInterface $webview {
-        get => $this->window->webview;
-    }
-
-    /**
-     * Gets VFS of the default (main) application window.
-     *
-     * Note: Property will throw an {@see \LogicException} in case the default
-     *       Window was already closed and removed earlier.
-     */
-    public VirtualFileSystemInterface $fs {
-        get => $this->window->fs;
-    }
-
-    /**
-     * Contains application aware event subscriptions.
-     */
-    private readonly EventListener $events;
-
     public function __construct(
         public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
         ?PsrEventDispatcherInterface $dispatcher = null,
     ) {
         $this->api = new LibSaucer($this->info->library);
-        $this->debug = DebugEnvResolver::resolve($this->info->debug);
+        $this->isDebug = DebugEnvResolver::resolve($this->info->debug);
         $this->events = $this->createEventListener($dispatcher);
         $this->id = $this->createApplicationId($this->info->name, $this->info->threads);
 
@@ -182,7 +142,7 @@ final class Application
     public function quit(): void
     {
         $this->api->saucer_application_quit($this->id->ptr);
-        $this->running = false;
+        $this->isRunning = false;
     }
 
     /**
@@ -216,15 +176,15 @@ final class Application
      */
     public function run(): void
     {
-        if ($this->running) {
+        if ($this->isRunning) {
             return;
         }
 
-        $this->running = true;
+        $this->isRunning = true;
 
         $this->registerQuitHandlersIfNotRegistered();
 
-        while ($this->running) {
+        while ($this->isRunning) {
             $this->api->saucer_application_run_once($this->id->ptr);
             \usleep(1);
         }

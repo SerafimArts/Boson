@@ -23,24 +23,12 @@ use Serafim\Boson\Window\Size\SizeInterface;
 
 final class Window implements WindowInterface
 {
-    /**
-     * See {@see WindowInterface::$id} property description.
-     */
     public readonly WindowId $id;
 
-    /**
-     * See {@see WindowInterface::$fs} property description.
-     */
     public readonly VirtualFileSystemInterface $fs;
 
-    /**
-     * See {@see WindowInterface::$webview} property description.
-     */
     public readonly WebView $webview;
 
-    /**
-     * See {@see WindowInterface::$title} property description.
-     */
     public string $title {
         get => $this->title ??= $this->getCurrentWindowTitle();
         set {
@@ -48,9 +36,6 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$size} property description.
-     */
     public MutableSizeInterface $size {
         get => $this->size;
         set(SizeInterface $size) {
@@ -64,9 +49,6 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$min} property description.
-     */
     public MutableSizeInterface $min {
         get => $this->min;
         set(SizeInterface $size) {
@@ -80,9 +62,6 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$max} property description.
-     */
     public MutableSizeInterface $max {
         get => $this->max;
         set(SizeInterface $size) {
@@ -96,9 +75,6 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$isDarkModeEnabled} property description.
-     */
     public bool $isDarkModeEnabled {
         get {
             return $this->isDarkModeEnabled
@@ -112,9 +88,6 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$isVisible} property description.
-     */
     public bool $isVisible {
         get => $this->api->saucer_window_visible($this->id->ptr);
         set {
@@ -126,9 +99,13 @@ final class Window implements WindowInterface
         }
     }
 
-    /**
-     * See {@see WindowInterface::$events} property description.
-     */
+    public bool $isDecorated {
+        get => $this->api->saucer_window_decorations($this->id->ptr);
+        set {
+            $this->api->saucer_window_set_decorations($this->id->ptr, $value);
+        }
+    }
+
     public readonly DelegateEventListener $events;
 
     /**
@@ -142,13 +119,7 @@ final class Window implements WindowInterface
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
-        /**
-         * See {@see WindowInterface::$app} property description.
-         */
         public readonly Application $app,
-        /**
-         * See {@see WindowInterface::$info} property description.
-         */
         public readonly WindowCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
@@ -208,16 +179,24 @@ final class Window implements WindowInterface
                 $this->api->saucer_webview_set_force_dark_mode($handle, $info->darkMode);
             }
 
+            if ($info->resizable === false) {
+                $this->api->saucer_window_set_resizable($handle, false);
+            }
+
+            if ($info->decorated === false) {
+                $this->api->saucer_window_set_decorations($handle, false);
+            }
+
             $this->api->saucer_window_set_size($handle, $info->width, $info->height);
 
             // Enable context menu in case of the corresponding value was passed
             // explicitly to the create info options or debug mode was enabled.
-            $isContextMenuEnabled = $info->webview->isContextMenuEnabled ?? $this->app->debug;
+            $isContextMenuEnabled = $info->webview->isContextMenuEnabled ?? $this->app->isDebug;
             $this->api->saucer_webview_set_context_menu($handle, $isContextMenuEnabled);
 
             // Enable dev tools in case of the corresponding value was passed
             // explicitly to the create info options or debug mode was enabled.
-            $isDevToolsEnabled = $info->webview->isDevToolsEnabled ?? $this->app->debug;
+            $isDevToolsEnabled = $info->webview->isDevToolsEnabled ?? $this->app->isDebug;
             $this->api->saucer_webview_set_dev_tools($handle, $isDevToolsEnabled);
 
             return $handle;

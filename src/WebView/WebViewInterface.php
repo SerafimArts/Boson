@@ -12,43 +12,23 @@ use Serafim\Boson\Window\WindowInterface;
 interface WebViewInterface
 {
     /**
-     * An information DTO about the WebView with which it was created.
-     *
-     * @readonly
+     * Gets information DTO about the webview with which it was created.
      */
-    public WebViewCreateInfo $info {
-        /**
-         * Gets WebView creation info.
-         */
-        get;
-    }
+    public WebViewCreateInfo $info { get; }
 
     /**
-     * An application window instance to which this WebView instance belongs.
-     *
-     * @readonly
+     * Gets parent application window instance to which this webview instance belongs.
      */
-    public WindowInterface $window {
-        /**
-         * Gets WebView`s application window instance.
-         */
-        get;
-    }
+    public WindowInterface $window { get; }
 
     /**
-     * Provides access to WebView event and intention subscriptions.
-     *
-     * @readonly
+     * Gets access to the listener of the webview events
+     * and intention subscriptions.
      */
-    public EventListenerInterface $events {
-        /**
-         * Gets the event listener object.
-         */
-        get;
-    }
+    public EventListenerInterface $events { get; }
 
     /**
-     * Contains WebView URI instance.
+     * Contains webview URI instance.
      */
     public Uri $uri {
         /**
@@ -62,7 +42,7 @@ interface WebViewInterface
          */
         get;
         /**
-         * Updates URI of the WebView.
+         * Updates URI of the webview.
          *
          * This can also be considered as navigation to a specific web page.
          *
@@ -86,9 +66,7 @@ interface WebViewInterface
     }
 
     /**
-     * Contains WebView document status.
-     *
-     * @readonly
+     * Gets webview status.
      */
     public State $state { get; }
 

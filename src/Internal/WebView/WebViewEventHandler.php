@@ -50,7 +50,7 @@ final class WebViewEventHandler
 
     public function __construct(
         private readonly LibSaucer $api,
-        private readonly WebView $webView,
+        private readonly WebView $webview,
         private readonly EventDispatcherInterface $dispatcher,
         private readonly UriParserInterface $uriParser,
         private State &$state,
@@ -81,7 +81,7 @@ final class WebViewEventHandler
 
     public function listenEvents(): void
     {
-        $ptr = $this->webView->window->id->ptr;
+        $ptr = $this->webview->window->id->ptr;
 
         $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_DOM_READY, $this->handlers->onDomReady);
         $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_NAVIGATED, $this->handlers->onNavigated);
@@ -94,14 +94,14 @@ final class WebViewEventHandler
     private function onDomReady(CData $_): void
     {
         $this->dispatcher->dispatch(new WebViewDomReady(
-            subject: $this->webView,
+            subject: $this->webview,
         ));
     }
 
     private function onNavigated(CData $_, string $url): void
     {
         $this->dispatcher->dispatch(new WebViewNavigated(
-            subject: $this->webView,
+            subject: $this->webview,
             uri: $this->uriParser->parse($url),
         ));
     }
@@ -115,7 +115,7 @@ final class WebViewEventHandler
         );
 
         $intention = $this->dispatcher->dispatch(new WebViewNavigating(
-            subject: $this->webView,
+            subject: $this->webview,
             uri: $uri,
             isNewWindow: $this->api->saucer_navigation_new_window($navigation),
             isRedirection: $this->api->saucer_navigation_redirection($navigation),
@@ -131,7 +131,7 @@ final class WebViewEventHandler
 
     private function onFaviconChanged(CData $ptr, CData $icon): void
     {
-        $intention = $this->dispatcher->dispatch(new WebViewFaviconChanging($this->webView));
+        $intention = $this->dispatcher->dispatch(new WebViewFaviconChanging($this->webview));
 
         try {
             if ($intention->isCancelled) {
@@ -139,7 +139,7 @@ final class WebViewEventHandler
             }
 
             $this->api->saucer_window_set_icon($ptr, $icon);
-            $this->dispatcher->dispatch(new WebViewFaviconChanged($this->webView));
+            $this->dispatcher->dispatch(new WebViewFaviconChanged($this->webview));
         } finally {
             $this->api->saucer_icon_free($icon);
         }
@@ -148,7 +148,7 @@ final class WebViewEventHandler
     private function onTitleChanged(CData $ptr, string $title): void
     {
         $intention = $this->dispatcher->dispatch(new WebViewTitleChanging(
-            subject: $this->webView,
+            subject: $this->webview,
             title: $title,
         ));
 
@@ -157,19 +157,19 @@ final class WebViewEventHandler
         }
 
         $this->api->saucer_window_set_title($ptr, $title);
-        $this->dispatcher->dispatch(new WebViewTitleChanged($this->webView, $title));
+        $this->dispatcher->dispatch(new WebViewTitleChanged($this->webview, $title));
     }
 
     private function onLoad(CData $_, CData $state): void
     {
         if ($state[0] === SaucerState::SAUCER_STATE_STARTED) {
             $this->changeState(State::Loading);
-            $this->dispatcher->dispatch(new WebViewLoading($this->webView));
+            $this->dispatcher->dispatch(new WebViewLoading($this->webview));
 
             return;
         }
 
         $this->changeState(State::Ready);
-        $this->dispatcher->dispatch(new WebViewLoaded($this->webView));
+        $this->dispatcher->dispatch(new WebViewLoaded($this->webview));
     }
 }

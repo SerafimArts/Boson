@@ -1,12 +1,6 @@
 parameters:
 	ignoreErrors:
 		-
-			message: '#^Class Serafim\\Boson\\Internal\\Saucer\\LibSaucer does not have a constructor and must be instantiated without any parameters\.$#'
-			identifier: new.noConstructor
-			count: 1
-			path: src/Application.php
-
-		-
 			message: '#^Method Serafim\\Boson\\Dispatcher\\DelegateEventListener\:\:dispatch\(\) should return TArgEvent of object but returns object\.$#'
 			identifier: return.type
 			count: 1

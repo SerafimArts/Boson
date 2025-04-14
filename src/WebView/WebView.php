@@ -18,9 +18,6 @@ use Serafim\Boson\Window\Window;
 
 final class WebView implements WebViewInterface
 {
-    /**
-     * See {@see WebViewInterface::$uri} property description.
-     */
     public Uri $uri {
         get {
             return $this->uriParser->parse($this->urlString);
@@ -30,14 +27,8 @@ final class WebView implements WebViewInterface
         }
     }
 
-    /**
-     * See {@see WebViewInterface::$events} property description.
-     */
     public readonly DelegateEventListener $events;
 
-    /**
-     * See {@see WebViewInterface::$state} property description.
-     */
     public private(set) State $state = State::Loading;
 
     /**
@@ -83,13 +74,7 @@ final class WebView implements WebViewInterface
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
-        /**
-         * Provides parent Window instance.
-         */
         public readonly Window $window,
-        /**
-         * WebView creation info DTO.
-         */
         public readonly WebViewCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
@@ -104,7 +89,7 @@ final class WebView implements WebViewInterface
 
         $this->handler = new WebViewEventHandler(
             api: $this->api,
-            webView: $this,
+            webview: $this,
             dispatcher: $this->events,
             uriParser: $this->uriParser,
             state: $this->state,
