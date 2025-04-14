@@ -6,6 +6,8 @@ namespace Serafim\Boson\Internal\Saucer;
 
 use FFI\Env\Runtime;
 use Serafim\Boson\Environment\Architecture;
+use Serafim\Boson\Environment\Exception\UnsupportedArchitectureException;
+use Serafim\Boson\Environment\Exception\UnsupportedOperatingSystemException;
 use Serafim\Boson\Environment\OperatingSystem;
 
 /**
@@ -36,29 +38,17 @@ final readonly class LibSaucer
             lib: $library ?? match ($os = OperatingSystem::current()) {
                 OperatingSystem::Windows => match ($arch = Architecture::current()) {
                     Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-windows-amd64.dll',
-                    default => throw new \LogicException(\sprintf(
-                        'Unsupported CPU architecture %s',
-                        $arch->name,
-                    )),
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
                 OperatingSystem::Linux => match ($arch = Architecture::current()) {
                     Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-linux-amd64.dll',
-                    default => throw new \LogicException(\sprintf(
-                        'Unsupported CPU architecture %s',
-                        $arch->name,
-                    )),
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
                 OperatingSystem::MacOS => match ($arch = Architecture::current()) {
                     Architecture::Arm64 => self::DEFAULT_BIN_DIR . '/libboson-darwin-arm64.dylib',
-                    default => throw new \LogicException(\sprintf(
-                        'Unsupported CPU architecture %s',
-                        $arch->name,
-                    )),
+                    default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
-                default => throw new \LogicException(\sprintf(
-                    'Unsupported OS %s',
-                    $os->name,
-                )),
+                default => throw UnsupportedOperatingSystemException::becauseOperatingSystemIsInvalid($os->name),
             },
         );
     }
