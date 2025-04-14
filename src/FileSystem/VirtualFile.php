@@ -7,7 +7,6 @@ namespace Serafim\Boson\FileSystem;
 use Serafim\Boson\FileSystem\Embedded\Embedding;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Window;
-use Serafim\Boson\Window\WindowId;
 
 final class VirtualFile
 {
