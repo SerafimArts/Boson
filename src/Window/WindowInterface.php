@@ -76,6 +76,8 @@ interface WindowInterface
 
     /**
      * Provides access to window event and intention subscriptions.
+     *
+     * @readonly
      */
     public EventListenerInterface $events {
         /**
