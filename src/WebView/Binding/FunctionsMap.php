@@ -20,7 +20,7 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
         const crypto = window.crypto || window.msCrypto;
         const saucer = window.saucer;
 
-        class __BosonRpc {
+        class BosonRpc {
             #messages = {};
 
             #generateId() {
@@ -29,14 +29,14 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
                     .join('');
             }
 
-            resolve(id, result) {
+            __resolve(id, result) {
                 if (this.#messages[id]) {
                     this.#messages[id].resolve(result);
                     delete this.#messages[id];
                 }
             }
 
-            reject(id, error) {
+            __reject(id, error) {
                 if (this.#messages[id]) {
                     this.#messages[id].reject(error);
                     delete this.#messages[id];
@@ -57,15 +57,15 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
         }
 
         window.boson = window.boson || {};
-        boson.rpc = new __BosonRpc();
+        boson.rpc = new BosonRpc();
         JS;
 
     private const string BOSON_RESOLVING = <<<'JS'
-        window.boson.rpc.resolve("%s", %s);
+        window.boson.rpc.__resolve("%s", %s);
         JS;
 
     private const string BOSON_REJECTION = <<<'JS'
-        window.boson.rpc.reject("%s", Error(`%s`));
+        window.boson.rpc.__reject("%s", Error(`%s`));
         JS;
 
     private const string BOSON_BIND = <<<'JS'
