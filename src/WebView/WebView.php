@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView;
 
 use FFI\CData;
+use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
+use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\FunctionsMap;
 use Serafim\Boson\WebView\Scripts\ScriptsMap;
 use Serafim\Boson\WebView\Url\MemoizedUrlParser;
@@ -111,6 +113,24 @@ final class WebView implements WebViewInterface
             urlParser: $this->urlParser,
             state: $this->state,
         );
+
+        foreach ($this->info->functions as $function => $callback) {
+            $this->functions->bind($function, $callback);
+        }
+
+        foreach ($this->info->scripts as $script) {
+            $this->scripts->add($script);
+        }
+    }
+
+    public function bind(string $function, \Closure $callback): void
+    {
+        $this->functions->bind($function, $callback);
+    }
+
+    public function eval(#[Language('JavaScript')] string $code): void
+    {
+        $this->scripts->eval($code);
     }
 
     public function forward(): void
