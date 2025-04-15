@@ -70,13 +70,6 @@ final class WebView implements WebViewInterface
     private UrlParserInterface $urlParser;
 
     /**
-     * Contains unique index filename
-     *
-     * @var non-empty-string
-     */
-    private readonly string $index;
-
-    /**
      * Contains an internal bridge between system {@see LibSaucer} events
      * and the PSR {@see WebView::$events} dispatcher.
      *
@@ -98,7 +91,6 @@ final class WebView implements WebViewInterface
         );
 
         $this->events = new DelegateEventListener($dispatcher);
-        $this->index = \spl_object_hash($this) . '/index.html';
         // The WebView handle pointer is the same as the Window pointer.
         $this->ptr = $this->window->id->ptr;
 
