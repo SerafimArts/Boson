@@ -7,6 +7,8 @@ namespace Serafim\Boson\Window\Manager;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
+use Serafim\Boson\Internal\Memory\ReactiveWeakMap;
+use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Window;
@@ -27,6 +29,11 @@ final class WindowManager implements
      */
     private readonly \SplObjectStorage $windows;
 
+    /**
+     * @var ReactiveWeakSet<Window>
+     */
+    private readonly ReactiveWeakSet $memory;
+
     private readonly DelegateEventListener $events;
 
     public function __construct(
@@ -36,6 +43,7 @@ final class WindowManager implements
         EventDispatcherInterface $dispatcher,
     ) {
         $this->windows = new \SplObjectStorage();
+        $this->memory = new ReactiveWeakSet();
 
         $this->events = new DelegateEventListener($dispatcher);
 
@@ -68,6 +76,12 @@ final class WindowManager implements
             info: $info,
             dispatcher: $this->events,
         ));
+
+        $this->memory->watch($window, function (Window $window): void {
+            $this->api->saucer_webview_clear_scripts($window->id->ptr);
+            $this->api->saucer_webview_clear_embedded($window->id->ptr);
+            $this->api->saucer_free($window->id->ptr);
+        });
 
         return $window;
     }
