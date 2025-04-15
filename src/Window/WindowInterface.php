@@ -6,7 +6,6 @@ namespace Serafim\Boson\Window;
 
 use Serafim\Boson\ApplicationInterface;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
-use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\Size;
@@ -28,11 +27,6 @@ interface WindowInterface
      * Gets parent application instance to which this window belongs.
      */
     public ApplicationInterface $app { get; }
-
-    /**
-     * Get virtual filesystem belongs to the window instance.
-     */
-    public VirtualFileSystemInterface $fs { get; }
 
     /**
      * Gets child webview instance attached to the window.

@@ -9,7 +9,6 @@ use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Exception\NoDefaultWindowException;
-use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\Internal\Application\DebugEnvResolver;
 use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
@@ -37,10 +36,6 @@ final class Application implements ApplicationInterface
 
     public WebViewInterface $webview {
         get => $this->window->webview;
-    }
-
-    public VirtualFileSystemInterface $fs {
-        get => $this->window->fs;
     }
 
     public readonly bool $isDebug;

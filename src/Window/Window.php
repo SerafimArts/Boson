@@ -8,8 +8,6 @@ use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
-use Serafim\Boson\FileSystem\VirtualFileSystem;
-use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Window\WindowEventHandler;
@@ -24,8 +22,6 @@ use Serafim\Boson\Window\Size\SizeInterface;
 final class Window implements WindowInterface
 {
     public readonly WindowId $id;
-
-    public readonly VirtualFileSystemInterface $fs;
 
     public readonly WebView $webview;
 
@@ -137,7 +133,6 @@ final class Window implements WindowInterface
         $this->min = new ManagedWindowMinBounds($this->api, $this->id->ptr);
         $this->max = new ManagedWindowMaxBounds($this->api, $this->id->ptr);
         $this->webview = new WebView($this->api, $this, $this->info->webview, $this->events);
-        $this->fs = new VirtualFileSystem($this->api, $this);
         $this->handler = new WindowEventHandler($this->api, $this, $this->events);
 
         if ($this->info->visible) {
