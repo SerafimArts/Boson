@@ -10,10 +10,14 @@ namespace Serafim\Boson\Dispatcher\Subscription;
  */
 class Subscription implements SubscriptionInterface
 {
-    /**
-     * @param class-string<T> $name
-     */
     public function __construct(
+        /**
+         * @var array-key
+         */
+        public readonly int|string $id,
+        /**
+         * @var class-string<T>
+         */
         public readonly string $name,
     ) {}
 }

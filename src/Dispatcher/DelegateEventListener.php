@@ -10,7 +10,9 @@ final class DelegateEventListener extends EventListener
 {
     public function __construct(
         private readonly PsrEventDispatcherInterface $delegate,
-    ) {}
+    ) {
+        parent::__construct();
+    }
 
     public function dispatch(object $event): object
     {
