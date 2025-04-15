@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView;
 
-use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\WebView\Binding\FunctionsMapInterface;
 use Serafim\Boson\WebView\Scripts\ScriptsMapInterface;
