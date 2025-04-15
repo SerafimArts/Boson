@@ -7,7 +7,7 @@ namespace Serafim\Boson\Window;
 use Serafim\Boson\ApplicationInterface;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
-use Serafim\Boson\WebView\WebView;
+use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\Size;
 use Serafim\Boson\Window\Size\SizeInterface;
@@ -37,7 +37,7 @@ interface WindowInterface
     /**
      * Gets child webview instance attached to the window.
      */
-    public WebView $webview { get; }
+    public WebViewInterface $webview { get; }
 
     /**
      * Gets access to the listener of the window events

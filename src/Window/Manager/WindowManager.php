@@ -7,7 +7,6 @@ namespace Serafim\Boson\Window\Manager;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
-use Serafim\Boson\Internal\Memory\ReactiveWeakMap;
 use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Event\WindowClosed;
