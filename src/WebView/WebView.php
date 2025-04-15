@@ -10,7 +10,6 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
-use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\FunctionsMap;
 use Serafim\Boson\WebView\Scripts\ScriptsMap;
 use Serafim\Boson\WebView\Url\MemoizedUrlParser;
