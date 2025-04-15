@@ -34,15 +34,15 @@ final class WebViewEventHandler
      * @var non-empty-string
      */
     private const string HANDLER_STRUCT = <<<'CDATA'
-                             struct {
-                                 void (*onDomReady)(const saucer_handle *);
-                                 void (*onNavigated)(const saucer_handle *, const char *);
-                                 SAUCER_POLICY (*onNavigating)(const saucer_handle *, const saucer_navigation *);
-                                 void (*onFaviconChanged)(const saucer_handle *, const saucer_icon *);
-                                 void (*onTitleChanged)(const saucer_handle *, const char *);
-                                 void (*onLoad)(const saucer_handle *, const SAUCER_STATE *);
-                             }
-                             CDATA;
+        struct {
+            void (*onDomReady)(const saucer_handle *);
+            void (*onNavigated)(const saucer_handle *, const char *);
+            SAUCER_POLICY (*onNavigating)(const saucer_handle *, const saucer_navigation *);
+            void (*onFaviconChanged)(const saucer_handle *, const saucer_icon *);
+            void (*onTitleChanged)(const saucer_handle *, const char *);
+            void (*onLoad)(const saucer_handle *, const SAUCER_STATE *);
+        }
+        CDATA;
 
     /**
      * Contains managed struct with event handlers.
