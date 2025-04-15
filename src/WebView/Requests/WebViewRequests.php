@@ -74,8 +74,8 @@ final class WebViewRequests implements WebViewRequestsInterface
             if (!\array_key_exists($id, $this->results)) {
                 if (($timeLeft = $this->timeLeft) < 0) {
                     throw StalledRequestException::becauseRequestIsStalled(
-                        code: $code,
-                        timeout: ($timeLeft - $this->timeout) * -1,
+                        $code,
+                        ($timeLeft - $this->timeout) * -1,
                     );
                 }
 
@@ -89,7 +89,7 @@ final class WebViewRequests implements WebViewRequestsInterface
             }
         }
 
-        throw UnprocessableRequestException::becauseRequestIsUnprocessable($id);
+        throw UnprocessableRequestException::becauseRequestIsUnprocessable($code);
     }
 
     /**

@@ -8,7 +8,7 @@ final class StalledRequestException extends RequestException
 {
     public static function becauseRequestIsStalled(string $code, float $timeout, ?\Throwable $previous = null): self
     {
-        $message = 'The Request("%s") is stalled after %01.2fs of waiting;'
+        $message = 'Request "%s" is stalled after %01.2fs of waiting;'
             . ' This is most likely due to the fact that the request contains'
             . ' incorrect JavaScript code (syntax error)';
 
