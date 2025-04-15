@@ -10,6 +10,13 @@ namespace Serafim\Boson\Dispatcher\Subscription;
 interface SubscriptionInterface
 {
     /**
+     * An identifier of the subscription.
+     *
+     * @var array-key
+     */
+    public int|string $id { get; }
+
+    /**
      * @var class-string<TEvent>
      */
     public string $name { get; }

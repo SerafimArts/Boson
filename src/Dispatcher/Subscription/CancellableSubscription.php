@@ -19,14 +19,16 @@ final class CancellableSubscription extends Subscription implements CancellableS
     private readonly \Closure $canceller;
 
     /**
+     * @param array-key $id
      * @param class-string<T> $name
      * @param callable(SubscriptionInterface<T>):void $canceller
      */
     public function __construct(
+        int|string $id,
         string $name,
         callable $canceller,
     ) {
-        parent::__construct($name);
+        parent::__construct($id, $name);
 
         $this->canceller = $canceller(...);
     }

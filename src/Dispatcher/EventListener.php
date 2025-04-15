@@ -8,6 +8,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use Serafim\Boson\Dispatcher\Subscription\CancellableSubscription;
 use Serafim\Boson\Dispatcher\Subscription\CancellableSubscriptionInterface;
 use Serafim\Boson\Dispatcher\Subscription\SubscriptionInterface;
+use Serafim\Boson\Internal\IdGenerator\GeneratorInterface;
+use Serafim\Boson\Internal\IdGenerator\IntGenerator;
 
 class EventListener implements EventListenerInterface, EventDispatcherInterface
 {
@@ -15,6 +17,13 @@ class EventListener implements EventListenerInterface, EventDispatcherInterface
      * @var array<class-string<object>, array<array-key, callable(object):void>>
      */
     protected array $listeners = [];
+
+    private readonly GeneratorInterface $idGenerator;
+
+    public function __construct()
+    {
+        $this->idGenerator = IntGenerator::createFromEnvironment();
+    }
 
     public function getListenersForEvent(object $event): iterable
     {
@@ -25,33 +34,24 @@ class EventListener implements EventListenerInterface, EventDispatcherInterface
         return $this->listeners[$event::class];
     }
 
-    /**
-     * @param SubscriptionInterface<object> $subscription
-     */
-    private function getId(SubscriptionInterface $subscription): int
-    {
-        return \spl_object_id($subscription);
-    }
-
     public function addEventListener(string $event, callable $listener): CancellableSubscriptionInterface
     {
         $subscription = new CancellableSubscription(
+            id: $this->idGenerator->nextId(),
             name: $event,
             // @phpstan-ignore-next-line
             canceller: $this->removeEventListener(...),
         );
 
         // @phpstan-ignore-next-line
-        $this->listeners[$event][$this->getId($subscription)] = $listener(...);
+        $this->listeners[$event][$subscription->id] = $listener(...);
 
         return $subscription;
     }
 
     public function removeEventListener(SubscriptionInterface $subscription): void
     {
-        $id = $this->getId($subscription);
-
-        unset($this->listeners[$subscription->name][$id]);
+        unset($this->listeners[$subscription->name][$subscription->id]);
     }
 
     public function removeAllEventListenersForEvent(string $event): void
