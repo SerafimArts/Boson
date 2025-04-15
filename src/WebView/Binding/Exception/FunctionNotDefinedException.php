@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Binding\Exception;
 
-final class FunctionNotDefinedException extends BindingException
+final class FunctionNotDefinedException extends WebViewBindingException
 {
     public static function becauseFunctionNotDefined(string $name, ?\Throwable $previous = null): self
     {

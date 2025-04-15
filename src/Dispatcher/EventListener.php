@@ -18,6 +18,9 @@ class EventListener implements EventListenerInterface, EventDispatcherInterface
      */
     protected array $listeners = [];
 
+    /**
+     * @var GeneratorInterface<array-key>
+     */
     private readonly GeneratorInterface $idGenerator;
 
     public function __construct()

@@ -7,9 +7,9 @@ namespace Serafim\Boson\WebView\Scripts;
 use JetBrains\PhpStorm\Language;
 
 /**
- * @template-extends \Traversable<mixed, Script>
+ * @template-extends \Traversable<mixed, WebViewScript>
  */
-interface ScriptsMapInterface extends \Traversable, \Countable
+interface WebViewScriptsSetInterface extends \Traversable, \Countable
 {
     /**
      * Adds JavaScript code to execution.
@@ -29,7 +29,7 @@ interface ScriptsMapInterface extends \Traversable, \Countable
      *
      * @param string $code A JavaScript code for execution
      */
-    public function preload(#[Language('JavaScript')] string $code): Script;
+    public function preload(#[Language('JavaScript')] string $code): WebViewScript;
 
     /**
      * Adds JavaScript code to execution.
@@ -39,7 +39,7 @@ interface ScriptsMapInterface extends \Traversable, \Countable
      *
      * @param string $code A JavaScript code for execution
      */
-    public function add(#[Language('JavaScript')] string $code): Script;
+    public function add(#[Language('JavaScript')] string $code): WebViewScript;
 
     /**
      * The number of registered scripts (cannot be less than 0)

@@ -14,11 +14,6 @@ use Serafim\Boson\Window\Size\SizeInterface;
 interface WindowInterface
 {
     /**
-     * Gets an identifier of the window.
-     */
-    public WindowId $id { get; }
-
-    /**
      * Gets an information DTO about the window with which it was created.
      */
     public WindowCreateInfo $info { get; }

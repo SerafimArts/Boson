@@ -7,14 +7,14 @@ namespace Serafim\Boson\WebView\Scripts;
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 
-final readonly class Script implements \Stringable
+final readonly class WebViewScript implements \Stringable
 {
     public function __construct(
         private LibSaucer $api,
-        public ScriptId $id,
+        public WebViewScriptId $id,
         #[Language('JavaScript')]
         public string $code,
-        public ScriptLoadingTime $time,
+        public WebViewScriptLoadingTime $time,
     ) {}
 
     public function __toString(): string

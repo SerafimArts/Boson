@@ -8,6 +8,8 @@ $files = PhpCsFixer\Finder::create()
         => !\in_array(\realpath($file->getPathname()), [
             // "public private(set) ?WindowInterface $default" detects as ternary operator
             \realpath(__DIR__ . '/src/Window/Manager/WindowManager.php'),
+            // Fixer doesnt support an abstract properties
+            \realpath(__DIR__ . '/src/Internal/IdGenerator/IntGenerator.php'),
         ], true)
     )
 ;
