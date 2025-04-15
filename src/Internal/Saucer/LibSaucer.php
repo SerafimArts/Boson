@@ -37,15 +37,20 @@ final readonly class LibSaucer
             code: (string) \file_get_contents(__FILE__, offset: __COMPILER_HALT_OFFSET__),
             lib: $library ?? match ($os = OperatingSystem::current()) {
                 OperatingSystem::Windows => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-windows-amd64.dll',
+                    Architecture::x86,
+                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-windows-x86_64.dll',
                     default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
                 OperatingSystem::Linux => match ($arch = Architecture::current()) {
-                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-linux-amd64.dll',
+                    Architecture::x86,
+                    Architecture::Amd64 => self::DEFAULT_BIN_DIR . '/libboson-linux-x86_64.so',
+                    Architecture::Arm64 => self::DEFAULT_BIN_DIR . '/libboson-linux-aarch64.so',
                     default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
                 OperatingSystem::MacOS => match ($arch = Architecture::current()) {
-                    Architecture::Arm64 => self::DEFAULT_BIN_DIR . '/libboson-darwin-arm64.dylib',
+                    Architecture::x86,
+                    Architecture::Amd64,
+                    Architecture::Arm64 => self::DEFAULT_BIN_DIR . '/libboson-darwin-universal.dylib',
                     default => throw UnsupportedArchitectureException::becauseArchitectureIsInvalid($arch->name),
                 },
                 default => throw UnsupportedOperatingSystemException::becauseOperatingSystemIsInvalid($os->name),
