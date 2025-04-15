@@ -7,6 +7,7 @@ namespace Serafim\Boson\Window\Manager;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
+use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Event\WindowClosed;
@@ -38,6 +39,7 @@ final class WindowManager implements
     public function __construct(
         private readonly LibSaucer $api,
         private readonly Application $app,
+        private readonly ProcessUnlockPlaceholder $placeholder,
         WindowCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
@@ -71,6 +73,7 @@ final class WindowManager implements
     {
         $this->windows->attach($window = new Window(
             api: $this->api,
+            placeholder: $this->placeholder,
             app: $this->app,
             info: $info,
             dispatcher: $this->events,

@@ -8,10 +8,10 @@ use FFI\CData;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\ValueObject\Id\StructPointerId;
 
-final readonly class ScriptId extends StructPointerId
+final readonly class WebViewScriptId extends StructPointerId
 {
     /**
-     * Returns new {@see ScriptId} instance from given
+     * Returns new {@see WebViewScriptId} instance from given
      * `saucer_script*` struct pointer.
      *
      * @api

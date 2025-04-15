@@ -9,12 +9,12 @@ use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\Exception\FunctionNotDefinedException;
 use Serafim\Boson\WebView\Binding\Exception\InvalidFunctionException;
 use Serafim\Boson\WebView\Event\WebViewMessageReceiving;
-use Serafim\Boson\WebView\Scripts\ScriptsMap;
+use Serafim\Boson\WebView\Scripts\WebViewScriptsSet;
 
 /**
  * @template-implements \IteratorAggregate<non-empty-string, \Closure(mixed...):mixed>
  */
-final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
+final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \IteratorAggregate
 {
     private const string BOSON_RPC = <<<'JS'
         const crypto = window.crypto || window.msCrypto;
@@ -89,7 +89,7 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
     private array $functions = [];
 
     public function __construct(
-        private readonly ScriptsMap $scripts,
+        private readonly WebViewScriptsSet $scripts,
         private readonly EventListenerInterface $events,
     ) {
         $this->prefix = '__boson_rpc_' . \spl_object_id($this);

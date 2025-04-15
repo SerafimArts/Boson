@@ -10,6 +10,7 @@ use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Exception\NoDefaultWindowException;
 use Serafim\Boson\Internal\Application\DebugEnvResolver;
+use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
 use Serafim\Boson\Internal\Application\QuitHandler\WindowsQuitHandler;
@@ -52,6 +53,8 @@ final class Application implements ApplicationInterface
      */
     private bool $quitHandlerIsRegistered = false;
 
+    private readonly ProcessUnlockPlaceholder $placeholder;
+
     public function __construct(
         public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
         ?PsrEventDispatcherInterface $dispatcher = null,
@@ -61,9 +64,15 @@ final class Application implements ApplicationInterface
         $this->events = $this->createEventListener($dispatcher);
         $this->id = $this->createApplicationId($this->info->name, $this->info->threads);
 
+        $this->placeholder = new ProcessUnlockPlaceholder(
+            api: $this->api,
+            app: $this,
+        );
+
         $this->windows = new WindowManager(
             api: $this->api,
             app: $this,
+            placeholder: $this->placeholder,
             info: $this->info->window,
             dispatcher: $this->events,
         );
@@ -144,11 +153,6 @@ final class Application implements ApplicationInterface
         return $options;
     }
 
-    /**
-     * Stops an application execution.
-     *
-     * @api
-     */
     public function quit(): void
     {
         $this->isRunning = false;
@@ -181,9 +185,6 @@ final class Application implements ApplicationInterface
         $this->quitHandlerIsRegistered = true;
     }
 
-    /**
-     * @api
-     */
     public function run(): void
     {
         if ($this->isRunning) {
@@ -196,6 +197,7 @@ final class Application implements ApplicationInterface
 
         do {
             $this->api->saucer_application_run_once($this->id->ptr);
+
             \usleep(1);
         } while ($this->isRunning);
     }

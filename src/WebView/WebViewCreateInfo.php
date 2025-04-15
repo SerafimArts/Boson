@@ -139,7 +139,7 @@ final readonly class WebViewCreateInfo
          *  - Context menu will be enabled if debug mode is enabled.
          *  - Context menu will bew disabled if debug mode is disabled.
          */
-        public ?bool $isContextMenuEnabled = null,
+        public ?bool $contextMenu = null,
         /**
          * Enable or disable default webview dev tools (F12 key).
          *
@@ -148,7 +148,7 @@ final readonly class WebViewCreateInfo
          *  - Dev Tools will be enabled if debug mode is enabled.
          *  - Dev Tools will bew disabled if debug mode is disabled.
          */
-        public ?bool $isDevToolsEnabled = null,
+        public ?bool $devTools = null,
     ) {
         assert($url === null || $html === null, new \InvalidArgumentException(
             message: 'You can specify either $url or $html, but not both',

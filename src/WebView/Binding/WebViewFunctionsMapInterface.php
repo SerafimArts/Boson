@@ -10,7 +10,7 @@ use Serafim\Boson\WebView\Binding\Exception\FunctionNotDefinedException;
 /**
  * @template-extends \Traversable<non-empty-string, \Closure(mixed...):mixed>
  */
-interface FunctionsMapInterface extends \Traversable, \Countable
+interface WebViewFunctionsMapInterface extends \Traversable, \Countable
 {
     /**
      * Binds a function to a new global JavaScript function
@@ -26,7 +26,7 @@ interface FunctionsMapInterface extends \Traversable, \Countable
     public function bind(string $function, \Closure $callback): void;
 
     /**
-     * Removes a binding created with {@see FunctionsMapInterface::bind()}
+     * Removes a binding created with {@see WebViewFunctionsMapInterface::bind()}
      *
      * @param non-empty-string $function The name of the JS function
      *

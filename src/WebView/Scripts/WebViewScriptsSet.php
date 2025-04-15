@@ -11,14 +11,14 @@ use Serafim\Boson\Internal\Saucer\SaucerLoadTime;
 use Serafim\Boson\WebView\WebView;
 
 /**
- * @template-implements \IteratorAggregate<mixed, Script>
+ * @template-implements \IteratorAggregate<mixed, WebViewScript>
  */
-final readonly class ScriptsMap implements ScriptsMapInterface, \IteratorAggregate
+final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \IteratorAggregate
 {
     /**
      * List of loaded scripts.
      *
-     * @var \SplObjectStorage<Script, mixed>
+     * @var \SplObjectStorage<WebViewScript, mixed>
      */
     private \SplObjectStorage $scripts;
 
@@ -40,42 +40,42 @@ final readonly class ScriptsMap implements ScriptsMapInterface, \IteratorAggrega
         $this->api->saucer_webview_execute($this->ptr, $code);
     }
 
-    public function preload(#[Language('JavaScript')] string $code): Script
+    public function preload(#[Language('JavaScript')] string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_CREATION);
 
-        $this->registerAndInject($script = new Script(
+        $this->registerAndInject($script = new WebViewScript(
             api: $this->api,
-            id: ScriptId::fromScriptHandle($this->api, $handle),
+            id: WebViewScriptId::fromScriptHandle($this->api, $handle),
             code: $code,
-            time: ScriptLoadingTime::OnCreated,
+            time: WebViewScriptLoadingTime::OnCreated,
         ));
 
         return $script;
     }
 
-    public function add(#[Language('JavaScript')] string $code): Script
+    public function add(#[Language('JavaScript')] string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_READY);
 
-        $this->registerAndInject($script = new Script(
+        $this->registerAndInject($script = new WebViewScript(
             api: $this->api,
-            id: ScriptId::fromScriptHandle($this->api, $handle),
+            id: WebViewScriptId::fromScriptHandle($this->api, $handle),
             code: $code,
-            time: ScriptLoadingTime::OnReady,
+            time: WebViewScriptLoadingTime::OnReady,
         ));
 
         return $script;
     }
 
-    private function registerAndInject(Script $script): void
+    private function registerAndInject(WebViewScript $script): void
     {
         $this->scripts->attach($script);
 
         $this->inject($script);
     }
 
-    private function inject(Script $script): void
+    private function inject(WebViewScript $script): void
     {
         $this->api->saucer_webview_inject($this->ptr, $script->id->ptr);
     }

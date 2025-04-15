@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Scripts;
 
-enum ScriptLoadingTime
+enum WebViewScriptLoadingTime
 {
     /**
      * The script will be loaded as soon as the document is created.

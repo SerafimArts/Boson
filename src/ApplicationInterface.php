@@ -13,11 +13,6 @@ use Serafim\Boson\Window\WindowInterface;
 interface ApplicationInterface
 {
     /**
-     * Gets an identifier of the application.
-     */
-    public ApplicationId $id { get; }
-
-    /**
      * Gets an information DTO about the application
      * with which it was created.
      */
@@ -74,4 +69,16 @@ interface ApplicationInterface
      * or {@see false} instead.
      */
     public bool $isRunning { get; }
+
+    /**
+     * Run an application.
+     *
+     * Note: Blocking operation (!!!).
+     */
+    public function run(): void;
+
+    /**
+     * Stops an application.
+     */
+    public function quit(): void;
 }

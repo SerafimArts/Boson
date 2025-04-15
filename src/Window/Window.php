@@ -8,6 +8,7 @@ use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Window\WindowEventHandler;
@@ -122,6 +123,7 @@ final class Window implements WindowInterface
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
+        private readonly ProcessUnlockPlaceholder $placeholder,
         public readonly Application $app,
         public readonly WindowCreateInfo $info,
         EventDispatcherInterface $dispatcher,
@@ -132,8 +134,20 @@ final class Window implements WindowInterface
         $this->size = new ManagedWindowSize($this->api, $this->id->ptr);
         $this->min = new ManagedWindowMinBounds($this->api, $this->id->ptr);
         $this->max = new ManagedWindowMaxBounds($this->api, $this->id->ptr);
-        $this->webview = new WebView($this->api, $this, $this->info->webview, $this->events);
-        $this->handler = new WindowEventHandler($this->api, $this, $this->events);
+
+        $this->webview = new WebView(
+            api: $this->api,
+            placeholder: $this->placeholder,
+            window: $this,
+            info: $this->info->webview,
+            dispatcher: $this->events,
+        );
+
+        $this->handler = new WindowEventHandler(
+            api: $this->api,
+            window: $this,
+            dispatcher: $this->events,
+        );
 
         if ($this->info->visible) {
             $this->show();
@@ -193,12 +207,12 @@ final class Window implements WindowInterface
 
             // Enable context menu in case of the corresponding value was passed
             // explicitly to the create info options or debug mode was enabled.
-            $isContextMenuEnabled = $info->webview->isContextMenuEnabled ?? $this->app->isDebug;
+            $isContextMenuEnabled = $info->webview->contextMenu ?? $this->app->isDebug;
             $this->api->saucer_webview_set_context_menu($handle, $isContextMenuEnabled);
 
             // Enable dev tools in case of the corresponding value was passed
             // explicitly to the create info options or debug mode was enabled.
-            $isDevToolsEnabled = $info->webview->isDevToolsEnabled ?? $this->app->isDebug;
+            $isDevToolsEnabled = $info->webview->devTools ?? $this->app->isDebug;
             $this->api->saucer_webview_set_dev_tools($handle, $isDevToolsEnabled);
 
             return $handle;

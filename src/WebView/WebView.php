@@ -8,10 +8,12 @@ use FFI\CData;
 use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
-use Serafim\Boson\WebView\Binding\FunctionsMap;
-use Serafim\Boson\WebView\Scripts\ScriptsMap;
+use Serafim\Boson\WebView\Binding\WebViewFunctionsMap;
+use Serafim\Boson\WebView\Requests\WebViewRequests;
+use Serafim\Boson\WebView\Scripts\WebViewScriptsSet;
 use Serafim\Boson\WebView\Url\MemoizedUrlParser;
 use Serafim\Boson\WebView\Url\NativeUrlParser;
 use Serafim\Boson\WebView\Url\Url;
@@ -22,9 +24,11 @@ final class WebView implements WebViewInterface
 {
     public readonly DelegateEventListener $events;
 
-    public readonly ScriptsMap $scripts;
+    public readonly WebViewScriptsSet $scripts;
 
-    public readonly FunctionsMap $functions;
+    public readonly WebViewFunctionsMap $functions;
+
+    public readonly WebViewRequests $requests;
 
     public Url $url {
         get {
@@ -83,6 +87,7 @@ final class WebView implements WebViewInterface
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
+        private readonly ProcessUnlockPlaceholder $placeholder,
         public readonly Window $window,
         public readonly WebViewCreateInfo $info,
         EventDispatcherInterface $dispatcher,
@@ -95,14 +100,19 @@ final class WebView implements WebViewInterface
         // The WebView handle pointer is the same as the Window pointer.
         $this->ptr = $this->window->id->ptr;
 
-        $this->scripts = new ScriptsMap(
+        $this->scripts = new WebViewScriptsSet(
             api: $this->api,
             webview: $this,
         );
 
-        $this->functions = new FunctionsMap(
+        $this->functions = new WebViewFunctionsMap(
             scripts: $this->scripts,
             events: $this->events,
+        );
+
+        $this->requests = new WebViewRequests(
+            webview: $this,
+            placeholder: $this->placeholder,
         );
 
         $this->handler = new WebViewEventHandler(
@@ -120,6 +130,14 @@ final class WebView implements WebViewInterface
         foreach ($this->info->scripts as $script) {
             $this->scripts->add($script);
         }
+
+        if ($this->info->url !== null) {
+            $this->url = $this->info->url;
+        }
+
+        if ($this->info->html !== null) {
+            $this->html = $this->info->html;
+        }
     }
 
     public function bind(string $function, \Closure $callback): void
@@ -130,6 +148,11 @@ final class WebView implements WebViewInterface
     public function eval(#[Language('JavaScript')] string $code): void
     {
         $this->scripts->eval($code);
+    }
+
+    public function request(#[Language('JavaScript')] string $code): mixed
+    {
+        return $this->requests->send($code);
     }
 
     public function forward(): void
