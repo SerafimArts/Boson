@@ -3,73 +3,270 @@ name: Build Binaries
 on:
   push:
     branches: [ master ]
-  pull_request:
-    branches: [ master ]
+  release:
+    types: [created]
+
+env:
+  BUILD_DIR: ./build
+  SOURCES_DIR: ./backend
 
 jobs:
-  build:
-    runs-on: ${{ matrix.os }}
-    container: ${{ matrix.container }}
-    env:
-      BUILD_DIR: ./build
+  # Windows
+  build-windows:
     strategy:
       fail-fast: false
       matrix:
-        include:
-          - os: ubuntu-latest
-            platform: Linux
-            backend: WebKitGtk
-            build_type: Release
-            container: archlinux:base-devel
-          - os: windows-latest
-            platform: Windows
-            backend: WebView2
-            build_type: Release
-            cmake-args: "-Dsaucer_package_all=ON -Dsaucer_serializer=Rflpp"
-          - os: macos-latest
-            platform: MacOs
-            backend: WebKit
-            build_type: Release
-            cmake-args: '-DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"'
+        build-type:
+          - Release
+        platform:
+          - { arch: x86_64 }
+
+    runs-on: windows-latest
+    name: "Windows-WebView2-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
 
     steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Set up build directory
-        run: mkdir -p ${{ env.BUILD_DIR }}
-
-      - name: 📋 Install Base Dependencies
-        shell: bash
-        if: matrix.platform == 'Linux'
-        run: "pacman --noconfirm -Syu cmake gcc git xorg-server-xvfb xorg-xwd openssh tmate"
-
-      - name: 📋 Install WebKitGtk
-        shell: bash
-        if: matrix.backend == 'WebKitGtk'
-        run: "pacman --noconfirm -Syu gtk4 libadwaita webkitgtk-6.0"
+      - name: Checkout
+        uses: actions/checkout@v4
 
       - name: Compile
-        run: |
-          cmake -B ${{ env.BUILD_DIR }} -S ./backend -DCMAKE_BUILD_TYPE=${{ matrix.build_type }} -Dsaucer_backend=${{ matrix.backend }} -Dsaucer_tests=ON -Dsaucer_examples=ON ${{ matrix.cmake-args }}
-
-      - name: Build
-        run: cmake --build ${{ env.BUILD_DIR }} --target boson --config ${{ matrix.build_type }}
-
-      - name: Run Tests
-        working-directory: ${{ env.BUILD_DIR }}
-        run: ctest --build-config ${{ matrix.build_type }}
-
-      - name: List build artifacts
-        if: matrix.platform != 'Windows'
-        run: ls -la ${{ env.BUILD_DIR }}/bin/
-      - name: List build artifacts (Only windows)
-        if: matrix.platform == 'Windows'
-        run: ls -Force ${{ env.BUILD_DIR }}/bin
-
-      - name: Upload Artifacts
-        uses: actions/upload-artifact@v4
+        uses: ./.github/actions/compile
         with:
-          name: boson-${{ matrix.os }}
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: WebView2
+          platform: Windows
+          build-type: ${{ matrix.build-type }}
+          cmake-args: -Dsaucer_msvc_hack=ON -Dsaucer_serializer=Rflpp
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "Windows-WebView2-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
+
+  # MacOS
+  build-macos-uni:
+    runs-on: macos-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        backend:
+          - WebKit
+        build-type:
+          - Release
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: ${{ matrix.backend }}
+          platform: macOS
+          build-type: ${{ matrix.build-type }}
+          cmake-args: '-DCMAKE_OSX_ARCHITECTURES="x86_64;arm64"'
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "macOS-WebKit-uni-${{ matrix.build-type }}"
+          path: ${{ env.BUILD_DIR }}/bin/
+
+  build-macos:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type:
+          - Release
+        platform:
+          - { arch: aarch64, os: macos-14 }
+
+    runs-on: ${{ matrix.platform.os }}
+    name: "macOS-WebKit-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: WebKit
+          platform: macOS
+          build-type: ${{ matrix.build-type }}
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "macOS-WebKit-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          path: ${{ env.BUILD_DIR }}/bin/
+  # Linux
+  build-gnu_linux_qt5:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type:
+          - Release
+        platform:
+          # Check these for architecture compatibility:
+          # https://packages.debian.org/search?searchon=names&keywords=qtwebengine5-dev
+          # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
+          # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
+          - { arch: "x86_64", qemuArch: "linux/amd64" }
+          - { arch: "x86", qemuArch: "linux/386" }
+          - { arch: "aarch64", qemuArch: "linux/arm64/v8" }
+          #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
+
+    runs-on: ubuntu-latest
+    name: "GNU_Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup container
+        uses: ./.github/actions/setup-container
+        with:
+          qemuArch: ${{ matrix.platform.qemuArch }}
+          dockerArch: ${{ matrix.platform.dockerArch || 'SAME_AS_QEMU' }}
+          image: "debian:sid-slim"
+
+      - name: Install dependencies
+        uses: ./.github/actions/run-in-container
+        with:
+          command: apt update && apt install -y build-essential git gcc-14 cmake xvfb qtbase5-dev qtbase5-dev-tools qtdeclarative5-dev libqt5webchannel5-dev qtwebengine5-dev
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: Qt5
+          platform: Linux
+          build-type: ${{ matrix.build-type }}
+          in-container: true
+          arm-hack: ${{ matrix.platform.arch }}
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "GNU_Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          path: ${{ env.BUILD_DIR }}/bin/
+
+  build-gnu_linux_qt6:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type:
+          - Release
+        platform:
+          # Check these for architecture compatibility:
+          # https://packages.debian.org/search?searchon=names&keywords=qt6-webengine-dev
+          # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
+          # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
+          - { arch: "x86_64", qemuArch: "linux/amd64" }
+          - { arch: "x86", qemuArch: "linux/386" }
+          - { arch: "aarch64", qemuArch: "linux/arm64/v8" }
+
+    runs-on: ubuntu-latest
+    name: "GNU_Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup container
+        uses: ./.github/actions/setup-container
+        with:
+          qemuArch: ${{ matrix.platform.qemuArch }}
+          dockerArch: ${{ matrix.platform.dockerArch || 'SAME_AS_QEMU' }}
+          image: "debian:sid-slim"
+
+      - name: Install dependencies
+        uses: ./.github/actions/run-in-container
+        with:
+          command: apt update && apt install -y build-essential git gcc-14 cmake xvfb qt6-base-dev qt6-tools-dev qt6-declarative-dev qt6-webchannel-dev qt6-webengine-dev qt6-svg-dev
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: Qt6
+          platform: Linux
+          build-type: ${{ matrix.build-type }}
+          in-container: true
+          arm-hack: ${{ matrix.platform.arch }}
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "GNU_Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          path: ${{ env.BUILD_DIR }}/bin/
+
+  build-gnu_linux_gtk:
+    strategy:
+      fail-fast: false
+      matrix:
+        build-type:
+          - Release
+        platform:
+          # Check these for architecture compatibility:
+          # https://packages.debian.org/search?searchon=names&keywords=libgtk-4-dev
+          # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
+          # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
+          - { arch: "x86_64", qemuArch: "linux/amd64" }
+          - { arch: "x86", qemuArch: "linux/386" }
+          - { arch: "aarch64", qemuArch: "linux/arm64" }
+          - { arch: "arm", qemuArch: "linux/arm/v5" }
+          #- { arch: "ppc64le", qemuArch: "linux/ppc64le" }
+          #- { arch: "riscv64", qemuArch: "linux/riscv64" }
+          #- { arch: "s390x", qemuArch: "linux/s390x" }
+          #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
+
+    runs-on: ubuntu-latest
+    name: "GNU_Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup container
+        uses: ./.github/actions/setup-container
+        with:
+          qemuArch: ${{ matrix.platform.qemuArch }}
+          dockerArch: ${{ matrix.platform.dockerArch || 'SAME_AS_QEMU' }}
+          image: "debian:sid-slim"
+
+      - name: Install dependencies
+        uses: ./.github/actions/run-in-container
+        with:
+          command: apt update && apt install -y build-essential git gcc-14 cmake xvfb libgtk-4-dev libwebkitgtk-6.0-dev libadwaita-1-dev
+
+      - name: Compile
+        uses: ./.github/actions/compile
+        with:
+          src-dir: ${{ env.SOURCES_DIR }}
+          build-dir: ${{ env.BUILD_DIR }}
+          backend: WebKitGtk
+          platform: Linux
+          build-type: ${{ matrix.build-type }}
+          in-container: true
+          arm-hack: ${{ matrix.platform.arch }}
+
+      - name: Upload
+        uses: ./.github/actions/upload
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: "GNU_Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          path: ${{ env.BUILD_DIR }}/bin/
+
