@@ -82,8 +82,8 @@ final readonly class WebViewCreateInfo
     public array $functions;
 
     /**
-     * @param iterable<mixed, string> $scripts See the {@see $scripts} property
-     *        description for information.
+     * @param iterable<mixed, string> $scripts see the {@see $scripts} property
+     *        description for information
      * @param iterable<non-empty-string, \Closure(mixed...):mixed> $functions
      *        See the {@see $functions} property description for information.
      * @param non-empty-string|null $storage See {@see WebViewCreateInfo::$storage}
@@ -97,7 +97,7 @@ final readonly class WebViewCreateInfo
      *        - In case of {@see false} the storage (and any session persistent
      *          data) will be disabled.
      * @param iterable<non-empty-string, string|float|bool|int|list<string|float|bool|int>> $flags
-     *        See the {@see $flags} property description for information.
+     *        See the {@see $flags} property description for information
      */
     public function __construct(
         /**
