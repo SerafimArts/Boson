@@ -73,19 +73,11 @@ $app->run();
 - PHP ^8.4
   - ext-ffi
 
-| Platform | X86 | AMD64 | ARM64      | Technologies                                                                                                                                                         |
-|----------|-----|-------|------------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Windows  | ✓   | ✓     | ✖ (see #1) | [Windows API](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-api-list), [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/)  |
-| Linux    | ✓   | ✓     | ✖ (see #1) | [GTK](https://gtk.org/), [WebKitGTK](https://webkitgtk.org/)                                                                                                         |
-| macOS    | ✓   | ✓     | ✓          | Cocoa, [WebKit](https://webkit.org/)                                                                                                                                 |
-
-1. It would be nice if you sent a PR with support for this platform:
-```shell
-cmake -DCMAKE_BUILD_TYPE=Release -S . -B ./build
-cmake --build ./build --target webview --config Release
-
-# The binary will be located in `./bin/libwebview.[ext]`
-```
+| Platform | X86 | AMD64 | ARM64 | Technologies                                                                                                                                                        |
+|----------|-----|-------|-------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Windows  | ✓   | ✓     | ✖     | [Windows API](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-api-list), [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) |
+| Linux    | ✓   | ✓     | ✓     | [GTK](https://gtk.org/), [WebKitGTK](https://webkitgtk.org/)                                                                                                        |
+| macOS    | ✓   | ✓     | ✓     | Cocoa, [WebKit](https://webkit.org/)                                                                                                                                |
 
 ### Windows
 
