@@ -25,7 +25,7 @@ final class Window implements WindowInterface
 {
     public readonly WindowId $id;
 
-    public private(set) VirtualFileSystemInterface $fs;
+    public readonly VirtualFileSystemInterface $fs;
 
     public readonly WebView $webview;
 
@@ -262,11 +262,6 @@ final class Window implements WindowInterface
 
     public function __destruct()
     {
-        // The filesystem dependency must be
-        // destroyed BEFORE the window.
-        unset($this->fs);
-
         $this->isClosed = true;
-        $this->api->saucer_free($this->id->ptr);
     }
 }

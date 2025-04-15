@@ -99,15 +99,4 @@ final class VirtualFileSystem implements \IteratorAggregate, VirtualFileSystemIn
     {
         return \count($this->files);
     }
-
-    public function __destruct()
-    {
-        // The window pointer may be invalid if the
-        // window is already closed.
-        if ($this->window->isClosed) {
-            return;
-        }
-
-        $this->api->saucer_webview_clear_embedded($this->window->id->ptr);
-    }
 }
