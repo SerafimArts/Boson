@@ -6,7 +6,6 @@ namespace Serafim\Boson;
 
 use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\Exception\NoDefaultWindowException;
-use Serafim\Boson\FileSystem\VirtualFileSystemInterface;
 use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Manager\WindowManagerInterface;
 use Serafim\Boson\Window\WindowInterface;
@@ -50,17 +49,6 @@ interface ApplicationInterface
      * Gets webview of the default application`s window.
      */
     public WebViewInterface $webview {
-        /**
-         * @throws NoDefaultWindowException in case the default window was
-         *         already closed and removed earlier
-         */
-        get;
-    }
-
-    /**
-     * Gets virtual filesystem of the default application window.
-     */
-    public VirtualFileSystemInterface $fs {
         /**
          * @throws NoDefaultWindowException in case the default window was
          *         already closed and removed earlier

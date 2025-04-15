@@ -78,28 +78,16 @@ interface WebViewInterface
     }
 
     /**
+     * Load HTML content into the WebView.
+     */
+    public string $html {
+        set(string|\Stringable $html);
+    }
+
+    /**
      * Gets webview status.
      */
     public State $state { get; }
-
-    /**
-     * Load WebView content from passed html string.
-     */
-    public function loadHtml(#[Language('HTML')] string $html): void;
-
-    /**
-     * Load WebView content from virtual filesystem.
-     *
-     * @param non-empty-string $name
-     */
-    public function loadFromVirtualFilesystem(string $name): void;
-
-    /**
-     * Load WebView content from local filesystem.
-     *
-     * @param non-empty-string $pathname
-     */
-    public function loadFromLocalFilesystem(string $pathname): void;
 
     /**
      * Go forward using current history.

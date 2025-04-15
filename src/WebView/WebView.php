@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView;
 
 use FFI\CData;
-use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
@@ -20,6 +19,12 @@ use Serafim\Boson\Window\Window;
 
 final class WebView implements WebViewInterface
 {
+    public readonly DelegateEventListener $events;
+
+    public readonly ScriptsMap $scripts;
+
+    public readonly FunctionsMap $functions;
+
     public Url $url {
         get {
             return $this->urlParser->parse($this->urlString);
@@ -29,11 +34,13 @@ final class WebView implements WebViewInterface
         }
     }
 
-    public readonly DelegateEventListener $events;
+    public string $html {
+        set(string|\Stringable $html) {
+            $base64 = \base64_encode((string) $html);
 
-    public readonly ScriptsMap $scripts;
-
-    public readonly FunctionsMap $functions;
+            $this->url = \sprintf('data:text/html;base64,%s', $base64);
+        }
+    }
 
     public private(set) State $state = State::Loading;
 
@@ -112,25 +119,6 @@ final class WebView implements WebViewInterface
             urlParser: $this->urlParser,
             state: $this->state,
         );
-    }
-
-    public function loadHtml(#[Language('HTML')] string $html): void
-    {
-        $this->window->fs->mount($this->index, $html, 'text/html');
-
-        $this->loadFromVirtualFilesystem($this->index);
-    }
-
-    public function loadFromVirtualFilesystem(string $name): void
-    {
-        $this->api->saucer_webview_serve($this->ptr, $name);
-    }
-
-    public function loadFromLocalFilesystem(string $pathname): void
-    {
-        $this->window->fs->mountFromPathname($this->index, $pathname, 'text/html');
-
-        $this->loadFromVirtualFilesystem($this->index);
     }
 
     public function forward(): void
