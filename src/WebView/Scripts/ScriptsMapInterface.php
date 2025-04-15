@@ -17,9 +17,9 @@ interface ScriptsMapInterface extends \Traversable, \Countable
      * The specified JavaScript code will be executed ONCE
      * at the time the {@see exec()} method is called.
      *
-     * @param non-empty-string $code JavaScript code for execution
+     * @param string $code A JavaScript code for execution
      */
-    public function exec(#[Language('JavaScript')] string $code): void;
+    public function eval(#[Language('JavaScript')] string $code): void;
 
     /**
      * Adds JavaScript code to execution.
@@ -27,7 +27,7 @@ interface ScriptsMapInterface extends \Traversable, \Countable
      * The specified JavaScript code will be executed EVERY TIME after
      * the page loads.
      *
-     * @param string $code javaScript code for execution
+     * @param string $code A JavaScript code for execution
      */
     public function preload(#[Language('JavaScript')] string $code): Script;
 
@@ -37,7 +37,7 @@ interface ScriptsMapInterface extends \Traversable, \Countable
      * The specified JavaScript code will be executed EVERY TIME after
      * the entire DOM is loaded.
      *
-     * @param string $code An initialization JavaScript code
+     * @param string $code A JavaScript code for execution
      */
     public function add(#[Language('JavaScript')] string $code): Script;
 

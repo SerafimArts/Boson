@@ -35,7 +35,7 @@ final readonly class ScriptsMap implements ScriptsMapInterface, \IteratorAggrega
         $this->ptr = $this->webview->window->id->ptr;
     }
 
-    public function exec(#[Language('JavaScript')] string $code): void
+    public function eval(#[Language('JavaScript')] string $code): void
     {
         $this->api->saucer_webview_execute($this->ptr, $code);
     }

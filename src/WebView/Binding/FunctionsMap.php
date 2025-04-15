@@ -156,7 +156,7 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
             $error->getLine(),
         ]);
 
-        $this->scripts->exec(\vsprintf(self::BOSON_REJECTION, [
+        $this->scripts->eval(\vsprintf(self::BOSON_REJECTION, [
             \addcslashes($id, '"'),
             \addcslashes($message, '`\\'),
         ]));
@@ -172,7 +172,7 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
             return;
         }
 
-        $this->scripts->exec(\vsprintf(self::BOSON_RESOLVING, [
+        $this->scripts->eval(\vsprintf(self::BOSON_RESOLVING, [
             \addcslashes($id, '"'),
             $json,
         ]));
@@ -190,7 +190,7 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
         return $this->functions[$function](...$params);
     }
 
-    public function add(string $function, \Closure $callback): void
+    public function bind(string $function, \Closure $callback): void
     {
         if (isset($this->functions[$function])) {
             throw FunctionAlreadyDefinedException::becauseFunctionAlreadyDefined($function);
@@ -198,19 +198,19 @@ final class FunctionsMap implements FunctionsMapInterface, \IteratorAggregate
 
         $this->functions[$function] = $callback;
 
-        $this->scripts->exec(\sprintf(
+        $this->scripts->eval(\sprintf(
             self::BOSON_BIND,
             \addcslashes($function, '"'),
         ));
     }
 
-    public function remove(string $function): void
+    public function unbind(string $function): void
     {
         if (!isset($this->functions[$function])) {
             throw FunctionNotDefinedException::becauseFunctionNotDefined($function);
         }
 
-        $this->scripts->exec(\sprintf(
+        $this->scripts->eval(\sprintf(
             self::BOSON_UNBIND,
             \addcslashes($function, '"'),
         ));

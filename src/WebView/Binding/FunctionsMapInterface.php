@@ -23,16 +23,16 @@ interface FunctionsMapInterface extends \Traversable, \Countable
      *
      * @throws FunctionAlreadyDefinedException in case of function binding error
      */
-    public function add(string $function, \Closure $callback): void;
+    public function bind(string $function, \Closure $callback): void;
 
     /**
-     * Removes a binding created with {@see FunctionsMapInterface::add()}
+     * Removes a binding created with {@see FunctionsMapInterface::bind()}
      *
      * @param non-empty-string $function The name of the JS function
      *
      * @throws FunctionNotDefinedException in case of function unbinding error
      */
-    public function remove(string $function): void;
+    public function unbind(string $function): void;
 
     /**
      * The number of registered functions (cannot be less than 0)
