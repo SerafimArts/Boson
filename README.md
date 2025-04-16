@@ -23,30 +23,32 @@ And much easier than that =)
 - [Requirements](#requirements)
   - [Windows](#windows)
   - [Linux & BSD](#linux-and-bsd)
-    - [Debian](#debian)
-    - [Fedora](#fedora)
-    - [FreeBSD](#freebsd)
   - [MacOS](#macos)
 - [Usage](#usage)
+  - **Application**
+    - [Configuration](#application-configuration)
+    - [Launching](#application-launching)
+    - [Quit](#application-quit) 
   - **Window**
     - [Window Title](#window-title)
+    - [Window Size](#window-size)
     - [Window Resizing](#window-resizing)
     - [Window Max Size](#window-max-size)
     - [Window Min Size](#window-min-size)
-    - [Window Fixed Size](#window-fixed-size)
     - [Window Dark Mode](#window-dark-mode)
+    - [Window Decorations](#window-decorations)
   - **WebView**
     - [HTML Content](#webview-html-content)
-    - [Load Content From URL](#webview-url)
-    - **Styles**
-      - [Global Styles](#global-styles)
-    - **JavaScript**
-      - [Global Scripts](#global-scripts)
-      - [Creating Functions](#creating-functions)
-      - [Code Evaluation](#code-evaluation)
-      - [Code Requests](#code-requests)
+    - [Navigation to URL](#webview-url-navigation)
+    - [Navigation URL info](#webview-url-info)
+    - **JavaScript** 
+      - [Scripts](#webview-scripts)
+      - [Code Evaluation](#webview-code-evaluation)
+      - [Creating Functions](#webview-function-bindings)
+      - [Code Requests](#webview-requests)
+  - **Events**
+    - [Events and Intentions](#events-and-intentions)
   - **Misc**
-    - [Quit](#quit) 
     - [Debug Mode](#debug-mode)
     - [Custom Library](#custom-library)
 
@@ -76,7 +78,7 @@ $app->run();
 | Platform | X86 | AMD64 | ARM64 | Technologies                                                                                                                                                        |
 |----------|-----|-------|-------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | Windows  | ✓   | ✓     | ✖     | [Windows API](https://docs.microsoft.com/en-us/windows/win32/apiindex/windows-api-list), [WebView2](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) |
-| Linux    | ✓   | ✓     | ✓     | [GTK](https://gtk.org/), [WebKitGTK](https://webkitgtk.org/)                                                                                                        |
+| Linux    | ✓   | ✓     | ✓     | [GTK](https://gtk.org/), [WebKitGTK](https://webkitgtk.org/), [Qt5/Qt6](https://github.com/qt/qtwebkit)                                                             |
 | macOS    | ✓   | ✓     | ✓     | Cocoa, [WebKit](https://webkit.org/)                                                                                                                                |
 
 ### Windows
@@ -86,78 +88,149 @@ Requires Windows 10 or higher.
 End-users must have the [WebView2 runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) 
 installed on their system for any version of Windows before Windows 11.
 
-Note: A pre-builded version of the bridge already comes with 
-     the portability package in [`bin/WebView2Loader.dll`](./bin). No any 
-     additional installation required.
-
-### Linux and BSD
-
-The [GTK](https://gtk.org/) and [WebKitGTK](https://webkitgtk.org/) libraries 
-are required. You need to check your package repositories regarding which 
-packages to install.
-
-#### Debian
-
-**WebKitGTK 6.0, GTK 4**
-
-```shell
-apt install libgtk-4-1 libwebkitgtk-6.0-4
-```
-
-**WebKitGTK 4.1, GTK 3, libsoup 3**
-
-```shell
-apt install libgtk-3-0 libwebkit2gtk-4.1-0
-```
-
-**WebKitGTK 4.0, GTK 3, libsoup 2**
-
-```shell
-apt install libgtk-3-0 libwebkit2gtk-4.0-37
-```
-
-#### Fedora
-
-**WebKitGTK 6.0, GTK 4**
-
-```shell
-dnf install gtk4 webkitgtk6.0
-```
-
-**WebKitGTK 4.1, GTK 3, libsoup 3**
-
-```shell
-dnf install gtk3 webkit2gtk4.1
-```
-
-**WebKitGTK 4.0, GTK 3, libsoup 2**
-
-```shell
-dnf install gtk3 webkit2gtk4.0
-```
-
-#### FreeBSD
-
-**GTK 4**
-
-```shell
-pkg install webkit2-gtk4
-```
-
-**GTK 3**
-
-```shell
-pkg install webkit2-gtk3
-```
-
 ### MacOS
 
 It appears that no additional dependencies are required.
+
+### Linux and BSD
+
+Supports both [WebKitGTK](https://webkitgtk.org/)[WebKitGTK](https://webkitgtk.org/) and [Qt5](https://github.com/qt/qtwebkit) 
+as well as [Qt6](https://github.com/qt/qtwebkit) on Linux.
+
+The default backend is WebKitGtk:
+- Debian: `apt install libgtk-4-1 libwebkitgtk-6.0-4`
+- Fedora: `dnf install gtk4 webkitgtk6.0`
+- FreeBSD: `pkg install webkit2-gtk4`
+
+You can download other assemblies separately from [GitHub Actions](https://github.com/SerafimArts/Boson/actions/workflows/build.yml).
+Automatic detection and installation of dependencies is not supported yet.
 
 ## Usage
 
 > This documentation corresponds to the latest release (see https://github.com/SerafimArts/Boson/tags). 
 > Behavior and code in the `master` branch may differ from what is shown below.
+
+## Application Configuration
+
+An application configuration is built on the basis of the DTO hierarchy, 
+which reflects the application hierarchy.
+
+```
+ApplicationCreateInfo
+  // ... application configs
+
+  window: WindowCreateInfo
+    // ... window configs
+
+    webview: WebViewCreateInfo
+    // ... webview configs
+```
+
+In the PHP code it might look like this:
+
+```php
+use Serafim\Boson\ApplicationCreateInfo;
+use Serafim\Boson\WebView\WebViewCreateInfo;
+use Serafim\Boson\Window\WindowCreateInfo;
+
+$config = new ApplicationCreateInfo(
+    debug: false,
+    window: new WindowCreateInfo(
+        title: 'Hello World!',
+        width: 640,
+        height: 480,
+        webview: new WebViewCreateInfo(
+            html: '<h1>Hello!</h1>',
+            contextMenu: false,
+        ),
+    ),
+);
+```
+
+The configuration is passed to the application itself 
+and can be optional.
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\ApplicationCreateInfo;
+
+// Create an application
+$app = new Application();
+
+// Create an application with configuration
+$appWithConfig = new Application(new ApplicationCreateInfo(
+    debug: false,
+));
+```
+
+
+## Application Launching
+
+To start the application, you must call the `run()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->run();
+```
+
+Launching an application blocks the execution thread,
+meaning that no further code will be executed until the
+application is stopped.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->run();
+
+echo 'This code DOES NOT execute until the application is stopped!';
+```
+
+
+## Application Quit
+
+To stop the application, you should call the `quit()` method.
+
+```php
+$app = new Serafim\Boson\Application();
+
+/// ... do smth
+
+$app->quit();
+```
+
+Since exit (according to the logic of work) occurs after the application is 
+launched, and launching blocks the thread, it makes sense for the application
+to terminate after any event is fired.
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\Window\Event\WindowMinimized;
+
+$app = new Application();
+
+// The application will exit after minimizing.
+$app->events->addEventListener(WindowMinimized::class, function () use ($app) {
+    $app->quit();
+});
+
+$app->run();
+```
+
+It is also worth keeping in mind that the application may close 
+automatically after ALL windows are closed. To disable this behavior, 
+you should set the `quitOnClose` application config.
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\ApplicationCreateInfo;
+
+$appWithConfig = new Application(new ApplicationCreateInfo(
+    // Disables app quit when all windows are has been closed
+    quitOnClose: false,
+));
+```
+
 
 ### Window Title
 
@@ -177,52 +250,102 @@ Or set title from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
-        title: 'New Title'
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            title: 'New Title',
+        ),
     ),
 );
 
 $app->run();
 ```
 
-### Window Resizing
 
-To change the size, use the `resize()` method.
+### Window Size
+
+To obtain window size, use the `$size` property.
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->window->resize(640, 480);
+echo $app->window->size; // Size(640 × 480)
+
+echo $app->window->size->width; // int(640)
+echo $app->window->size->height; // int(480)
 
 $app->run();
 ```
 
-Or set size from configuration
+You also may set default window size via configuration.
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
-        width: 640,
-        height: 480,
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            width: 640,
+            height: 480,
+        ),
     ),
 );
 
 $app->run();
 ```
 
-### Window Max Size
 
-To change the max size, use the `resize()` method.
+### Window Resizing
 
-> [Linux/GTK4]: Using `WindowSizeHint::MaxBounds` for setting the maximum window 
-> size is not supported with GTK 4 (Linux platform) because X11-specific 
-> functions such as `gtk_window_set_geometry_hints` were removed.
-> This option has no effect when using GTK 4.
+To change the size, use the `$size` property.
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::MaxBounds);
+// Update window size to 640×480
+$app->window->size->update(640, 480);
+
+// Or set the dimensions explicitly using new Size object
+$app->window->size = new Serafim\Boson\Window\Size\Size(640, 480);
+
+$app->run();
+```
+
+In addition, each window size can also be changed separately.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->window->size->width = 640;
+$app->window->size->height = 480;
+
+$app->run();
+```
+
+To disable the ability to resize a window, pass the appropriate 
+`resizable` window configuration option.
+
+```php
+$app = new Serafim\Boson\Application(
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            decorated: false,
+        ),
+    ),
+);
+
+$app->run();
+```
+
+
+### Window Max Size
+
+To specify the maximum window size, use the `$max` property. The behavior of 
+the property is identical to the `$size` property [described above](#window-size).
+
+```php
+$app = new Serafim\Boson\Application();
+
+echo $app->window->max; // Will display the maximum allowed window size
+
+$app->window->max->update(1024, 768);
 
 $app->run();
 ```
@@ -230,25 +353,15 @@ $app->run();
 
 ### Window Min Size
 
-To change the min size, use the `resize()` method.
+To specify the maximum window size, use the `$min` property. The behavior of
+the property is identical to the `$size` property [described above](#window-size).
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::MinBounds);
+echo $app->window->min; // Will display the minimum allowed window size
 
-$app->run();
-```
-
-
-### Window Fixed Size
-
-To set the fixed size, use the `resize()` method.
-
-```php
-$app = new Serafim\Boson\Application();
-
-$app->window->resize(640, 480, \Serafim\Boson\Window\WindowSizeHint::Fixed);
+$app->window->min->update(1024, 768);
 
 $app->run();
 ```
@@ -256,16 +369,17 @@ $app->run();
 
 ### Window Dark Mode
 
-To set the dark mode (dark theme), use the `$darkMode` window property.
-
-> [Linux]: Currently not supported, this option has no effect
-
-> [MacOS]: Currently not supported, this option has no effect
+To set the dark mode (dark theme), use the `$isDarkModeEnabled` 
+window's property.
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->window->darkMode = true;
+$app->window->isDarkModeEnabled = true;
+
+if ($app->window->isDarkModeEnabled) {
+    echo 'Dark mode is enabled!';
+}
 
 $app->run();
 ```
@@ -274,13 +388,85 @@ Or set dark mode from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
-        darkMode: true,
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            darkMode: true,
+        ),
     ),
 );
 
 $app->run();
 ```
+
+
+### Window Decorations
+
+You can DISABLE the standard window\`s title bar, minimize, maximize and close 
+buttons. To do this, you should set the `false` for `$isDecorated` property.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->window->isDecorated = false;
+
+$app->run();
+```
+
+Or via configuration options.
+
+```php
+$app = new Serafim\Boson\Application(
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            decorated: false,
+        ),
+    ),
+);
+
+$app->run();
+```
+
+Please note that by disabling the standard title bar and buttons you will not
+be able to control the window (moving and resizing), but you can implement 
+this behavior yourself using HTML attributes.
+
+```php
+$app = new Serafim\Boson\Application(
+    info: new \Serafim\Boson\ApplicationCreateInfo(
+        window: new Serafim\Boson\Window\WindowCreateInfo(
+            decorated: false,
+            webview: new \Serafim\Boson\WebView\WebViewCreateInfo(
+                html: <<<'HTML'
+                    <div data-webview-drag>
+                        By dragging this element you can move the window
+                    </div>
+                    
+                    <hr />
+                    
+                    <div data-webview-resize="br">
+                        By dragging this element you can resize the window
+                    </div>
+                    HTML
+            )
+        ),
+    ),
+);
+
+$app->run();
+```
+
+- The `data-webview-drag` attribute defines the area by dragging 
+  which you can move the window.
+- The `data-webview-resize` attribute defines the area by dragging
+  which you can resize the window.
+  - An `t` attribute's value means the ability to resize vertically, top of the window. 
+  - An `b` attribute's value means the ability to resize vertically, bottom of the window. 
+  - An `r` attribute's value means the ability to resize horizontally, right of the window. 
+  - An `l` attribute's value means the ability to resize horizontally, left of the window.
+  - Using combinations such as `tl`, `tr`, `bl` and `br` allows you to specify 
+    simultaneous resizing of the window vertically and horizontally.
+
+
 
 ### WebView HTML Content
 
@@ -298,8 +484,8 @@ Or set html content from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
-        webview: new Serafim\Boson\WebView\HTMLWebViewCreateInfo(
+    window: new Serafim\Boson\Window\WindowCreateInfo(
+        webview: new Serafim\Boson\WebView\WebViewCreateInfo(
             html: '<button>Do Not Click Me!</button>',
         ),
     ),
@@ -309,28 +495,34 @@ $app->run();
 ```
 
 Please note that reading this property is NOT possible. If you need to
-read the contents, use the [data retrieval method](#webview-requests).
+read the contents, use the [data retrieval method](#code-requests).
 
 ```php
-$app = new Serafim\Boson\Application();
+use Serafim\Boson\Application;
+use Serafim\Boson\WebView\Event\WebViewDomReady;
 
-$app->webview->request('document.body.innerHTML')
-    ->then(function (string $html) {
-        var_dump($html);
-    });
+$app = new Application();
+
+$app->webview->html = '<button>Do Not Click Me!</button>';
+
+$app->events->addEventListener(WebViewDomReady::class, function () use ($app) {
+    $html = $app->webview->request('document.body.innerHTML');
+    
+    var_dump($html);
+});
 
 $app->run();
 ```
 
 
-### WebView URL
+### WebView URL Navigation
 
 To load content from the URL, you should use the `$url` property
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->url = 'https://nesk.me';
+$app->webview->url = 'https://github.com/SerafimArts/Boson';
 
 $app->run();
 ```
@@ -339,9 +531,9 @@ Or set URL from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+    window: new Serafim\Boson\Window\WindowCreateInfo(
         webview: new Serafim\Boson\WebView\URLWebViewCreateInfo(
-            url: 'https://nesk.me',
+            url: 'https://github.com/SerafimArts/Boson',
         ),
     ),
 );
@@ -350,49 +542,66 @@ $app->run();
 ```
 
 
-### Global Styles
+### WebView URL Info
 
-You can register a CSS style that will be applied to any page
-
-```php
-$app = new Serafim\Boson\Application();
-
-$app->webview->styleBeforeLoad(<<<'CSS'
-    body {
-        background: #900;
-    }
-    CSS);
-
-$app->run();
-```
-
-Or set styles from configuration
-
-```php
-$app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
-        webview: new Serafim\Boson\WebView\WebViewCreateInfo(
-            styles: [<<<'CSS'
-                body {
-                    background: #900;
-                }
-                CSS],
-        ),
-    ),
-);
-
-$app->run();
-```
-
-
-### Global Scripts
-
-You can register a JavaScript code that will be applied to any page
+In addition to navigation to the specified URL address, it is also possible 
+to obtain information about the URL.
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->evalBeforeLoad(<<<'JS'
+$app->webview->url = 'https://github.com/SerafimArts/Boson';
+
+echo 'URL: ' . $app->webview->url . "\n"; // string("about:blank")
+
+$app->events->addEventListener(WebViewNavigated::class, function () use ($app) {
+    echo 'URL: ' . $app->webview->url . "\n"; // string("https://github.com/SerafimArts/Boson")
+});
+
+$app->run();
+```
+
+In addition, you can get separate information about the URL parts.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->url = 'https://github.com/SerafimArts/Boson';
+
+$app->events->addEventListener(WebViewNavigated::class, function () use ($app) {
+    echo 'Scheme: ' . $app->webview->url->scheme . "\n"; // string("https")
+    echo 'Host:   ' . $app->webview->url->host . "\n";   // string("github.com")
+    echo 'Path:   ' . $app->webview->url->path . "\n";   // string("/SerafimArts/Boson")
+});
+
+$app->run();
+```
+
+
+### WebView Code Evaluation
+
+You can execute arbitrary code directly on current WebView
+
+```php
+$app = new Serafim\Boson\Application();
+
+// Load empty page
+$app->webview->html = '';
+// Evaluate JS code on this page
+$app->webview->eval('document.write("Hello World!")');
+
+$app->run();
+```
+
+
+### WebView Scripts
+
+You can register a JavaScript code that will be applied to any page.
+
+```php
+$app = new Serafim\Boson\Application();
+
+$app->webview->scripts->add(<<<'JS'
     alert('hello');
     JS);
 
@@ -403,7 +612,7 @@ Or set scripts from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+    window: new Serafim\Boson\Window\WindowCreateInfo(
         webview: new Serafim\Boson\WebView\WebViewCreateInfo(
             scripts: [<<<'JS'
                 alert('hello');
@@ -415,8 +624,28 @@ $app = new Serafim\Boson\Application(
 $app->run();
 ```
 
+It is worth noting that adding code is available in several options.
 
-### Creating Functions
+```php
+$app = new Serafim\Boson\Application();
+
+// "This code will be executed BEFORE the page loads: undefined"
+$app->webview->scripts->preload(<<<'JS'
+    console.log('This code will be executed BEFORE the page loads: ' + document?.body?.innerHTML);
+    JS);
+
+// "This code will be executed AFTER the page loads: <b>hello</b>"
+$app->webview->scripts->add(<<<'JS'
+    console.log('This code will be executed AFTER the page loads: ' + document?.body?.innerHTML);
+    JS);
+    
+$app->webview->html = '<b>hello</b>';
+
+$app->run();
+```
+
+
+### WebView Function Bindings
 
 You can create a function that can be called directly from WebView
 
@@ -434,7 +663,7 @@ Or set functions list from configuration
 
 ```php
 $app = new Serafim\Boson\Application(
-    window: new Serafim\Boson\Window\NewWindowCreateInfo(
+    window: new Serafim\Boson\Window\WindowCreateInfo(
         webview: new Serafim\Boson\WebView\WebViewCreateInfo(
             functions: ['foo' => function () { 
                 var_dump('Executed!');
@@ -447,47 +676,79 @@ $app->run();
 ```
 
 
-### Code Evaluation
+### WebView Requests
 
-You can execute arbitrary code directly on current WebView
-
-```php
-$app = new Serafim\Boson\Application();
-
-$app->webview->eval('document.write("Hello World!")');
-
-$app->run();
-```
-
-
-### Code Requests
-
-You can directly get data from WebView context
+You can directly get data from WebView context.
 
 ```php
 $app = new Serafim\Boson\Application();
 
-$app->webview->request('document.location')
-    ->then(function (array $data) {
-        var_dump($data);
-    });
-
-$app->run();
-```
-
-
-### Quit
-
-To exit the application, you should call the `quit()` method
-
-```php
-$app = new Serafim\Boson\Application();
-
-$app->webview->html = '<button onclick="quit()">exit</button>';
-
-$app->webview->bind('quit', function () use ($app) {
-    $app->quit();
+$app->events->addEventListener(WebViewDomReady::class, function () use ($app) {
+    var_dump($app->webview->request('document.location')); 
+    // array:10 [
+    //   "ancestorOrigins" => []
+    //   "href" => "https://nesk.me/"
+    //   "origin" => "https://nesk.me"
+    //   "protocol" => "https:"
+    //   "host" => "nesk.me"
+    //   "hostname" => "nesk.me"
+    //   "port" => ""
+    //   "pathname" => "/"
+    //   "search" => ""
+    //   "hash" => ""
+    // ]
 });
+
+$app->webview->url = 'https://nesk.me';
+
+$app->run();
+```
+
+Please note that the request CAN NOT be processed if the 
+application is not running.
+
+```php
+$app = new Serafim\Boson\Application();
+
+var_dump($app->webview->request('document.location'));
+//
+// Uncaught Serafim\Boson\WebView\Requests\Exception\UnprocessableRequestException:
+//      Request "document.location" could not be processed
+//      because application is not running
+//
+
+$app->run();
+```
+
+
+### Events and Intentions
+
+Any event is a fact. Events can not be changed or rejected. Unlike events, 
+an intent is an attempt by the application or any of its components to do 
+something. Any intent can be rejected or modified.
+
+To subscribe to events and intents, the `$events` field is used.
+
+```php
+use Serafim\Boson\WebView\Event\WebViewNavigating;
+use Serafim\Boson\WebView\Event\WebViewNavigated;
+
+$app = new Serafim\Boson\Application();
+
+$app->events->addEventListener(WebViewNavigating::class, function (WebViewNavigating $intention): void {
+    echo 'Try to move on URL: ' . $intention->url . "\n";
+
+    // Randomly block navigating to another URL
+    if (\random_int(0, 1)) {
+        $intention->cancel();
+    }
+});
+
+$app->events->addEventListener(WebViewNavigated::class, function (WebViewNavigated $event): void {
+    echo 'Navigated to URL: ' . $event->url . "\n";
+});
+
+$app->webview->url = 'https://nesk.me';
 
 $app->run();
 ```
