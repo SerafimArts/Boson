@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView;
 
 use FFI\CData;
-use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
@@ -145,12 +144,12 @@ final class WebView implements WebViewInterface
         $this->functions->bind($function, $callback);
     }
 
-    public function eval(#[Language('JavaScript')] string $code): void
+    public function eval(string $code): void
     {
         $this->scripts->eval($code);
     }
 
-    public function request(#[Language('JavaScript')] string $code): mixed
+    public function request(string $code): mixed
     {
         return $this->requests->send($code);
     }

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView;
 
-use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Dispatcher\EventListenerInterface;
 use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\WebViewFunctionsMapInterface;
@@ -118,7 +117,7 @@ interface WebViewInterface
      *
      * @param string $code A JavaScript code for execution
      */
-    public function eval(#[Language('JavaScript')] string $code): void;
+    public function eval(string $code): void;
 
     /**
      * Requests arbitrary data from webview using JavaScript code.
@@ -127,7 +126,7 @@ interface WebViewInterface
      *        that provides by the {@see $requests} field. This means that
      *        calling `$webview->requests->send(...)` should have the same effect.
      */
-    public function request(#[Language('JavaScript')] string $code): mixed;
+    public function request(string $code): mixed;
 
     /**
      * Go forward using current history.

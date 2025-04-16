@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView\Scripts;
 
 use FFI\CData;
-use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Saucer\SaucerLoadTime;
 use Serafim\Boson\WebView\WebView;
@@ -35,12 +34,12 @@ final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \I
         $this->ptr = $this->webview->window->id->ptr;
     }
 
-    public function eval(#[Language('JavaScript')] string $code): void
+    public function eval(string $code): void
     {
         $this->api->saucer_webview_execute($this->ptr, $code);
     }
 
-    public function preload(#[Language('JavaScript')] string $code): WebViewScript
+    public function preload(string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_CREATION);
 
@@ -54,7 +53,7 @@ final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \I
         return $script;
     }
 
-    public function add(#[Language('JavaScript')] string $code): WebViewScript
+    public function add(string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_READY);
 

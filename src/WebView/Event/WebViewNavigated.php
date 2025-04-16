@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Event;
 
+use Serafim\Boson\Internal\AsWebViewEvent;
 use Serafim\Boson\WebView\Url\Url;
 use Serafim\Boson\WebView\WebView;
+
+#[AsWebViewEvent]
 
 final class WebViewNavigated extends WebViewEvent
 {
