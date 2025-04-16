@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView;
 
-use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Application;
 use Serafim\Boson\WebView\WebViewCreateInfo\StorageDirectoryResolver;
 
@@ -117,7 +116,6 @@ final readonly class WebViewCreateInfo
          *
          * @var non-empty-string|null
          */
-        #[Language('html')]
         public ?string $html = null,
         iterable $scripts = [],
         iterable $functions = [],

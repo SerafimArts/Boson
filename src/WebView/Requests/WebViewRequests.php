@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Requests;
 
-use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\IdGenerator\GeneratorInterface;
 use Serafim\Boson\Internal\IdGenerator\IntGenerator;
@@ -59,7 +58,7 @@ final class WebViewRequests implements WebViewRequestsInterface
         $this->webview->bind(self::METHOD_NAME, $this->onResponseReceived(...));
     }
 
-    public function send(#[Language('JavaScript')] string $code): mixed
+    public function send(string $code): mixed
     {
         if ($code === '') {
             return '';
