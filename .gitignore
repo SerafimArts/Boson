@@ -1,5 +1,6 @@
 # IDE
 /.idea
+/.cursor
 
 # Composer
 /composer.lock
