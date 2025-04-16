@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace Serafim\Boson\Window;
 
 use Serafim\Boson\ApplicationInterface;
-use Serafim\Boson\Dispatcher\EventListenerInterface;
-use Serafim\Boson\WebView\WebViewInterface;
+use Serafim\Boson\Dispatcher\EventListenerProviderInterface;
+use Serafim\Boson\WebView\WebViewProviderInterface;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\Size;
 use Serafim\Boson\Window\Size\SizeInterface;
 
-interface WindowInterface
+interface WindowInterface extends
+    EventListenerProviderInterface,
+    WebViewProviderInterface
 {
     /**
      * Gets an information DTO about the window with which it was created.
@@ -22,17 +24,6 @@ interface WindowInterface
      * Gets parent application instance to which this window belongs.
      */
     public ApplicationInterface $app { get; }
-
-    /**
-     * Gets child webview instance attached to the window.
-     */
-    public WebViewInterface $webview { get; }
-
-    /**
-     * Gets access to the listener of the window events
-     * and intention subscriptions.
-     */
-    public EventListenerInterface $events { get; }
 
     /**
      * The title of the specified window encoded as UTF-8.

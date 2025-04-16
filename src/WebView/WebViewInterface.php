@@ -4,31 +4,23 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView;
 
-use Serafim\Boson\Dispatcher\EventListenerInterface;
+use JetBrains\PhpStorm\Language;
+use Serafim\Boson\Dispatcher\EventListenerProviderInterface;
 use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\WebViewFunctionsMapInterface;
 use Serafim\Boson\WebView\Requests\WebViewRequestsInterface;
 use Serafim\Boson\WebView\Scripts\WebViewScriptsSetInterface;
 use Serafim\Boson\WebView\Url\Url;
-use Serafim\Boson\Window\WindowInterface;
+use Serafim\Boson\Window\WindowProviderInterface;
 
-interface WebViewInterface
+interface WebViewInterface extends
+    EventListenerProviderInterface,
+    WindowProviderInterface
 {
     /**
      * Gets information DTO about the webview with which it was created.
      */
     public WebViewCreateInfo $info { get; }
-
-    /**
-     * Gets parent application window instance to which this webview instance belongs.
-     */
-    public WindowInterface $window { get; }
-
-    /**
-     * Gets access to the listener of the webview events
-     * and intention subscriptions.
-     */
-    public EventListenerInterface $events { get; }
 
     /**
      * Gets access to the scripts API of the webview.
@@ -117,7 +109,7 @@ interface WebViewInterface
      *
      * @param string $code A JavaScript code for execution
      */
-    public function eval(string $code): void;
+    public function eval(#[Language('JavaScript')] string $code): void;
 
     /**
      * Requests arbitrary data from webview using JavaScript code.
@@ -126,7 +118,7 @@ interface WebViewInterface
      *        that provides by the {@see $requests} field. This means that
      *        calling `$webview->requests->send(...)` should have the same effect.
      */
-    public function request(string $code): mixed;
+    public function request(#[Language('JavaScript')] string $code): mixed;
 
     /**
      * Go forward using current history.

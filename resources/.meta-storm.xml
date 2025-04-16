@@ -1,77 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <meta-storm xmlns="meta-storm">
     <definitions>
-        <classConstructor class="\Serafim\Boson\WebView\WebViewCreateInfo" argument="1">
-            <languageInjection language="JavaScript"/>
-        </classConstructor>
-
-        <classConstructor class="\Serafim\Boson\WebView\Scripts\WebViewScript" argument="2">
-            <languageInjection language="JavaScript"/>
-        </classConstructor>
-
-        <classMethod class="\Serafim\Boson\WebView\WebView" method="eval" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\WebView" method="request" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\WebViewInterface" method="eval" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\WebViewInterface" method="request" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSet" method="eval" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSet" method="preload" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSet" method="add" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSetInterface" method="eval" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSetInterface" method="preload" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Scripts\WebViewScriptsSetInterface" method="add" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Requests\WebViewRequests" method="send" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classMethod class="\Serafim\Boson\WebView\Requests\WebViewRequestsInterface" method="send" argument="0">
-            <languageInjection language="JavaScript"/>
-        </classMethod>
-
-        <classProperty class="\Serafim\Boson\WebView\WebView" property="html">
-            <languageInjection language="HTML" />
-        </classProperty>
-
-        <classProperty class="\Serafim\Boson\WebView\WebViewInterface" property="html">
-            <languageInjection language="HTML" />
-        </classProperty>
-
-        <classProperty class="\Serafim\Boson\WebView\Url\Url" property="scheme">
-            <collection name="url-scheme" />
-        </classProperty>
-
-        <classConstructor class="\Serafim\Boson\WebView\Url\Url" argument="0">
-            <collection name="url-scheme" />
-        </classConstructor>
 
         <classConstructor class="\Serafim\Boson\WebView\WebViewCreateInfo" argument="5">
             <directories xpath="$directory" />
@@ -116,26 +45,5 @@
     <collections>
         <attributeClass name="window-events" class="\Serafim\Boson\Internal\AsWindowEvent" />
         <attributeClass name="webview-events" class="\Serafim\Boson\Internal\AsWebViewEvent" />
-        <strings name="url-scheme">
-            <value>https</value>
-            <value>http</value>
-            <value>wss</value>
-            <value>ws</value>
-            <value>data</value>
-            <value>file</value>
-            <value>ftp</value>
-            <value>mailto</value>
-            <value>tel</value>
-            <value>imap</value>
-            <value>irc</value>
-            <value>nntp</value>
-            <value>acap</value>
-            <value>icap</value>
-            <value>mtqp</value>
-            <value>urn</value>
-            <value>javascript</value>
-            <value>resource</value>
-            <value>view-source</value>
-        </strings>
     </collections>
 </meta-storm>

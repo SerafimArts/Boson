@@ -4,13 +4,18 @@ declare(strict_types=1);
 
 namespace Serafim\Boson;
 
-use Serafim\Boson\Dispatcher\EventListenerInterface;
+use Serafim\Boson\Dispatcher\EventListenerProviderInterface;
 use Serafim\Boson\Exception\NoDefaultWindowException;
 use Serafim\Boson\WebView\WebViewInterface;
+use Serafim\Boson\WebView\WebViewProviderInterface;
 use Serafim\Boson\Window\Manager\WindowManagerInterface;
 use Serafim\Boson\Window\WindowInterface;
+use Serafim\Boson\Window\WindowProviderInterface;
 
-interface ApplicationInterface
+interface ApplicationInterface extends
+    EventListenerProviderInterface,
+    WindowProviderInterface,
+    WebViewProviderInterface
 {
     /**
      * Gets an information DTO about the application
@@ -19,19 +24,10 @@ interface ApplicationInterface
     public ApplicationCreateInfo $info { get; }
 
     /**
-     * Gets event listener of an application with application
-     * event and intention subscriptions.
-     */
-    public EventListenerInterface $events { get; }
-
-    /**
      * Gets windows list and methods for working with windows.
      */
     public WindowManagerInterface $windows { get; }
 
-    /**
-     * Gets default window instance.
-     */
     public WindowInterface $window {
         /**
          * @throws NoDefaultWindowException in case the default window was
@@ -40,9 +36,6 @@ interface ApplicationInterface
         get;
     }
 
-    /**
-     * Gets webview of the default application`s window.
-     */
     public WebViewInterface $webview {
         /**
          * @throws NoDefaultWindowException in case the default window was

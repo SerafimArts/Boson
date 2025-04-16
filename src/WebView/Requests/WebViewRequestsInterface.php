@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Requests;
 
+use JetBrains\PhpStorm\Language;
 use Serafim\Boson\WebView\Requests\Exception\UnprocessableRequestException;
 
 interface WebViewRequestsInterface
@@ -20,5 +21,5 @@ interface WebViewRequestsInterface
      *
      * @throws UnprocessableRequestException occurs when a response cannot be received
      */
-    public function send(string $code): mixed;
+    public function send(#[Language('JavaScript')] string $code): mixed;
 }

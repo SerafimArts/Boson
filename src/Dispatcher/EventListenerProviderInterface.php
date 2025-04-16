@@ -7,7 +7,8 @@ namespace Serafim\Boson\Dispatcher;
 interface EventListenerProviderInterface
 {
     /**
-     * Contains local event listeners.
+     * Gets event listener of the context with events
+     * and intention subscriptions.
      */
     public EventListenerInterface $events { get; }
 }

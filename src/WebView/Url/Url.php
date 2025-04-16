@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Url;
 
+use JetBrains\PhpStorm\ExpectedValues;
+
 final class Url implements \Stringable
 {
     /**
@@ -50,6 +52,12 @@ final class Url implements \Stringable
          *
          * @see https://tools.ietf.org/html/rfc3986#section-3.1
          */
+        #[ExpectedValues(values: [
+            'https', 'http', 'wss', 'ws', 'data',
+            'file', 'ftp', 'mailto', 'tel', 'imap',
+            'irc', 'nntp', 'acap', 'icap', 'mtqp',
+            'urn', 'javascript', 'resource', 'view-source',
+        ])]
         public readonly ?string $scheme,
         /**
          * Contains the user component of the URI/URL.
