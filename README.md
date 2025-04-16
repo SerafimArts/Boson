@@ -17,7 +17,7 @@ Why Boson? Because it's not an [Electron](https://www.electronjs.org)!
 And much easier than that =)
 
 > Also, this repository contains included high level PHP bindings 
-> [for webview v0.12.0](https://github.com/webview/webview).
+> [for Saucer v6.0](https://github.com/saucer/saucer).
 
 - [Simple Example](#simple-example)
 - [Requirements](#requirements)
