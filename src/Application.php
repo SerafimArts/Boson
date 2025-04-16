@@ -21,6 +21,8 @@ use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
 use Serafim\Boson\Window\WindowInterface;
+use Serafim\Boson\Internal\Application\DeferRunner\DeferRunnerInterface;
+use Serafim\Boson\Internal\Application\DeferRunner\NativeShutdownFunctionRunner;
 
 final class Application implements ApplicationInterface
 {
@@ -44,6 +46,11 @@ final class Application implements ApplicationInterface
     public private(set) bool $isRunning = false;
 
     /**
+     * Indicates whether the application was ever running
+     */
+    private bool $wasEverRunning = false;
+
+    /**
      * Shared WebView API library.
      */
     private readonly LibSaucer $api;
@@ -52,6 +59,11 @@ final class Application implements ApplicationInterface
      * Gets status of quit handler registration.
      */
     private bool $quitHandlerIsRegistered = false;
+
+    /**
+     * Gets status of defer runner registration.
+     */
+    private bool $deferRunnerIsRegistered = false;
 
     private readonly ProcessUnlockPlaceholder $placeholder;
 
@@ -78,6 +90,10 @@ final class Application implements ApplicationInterface
         );
 
         $this->registerDefaultEventListeners();
+
+        if ($this->info->autorun) {
+            $this->registerDeferRunnerIfNotRegistered();
+        }
     }
 
     private function registerDefaultEventListeners(): void
@@ -179,10 +195,47 @@ final class Application implements ApplicationInterface
                 continue;
             }
 
+            // Register EVERY quit handler
             $handler->register($this->quit(...));
         }
 
         $this->quitHandlerIsRegistered = true;
+    }
+
+    /**
+     * @return iterable<array-key, DeferRunnerInterface>
+     */
+    private function getDeferRunners(): iterable
+    {
+        yield new NativeShutdownFunctionRunner();
+    }
+
+    private function registerDeferRunnerIfNotRegistered(): void
+    {
+        if ($this->deferRunnerIsRegistered) {
+            return;
+        }
+
+        foreach ($this->getDeferRunners() as $runner) {
+            if ($runner->isSupported === false) {
+                continue;
+            }
+
+            // Register FIRST deferred runner
+            $runner->register($this->runIfNotEverRunning(...));
+            break;
+        }
+
+        $this->deferRunnerIsRegistered = true;
+    }
+
+    private function runIfNotEverRunning(): void
+    {
+        if ($this->wasEverRunning) {
+            return;
+        }
+
+        $this->run();
     }
 
     public function run(): void
@@ -192,6 +245,7 @@ final class Application implements ApplicationInterface
         }
 
         $this->isRunning = true;
+        $this->wasEverRunning = true;
 
         $this->registerQuitHandlersIfNotRegistered();
 

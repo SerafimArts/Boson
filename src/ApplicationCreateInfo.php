@@ -50,6 +50,10 @@ final readonly class ApplicationCreateInfo
          */
         public bool $quitOnClose = true,
         /**
+         * Automatically starts the application if set to {@see true}.
+         */
+        public bool $autorun = false,
+        /**
          * Main (default) window configuration DTO.
          */
         public WindowCreateInfo $window = new WindowCreateInfo(),
