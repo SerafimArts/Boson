@@ -99,8 +99,8 @@ final class Application implements ApplicationInterface
     private readonly ProcessUnlockPlaceholder $placeholder;
 
     /**
-     * @param PsrEventDispatcherInterface|null $dispatcher An optional event
-     *        dispatcher for handling application events.
+     * @param PsrEventDispatcherInterface|null $dispatcher an optional event
+     *        dispatcher for handling application events
      */
     public function __construct(
         /**
