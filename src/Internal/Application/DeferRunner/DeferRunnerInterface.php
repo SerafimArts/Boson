@@ -17,4 +17,4 @@ interface DeferRunnerInterface
      * @param callable(): void $callback The callback to be executed
      */
     public function register(callable $callback): void;
-} 
+}

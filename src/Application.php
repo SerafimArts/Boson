@@ -10,6 +10,8 @@ use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Exception\NoDefaultWindowException;
 use Serafim\Boson\Internal\Application\DebugEnvResolver;
+use Serafim\Boson\Internal\Application\DeferRunner\DeferRunnerInterface;
+use Serafim\Boson\Internal\Application\DeferRunner\NativeShutdownFunctionRunner;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
@@ -21,8 +23,6 @@ use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
 use Serafim\Boson\Window\WindowInterface;
-use Serafim\Boson\Internal\Application\DeferRunner\DeferRunnerInterface;
-use Serafim\Boson\Internal\Application\DeferRunner\NativeShutdownFunctionRunner;
 
 final class Application implements ApplicationInterface
 {
