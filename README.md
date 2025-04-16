@@ -29,6 +29,7 @@ And much easier than that =)
   - **Application**
     - [Configuration](#application-configuration)
     - [Launching](#application-launching)
+    - [Autorun](#application-autorun)
     - [Quit](#application-quit) 
   - **Window**
     - [Window Title](#window-title)
@@ -201,6 +202,27 @@ $app->run();
 echo 'This code DOES NOT execute until the application is stopped!';
 ```
 
+> In most cases, explicit `run()` invocation is not required, as the 
+> [autorun](#application-autorun) option is enabled by default.
+
+## Application Autorun
+
+By default, the application is automatically launched after creation (delayed, 
+not immediately), even if you do not call the `run()` method yourself. 
+This is because the autostart option is enabled (defined as `true`) by default.
+
+If you do not need the application to start automatically, 
+then this option should be disabled (set to `false`).
+
+```php
+use Serafim\Boson\Application;
+use Serafim\Boson\ApplicationCreateInfo;
+
+$app = new Application(new ApplicationCreateInfo(
+    autorun: false,
+));
+```
+
 
 ## Application Quit
 
@@ -228,8 +250,6 @@ $app = new Application();
 $app->events->addEventListener(WindowMinimized::class, function () use ($app) {
     $app->quit();
 });
-
-$app->run();
 ```
 
 It is also worth keeping in mind that the application may close 
@@ -257,8 +277,6 @@ $app = new Serafim\Boson\Application();
 $app->webview->title = 'New Title';
 
 echo 'Current Title: ' . $app->webview->title;
-
-$app->run();
 ```
 
 Or set title from configuration
@@ -271,8 +289,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -287,8 +303,6 @@ echo $app->window->size; // Size(640 × 480)
 
 echo $app->window->size->width; // int(640)
 echo $app->window->size->height; // int(480)
-
-$app->run();
 ```
 
 You also may set default window size via configuration.
@@ -302,8 +316,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -319,8 +331,6 @@ $app->window->size->update(640, 480);
 
 // Or set the dimensions explicitly using new Size object
 $app->window->size = new Serafim\Boson\Window\Size\Size(640, 480);
-
-$app->run();
 ```
 
 In addition, each window size can also be changed separately.
@@ -330,8 +340,6 @@ $app = new Serafim\Boson\Application();
 
 $app->window->size->width = 640;
 $app->window->size->height = 480;
-
-$app->run();
 ```
 
 To disable the ability to resize a window, pass the appropriate 
@@ -345,8 +353,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -361,8 +367,6 @@ $app = new Serafim\Boson\Application();
 echo $app->window->max; // Will display the maximum allowed window size
 
 $app->window->max->update(1024, 768);
-
-$app->run();
 ```
 
 
@@ -377,8 +381,6 @@ $app = new Serafim\Boson\Application();
 echo $app->window->min; // Will display the minimum allowed window size
 
 $app->window->min->update(1024, 768);
-
-$app->run();
 ```
 
 
@@ -395,8 +397,6 @@ $app->window->isDarkModeEnabled = true;
 if ($app->window->isDarkModeEnabled) {
     echo 'Dark mode is enabled!';
 }
-
-$app->run();
 ```
 
 Or set dark mode from configuration
@@ -409,8 +409,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -423,8 +421,6 @@ buttons. To do this, you should set the `false` for `$isDecorated` property.
 $app = new Serafim\Boson\Application();
 
 $app->window->isDecorated = false;
-
-$app->run();
 ```
 
 Or via configuration options.
@@ -437,8 +433,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 Please note that by disabling the standard title bar and buttons you will not
@@ -466,8 +460,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 - The `data-webview-drag` attribute defines the area by dragging 
@@ -491,8 +483,6 @@ To set the content, you should use the `$html` property
 $app = new Serafim\Boson\Application();
 
 $app->webview->html = '<button>Do Not Click Me!</button>';
-
-$app->run();
 ```
 
 Or set html content from configuration
@@ -505,8 +495,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 Please note that reading this property is NOT possible. If you need to
@@ -525,8 +513,6 @@ $app->events->addEventListener(WebViewDomReady::class, function () use ($app) {
     
     var_dump($html);
 });
-
-$app->run();
 ```
 
 
@@ -538,8 +524,6 @@ To load content from the URL, you should use the `$url` property
 $app = new Serafim\Boson\Application();
 
 $app->webview->url = 'https://github.com/SerafimArts/Boson';
-
-$app->run();
 ```
 
 Or set URL from configuration
@@ -552,8 +536,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -572,8 +554,6 @@ echo 'URL: ' . $app->webview->url . "\n"; // string("about:blank")
 $app->events->addEventListener(WebViewNavigated::class, function () use ($app) {
     echo 'URL: ' . $app->webview->url . "\n"; // string("https://github.com/SerafimArts/Boson")
 });
-
-$app->run();
 ```
 
 In addition, you can get separate information about the URL parts.
@@ -588,8 +568,6 @@ $app->events->addEventListener(WebViewNavigated::class, function () use ($app) {
     echo 'Host:   ' . $app->webview->url->host . "\n";   // string("github.com")
     echo 'Path:   ' . $app->webview->url->path . "\n";   // string("/SerafimArts/Boson")
 });
-
-$app->run();
 ```
 
 
@@ -604,8 +582,6 @@ $app = new Serafim\Boson\Application();
 $app->webview->html = '';
 // Evaluate JS code on this page
 $app->webview->eval('document.write("Hello World!")');
-
-$app->run();
 ```
 
 
@@ -619,8 +595,6 @@ $app = new Serafim\Boson\Application();
 $app->webview->scripts->add(<<<'JS'
     alert('hello');
     JS);
-
-$app->run();
 ```
 
 Or set scripts from configuration
@@ -635,8 +609,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 It is worth noting that adding code is available in several options.
@@ -655,8 +627,6 @@ $app->webview->scripts->add(<<<'JS'
     JS);
     
 $app->webview->html = '<b>hello</b>';
-
-$app->run();
 ```
 
 
@@ -670,8 +640,6 @@ $app = new Serafim\Boson\Application();
 $app->webview->bind('foo', function () { 
     var_dump('Executed!');
 });
-
-$app->run();
 ```
 
 Or set functions list from configuration
@@ -686,8 +654,6 @@ $app = new Serafim\Boson\Application(
         ),
     ),
 );
-
-$app->run();
 ```
 
 
@@ -715,8 +681,6 @@ $app->events->addEventListener(WebViewDomReady::class, function () use ($app) {
 });
 
 $app->webview->url = 'https://nesk.me';
-
-$app->run();
 ```
 
 Please note that the request CAN NOT be processed if the 
@@ -731,8 +695,6 @@ var_dump($app->webview->request('document.location'));
 //      Request "document.location" could not be processed
 //      because application is not running
 //
-
-$app->run();
 ```
 
 
@@ -764,8 +726,6 @@ $app->events->addEventListener(WebViewNavigated::class, function (WebViewNavigat
 });
 
 $app->webview->url = 'https://nesk.me';
-
-$app->run();
 ```
 
 
@@ -781,8 +741,6 @@ $app = new Serafim\Boson\Application(
     // null  - autodetect debug mode
     debug: true, 
 );
-
-$app->run();
 ```
 
 
@@ -797,6 +755,4 @@ $app = new Serafim\Boson\Application(
     // null   - autodetect library
     library: __DIR__ . '/path/to/custom-webview.so',
 );
-
-$app->run();
 ```

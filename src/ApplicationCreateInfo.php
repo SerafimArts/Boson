@@ -52,7 +52,7 @@ final readonly class ApplicationCreateInfo
         /**
          * Automatically starts the application if set to {@see true}.
          */
-        public bool $autorun = false,
+        public bool $autorun = true,
         /**
          * Main (default) window configuration DTO.
          */
