@@ -9,7 +9,6 @@ use Serafim\Boson\WebView\Url\Url;
 use Serafim\Boson\WebView\WebView;
 
 #[AsWebViewEvent]
-
 final class WebViewNavigated extends WebViewEvent
 {
     public function __construct(
