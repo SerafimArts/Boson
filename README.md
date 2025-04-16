@@ -81,6 +81,11 @@ $app->run();
 | Linux    | ✓   | ✓     | ✓     | [GTK](https://gtk.org/), [WebKitGTK](https://webkitgtk.org/), [Qt5/Qt6](https://github.com/qt/qtwebkit)                                                             |
 | macOS    | ✓   | ✓     | ✓     | Cocoa, [WebKit](https://webkit.org/)                                                                                                                                |
 
+> At the moment, all binaries are supplied [together with the library](./bin). 
+> In future versions, a separate platform-dependent installation of 
+> assemblies from [the GitHub Actions CI](https://github.com/SerafimArts/Boson/actions/workflows/build.yml) 
+> is planned.
+
 ### Windows
 
 Requires Windows 10 or higher.
@@ -94,7 +99,7 @@ It appears that no additional dependencies are required.
 
 ### Linux and BSD
 
-Supports both [WebKitGTK](https://webkitgtk.org/)[WebKitGTK](https://webkitgtk.org/) and [Qt5](https://github.com/qt/qtwebkit) 
+Supports both [WebKitGTK](https://webkitgtk.org/) and [Qt5](https://github.com/qt/qtwebkit) 
 as well as [Qt6](https://github.com/qt/qtwebkit) on Linux.
 
 The default backend is WebKitGtk:
@@ -326,7 +331,7 @@ To disable the ability to resize a window, pass the appropriate
 $app = new Serafim\Boson\Application(
     info: new \Serafim\Boson\ApplicationCreateInfo(
         window: new Serafim\Boson\Window\WindowCreateInfo(
-            decorated: false,
+            resizable: false,
         ),
     ),
 );
