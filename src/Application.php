@@ -22,6 +22,7 @@ use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\WebView\WebViewInterface;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
+use Serafim\Boson\Window\Manager\WindowManagerInterface;
 use Serafim\Boson\Window\WindowInterface;
 
 final class Application implements ApplicationInterface
@@ -32,17 +33,44 @@ final class Application implements ApplicationInterface
 
     public readonly EventListener $events;
 
+    /**
+     * Facade property.
+     *
+     * Provides more convenient and faster access
+     * to the {@see WindowManagerInterface::$default}
+     * subsystem from {@see $windows} property.
+     */
     public WindowInterface $window {
+        /**
+         * Gets the default window of the application.
+         *
+         * @throws NoDefaultWindowException in case there is not a single window
+         */
         get => $this->windows->default
             ?? throw NoDefaultWindowException::becauseNoDefaultWindow();
     }
 
+    /**
+     * Facade property.
+     *
+     * Provides more convenient and faster access
+     * to the {@see WindowInterface::$webview}
+     * subsystem from {@see $window} property.
+     */
     public WebViewInterface $webview {
+        /**
+         * Gets the WebView instance associated with the default window.
+         *
+         * @throws NoDefaultWindowException in case there is not a single window
+         */
         get => $this->window->webview;
     }
 
     public readonly bool $isDebug;
 
+    /**
+     * Indicates whether the application is currently running.
+     */
     public private(set) bool $isRunning = false;
 
     /**
@@ -52,8 +80,11 @@ final class Application implements ApplicationInterface
 
     /**
      * Shared WebView API library.
+     *
+     * @internal Not safe, you can get segfault, use
+     *           this low-level API at your own risk!
      */
-    private readonly LibSaucer $api;
+    public readonly LibSaucer $api;
 
     /**
      * Gets status of quit handler registration.
@@ -67,7 +98,14 @@ final class Application implements ApplicationInterface
 
     private readonly ProcessUnlockPlaceholder $placeholder;
 
+    /**
+     * @param PsrEventDispatcherInterface|null $dispatcher An optional event
+     *        dispatcher for handling application events.
+     */
     public function __construct(
+        /**
+         * Application configuration DTO.
+         */
         public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
         ?PsrEventDispatcherInterface $dispatcher = null,
     ) {
@@ -96,11 +134,22 @@ final class Application implements ApplicationInterface
         }
     }
 
+    /**
+     * Registers default event listeners for the application.
+     *
+     * This includes handling window close events.
+     */
     private function registerDefaultEventListeners(): void
     {
         $this->events->addEventListener(WindowClosed::class, $this->onWindowClose(...));
     }
 
+    /**
+     * Handles the window close event.
+     *
+     * If {@see $quitOnClose} is enabled ({@see true}) and
+     * all windows are closed, the application will quit.
+     */
     private function onWindowClose(): void
     {
         if ($this->info->quitOnClose && $this->windows->count() === 0) {
@@ -108,6 +157,10 @@ final class Application implements ApplicationInterface
         }
     }
 
+    /**
+     * Creates local (application-aware) event listener
+     * based on the provided dispatcher.
+     */
     private function createEventListener(?PsrEventDispatcherInterface $dispatcher): EventListener
     {
         if ($dispatcher === null) {
@@ -169,6 +222,10 @@ final class Application implements ApplicationInterface
         return $options;
     }
 
+    /**
+     * Quits the application, stopping the main
+     * loop and releasing resources.
+     */
     public function quit(): void
     {
         $this->isRunning = false;
@@ -176,6 +233,9 @@ final class Application implements ApplicationInterface
     }
 
     /**
+     * Returns a list of quit handlers (intercepts alternative
+     * application shutdown commands) for the application.
+     *
      * @return iterable<array-key, QuitHandlerInterface>
      */
     private function getQuitHandlers(): iterable
@@ -184,6 +244,11 @@ final class Application implements ApplicationInterface
         yield new PcntlQuitHandler();
     }
 
+    /**
+     * Registers quit handlers if they haven't been registered yet.
+     *
+     * This ensures that the application can be properly terminated.
+     */
     private function registerQuitHandlersIfNotRegistered(): void
     {
         if ($this->quitHandlerIsRegistered) {
@@ -203,6 +268,8 @@ final class Application implements ApplicationInterface
     }
 
     /**
+     * Returns a list of defer runners for the application.
+     *
      * @return iterable<array-key, DeferRunnerInterface>
      */
     private function getDeferRunners(): iterable
@@ -210,6 +277,12 @@ final class Application implements ApplicationInterface
         yield new NativeShutdownFunctionRunner();
     }
 
+    /**
+     * Registers a defer runner if none has been registered yet.
+     *
+     * This allows the application to be started automatically
+     * after script execution.
+     */
     private function registerDeferRunnerIfNotRegistered(): void
     {
         if ($this->deferRunnerIsRegistered) {
@@ -229,6 +302,12 @@ final class Application implements ApplicationInterface
         $this->deferRunnerIsRegistered = true;
     }
 
+    /**
+     * Runs the application if it has never been run before.
+     *
+     * This is used by the defer runner to start
+     * the application automatically.
+     */
     private function runIfNotEverRunning(): void
     {
         if ($this->wasEverRunning) {
@@ -238,6 +317,12 @@ final class Application implements ApplicationInterface
         $this->run();
     }
 
+    /**
+     * Runs the application, starting the main event loop.
+     *
+     * This method blocks main thread until the
+     * application is quit.
+     */
     public function run(): void
     {
         if ($this->isRunning) {
@@ -256,6 +341,12 @@ final class Application implements ApplicationInterface
         } while ($this->isRunning);
     }
 
+    /**
+     * Destructor for the Application class.
+     *
+     * Ensures that all resources are properly released
+     * when the application is destroyed.
+     */
     public function __destruct()
     {
         $this->api->saucer_application_quit($this->id->ptr);
