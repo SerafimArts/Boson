@@ -24,6 +24,7 @@ And much easier than that =)
   - [Windows](#windows)
   - [Linux & BSD](#linux-and-bsd)
   - [MacOS](#macos)
+- [Installation](#installation)
 - [Usage](#usage)
   - **Application**
     - [Configuration](#application-configuration)
@@ -109,6 +110,15 @@ The default backend is WebKitGtk:
 
 You can download other assemblies separately from [GitHub Actions](https://github.com/SerafimArts/Boson/actions/workflows/build.yml).
 Automatic detection and installation of dependencies is not supported yet.
+
+## Installation
+
+Boson package is available as Composer repository and can 
+be installed using the following command in a root of your project:
+
+```bash
+$ composer require serafim/boson
+```
 
 ## Usage
 
