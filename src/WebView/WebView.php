@@ -212,6 +212,7 @@ final class WebView
      *       calling `$webview->functions->bind(...)` should have the same effect.
      *
      * @api
+     *
      * @uses WebViewFunctionsMap::bind() WebView Functions API
      *
      * @param non-empty-string $function
@@ -231,6 +232,7 @@ final class WebView
      *       calling `$webview->scripts->eval(...)` should have the same effect.
      *
      * @api
+     *
      * @uses WebViewScriptsSet::eval() WebView Scripts API
      *
      * @param string $code A JavaScript code for execution
@@ -248,6 +250,7 @@ final class WebView
      *       calling `$webview->requests->send(...)` should have the same effect.
      *
      * @api
+     *
      * @uses WebViewRequests::send() WebView Requests API
      *
      * @param string $code A JavaScript code for execution

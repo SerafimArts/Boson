@@ -9,7 +9,7 @@ $files = PhpCsFixer\Finder::create()
             // "public private(set) ?Window $default" detects as ternary operator
             \realpath(__DIR__ . '/src/Window/Manager/WindowManager.php'),
             // Fixer doesnt support an abstract properties
-            \realpath(__DIR__ . '/src/Internal/IdGenerator/IntGenerator.php'),
+            \realpath(__DIR__ . '/src/Shared/IdValueGenerator/IntValueGenerator.php'),
         ], true)
     )
 ;
