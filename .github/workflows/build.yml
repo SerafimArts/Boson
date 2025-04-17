@@ -28,7 +28,7 @@ jobs:
           - { arch: x86_64 }
 
     runs-on: windows-latest
-    name: "Windows-WebView2-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Windows-WebView2-${{ matrix.platform.arch }}"
 
     steps:
       - name: Checkout
@@ -48,7 +48,7 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "Windows-WebView2-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Windows-WebView2-${{ matrix.platform.arch }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
   #
@@ -66,7 +66,7 @@ jobs:
           - Release
 
     runs-on: macos-latest
-    name: "MacOS-WebKit-Universal-${{ matrix.build-type }}"
+    name: "MacOS-WebKit-Universal"
 
     steps:
       - name: Checkout
@@ -86,7 +86,7 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "MacOS-WebKit-Universal-${{ matrix.build-type }}"
+          name: "MacOS-WebKit-Universal"
           path: ${{ env.BUILD_DIR }}/bin/
 
   #
@@ -106,12 +106,12 @@ jobs:
           # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
           # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
           - { arch: "x86_64", qemuArch: "linux/amd64" }
-          - { arch: "x86", qemuArch: "linux/386" }
+          #- { arch: "x86", qemuArch: "linux/386" }
           - { arch: "aarch64", qemuArch: "linux/arm64/v8" }
           #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
 
     runs-on: ubuntu-latest
-    name: "Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-Qt5-${{ matrix.platform.arch }}"
 
     steps:
       - name: Checkout
@@ -144,7 +144,7 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-Qt5-${{ matrix.platform.arch }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
   build-linux-qt6:
@@ -163,7 +163,7 @@ jobs:
           - { arch: "aarch64", qemuArch: "linux/arm64/v8" }
 
     runs-on: ubuntu-latest
-    name: "Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-Qt6-${{ matrix.platform.arch }}"
 
     steps:
       - name: Checkout
@@ -196,7 +196,7 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-Qt6-${{ matrix.platform.arch }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
   build-linux-gtk:
@@ -220,7 +220,7 @@ jobs:
           #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
 
     runs-on: ubuntu-latest
-    name: "Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-WebKitGtk-${{ matrix.platform.arch }}"
 
     steps:
       - name: Checkout
@@ -253,6 +253,6 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-WebKitGtk-${{ matrix.platform.arch }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
