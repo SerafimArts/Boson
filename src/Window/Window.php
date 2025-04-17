@@ -8,6 +8,7 @@ use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
+use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
@@ -20,12 +21,34 @@ use Serafim\Boson\Window\Size\Managed\ManagedWindowSize;
 use Serafim\Boson\Window\Size\MutableSizeInterface;
 use Serafim\Boson\Window\Size\SizeInterface;
 
-final class Window implements WindowInterface
+/**
+ * @api
+ */
+final class Window
 {
+    /**
+     * Unique window identifier.
+     *
+     * It is worth noting that the destruction of this object
+     * from memory (deallocation using PHP GC) means the physical
+     * destruction of all data associated with it, including unmanaged.
+     */
     public readonly WindowId $id;
 
+    /**
+     * Gets child webview instance attached to the window.
+     */
     public readonly WebView $webview;
 
+    /**
+     * Gets access to the listener of the window events
+     * and intention subscriptions.
+     */
+    public readonly EventListener $events;
+
+    /**
+     * The title of the specified window encoded as UTF-8.
+     */
     public string $title {
         get => $this->title ??= $this->getCurrentWindowTitle();
         set {
@@ -33,8 +56,47 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains current window size.
+     */
     public MutableSizeInterface $size {
+        /**
+         * Returns mutable {@see MutableSizeInterface} window size value object.
+         *
+         * ```
+         * echo $window->size; // Size(640 × 480)
+         * ```
+         *
+         * Since the property returns mutable window size, they can be
+         * changed explicitly.
+         *
+         * ```
+         * $window->size->width = 640;
+         * $window->size->height = 648;
+         * ```
+         *
+         * Or using simultaneously update.
+         *
+         * ```
+         * $window->size->update(640, 480);
+         * ```
+         */
         get => $this->size;
+        /**
+         * Allows to update window size using any {@see SizeInterface}
+         * (for example {@see Size}) instance.
+         *
+         * ```
+         * $window->min = new Size(640, 480);
+         * ```
+         *
+         * The sizes can also be passed between different window instances
+         * and window properties.
+         *
+         * ```
+         * $window1->size = $window2->size;
+         * ```
+         */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowSize) {
                 $this->size = $size;
@@ -46,8 +108,48 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains minimum size bounds of the window.
+     */
     public MutableSizeInterface $min {
+        /**
+         * Returns mutable {@see MutableSizeInterface} minimum size bounds
+         * of the window.
+         *
+         * ```
+         * echo $window->min; // Size(0 × 0)
+         * ```
+         *
+         * Since the property returns mutable minimum size bounds,
+         * they can be changed explicitly.
+         *
+         * ```
+         * $window->min->width = 640;
+         * $window->min->height = 648;
+         * ```
+         *
+         * Or using simultaneously update.
+         *
+         * ```
+         * $window->min->update(640, 480);
+         * ```
+         */
         get => $this->min;
+        /**
+         * Allows to update window minimal size bound using any
+         * {@see SizeInterface} (for example {@see Size}) instance.
+         *
+         * ```
+         * $window->min = new Size(640, 480);
+         * ```
+         *
+         * The sizes can also be passed between different window instances
+         * and window properties.
+         *
+         * ```
+         * $window->min = $window->size;
+         * ```
+         */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMinBounds) {
                 $this->min = $size;
@@ -59,8 +161,48 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains maximum size bounds of the window.
+     */
     public MutableSizeInterface $max {
+        /**
+         * Returns mutable {@see MutableSizeInterface} maximum size bounds
+         * of the window.
+         *
+         * ```
+         * echo $window->max; // Size(5142 × 1462)
+         * ```
+         *
+         * Since the property returns mutable maximum size bounds,
+         * they can be changed explicitly.
+         *
+         * ```
+         * $window->max->width = 640;
+         * $window->max->height = 648;
+         * ```
+         *
+         * Or using simultaneously update.
+         *
+         * ```
+         * $window->max->update(640, 480);
+         * ```
+         */
         get => $this->max;
+        /**
+         * Allows to update window maximal size bound using any
+         * {@see SizeInterface} (for example {@see Size}) instance.
+         *
+         * ```
+         * $window->max = new Size(640, 480);
+         * ```
+         *
+         * The sizes can also be passed between different window instances
+         * and window properties.
+         *
+         * ```
+         * $window->max = $window->size;
+         * ```
+         */
         set(SizeInterface $size) {
             if ($size instanceof ManagedWindowMaxBounds) {
                 $this->max = $size;
@@ -72,11 +214,35 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains window dark mode option.
+     *
+     * In case of {@see true} then the dark mode is forcibly enabled,
+     * or {@see false} instead.
+     */
     public bool $isDarkModeEnabled {
+        /**
+         * Gets current window dark mode.
+         *
+         * ```
+         * if ($window->isDarkModeEnabled) {
+         *     echo 'Dark mode is enabled';
+         * } else {
+         *     echo 'Dark mode is disabled';
+         * }
+         * ```
+         */
         get {
             return $this->isDarkModeEnabled
                 ??= $this->api->saucer_webview_force_dark_mode($this->id->ptr);
         }
+        /**
+         * Updates current window dark mode.
+         *
+         * ```
+         * $window->isDarkModeEnabled = true;
+         * ```
+         */
         set {
             $this->api->saucer_webview_set_force_dark_mode(
                 $this->id->ptr,
@@ -85,8 +251,34 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains window visibility option.
+     */
     public bool $isVisible {
+        /**
+         * Gets current window visibility state.
+         *
+         * ```
+         * if ($window->isVisible) {
+         *     echo 'Window is visible';
+         * } else {
+         *     echo 'Window is hidden';
+         * }
+         * ```
+         */
         get => $this->api->saucer_window_visible($this->id->ptr);
+        /**
+         * Show the window in case of property will be set to {@see true}
+         * or hide in case of {@see false}.
+         *
+         * ```
+         * // Show window
+         * $window->isVisible = true;
+         *
+         * // Hide window
+         * $window->isVisible = false;
+         * ```
+         */
         set {
             if ($value) {
                 $this->api->saucer_window_show($this->id->ptr);
@@ -96,16 +288,51 @@ final class Window implements WindowInterface
         }
     }
 
+    /**
+     * Contains window decorated option.
+     */
     public bool $isDecorated {
+        /**
+         * Gets current window decorated state.
+         *
+         * ```
+         * if ($window->isDecorated) {
+         *     echo 'Window is decorated';
+         * } else {
+         *     echo 'Window is not decorated';
+         * }
+         * ```
+         */
         get => $this->api->saucer_window_decorations($this->id->ptr);
+        /**
+         * Enable window decorations in case of {@see true} or
+         * disable in case of {@see false}.
+         *
+         * ```
+         * // Enable window decorations
+         * $window->isDecorated = true;
+         *
+         * // Disable window decorations
+         * $window->isDecorated = false;
+         * ```
+         */
         set {
             $this->api->saucer_window_set_decorations($this->id->ptr, $value);
         }
     }
 
+    /**
+     * Gets current window closed state.
+     *
+     * ```
+     * if ($window->isClosed) {
+     *     echo 'Window is closed';
+     * } else {
+     *     echo 'Window is not closed';
+     * }
+     * ```
+     */
     public private(set) bool $isClosed = false;
-
-    public readonly DelegateEventListener $events;
 
     /**
      * Contains an internal bridge between system {@see LibSaucer} events
@@ -120,8 +347,18 @@ final class Window implements WindowInterface
          * Contains shared WebView API library.
          */
         private readonly LibSaucer $api,
+        /**
+         * Contains an internal application placeholder to unlock the
+         * webview process workflow.
+         */
         private readonly ProcessUnlockPlaceholder $placeholder,
+        /**
+         * Gets parent application instance to which this window belongs.
+         */
         public readonly Application $app,
+        /**
+         * Gets an information DTO about the window with which it was created.
+         */
         public readonly WindowCreateInfo $info,
         EventDispatcherInterface $dispatcher,
     ) {
@@ -250,16 +487,37 @@ final class Window implements WindowInterface
         return $preferences;
     }
 
+    /**
+     * Makes this window visible.
+     *
+     * Note: The same can be done using the window's visibility
+     *       property `$window->isVisible = true`.
+     *
+     * @api
+     */
     public function show(): void
     {
         $this->api->saucer_window_show($this->id->ptr);
     }
 
+    /**
+     * Hides this window.
+     *
+     * Note: The same can be done using the window's visibility
+     *       property `$window->isVisible = false`.
+     *
+     * @api
+     */
     public function hide(): void
     {
         $this->api->saucer_window_hide($this->id->ptr);
     }
 
+    /**
+     * Closes and destroys this window and its context.
+     *
+     * @api
+     */
     public function close(): void
     {
         $this->isClosed = true;

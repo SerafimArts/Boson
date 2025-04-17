@@ -7,6 +7,7 @@ namespace Serafim\Boson\Window\Manager;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
+use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
@@ -14,28 +15,42 @@ use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Event\WindowCreated;
 use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowCreateInfo;
-use Serafim\Boson\Window\WindowInterface;
 
 /**
- * @template-implements \IteratorAggregate<array-key, WindowInterface>
+ * @template-implements \IteratorAggregate<array-key, Window>
  */
 final class WindowManager implements
-    WindowManagerInterface,
+    WindowCollectionInterface,
+    WindowFactoryInterface,
     \IteratorAggregate
 {
-    public private(set) ?WindowInterface $default;
+    /**
+     * Gets default window instance.
+     *
+     * It may be {@see null} in case of window has been
+     * closed (removed) earlier.
+     */
+    public private(set) ?Window $default;
 
     /**
-     * @var \SplObjectStorage<WindowInterface, mixed>
+     * Contains a list of all windows in use.
+     *
+     * @var \SplObjectStorage<Window, mixed>
      */
     private readonly \SplObjectStorage $windows;
 
     /**
+     * Contains a list of subscriptions for window destruction.
+     *
      * @var ReactiveWeakSet<Window>
      */
     private readonly ReactiveWeakSet $memory;
 
-    private readonly DelegateEventListener $events;
+    /**
+     * Gets access to the listener of ANY window events
+     * and intention subscriptions.
+     */
+    public readonly EventListener $events;
 
     public function __construct(
         private readonly LibSaucer $api,
@@ -70,7 +85,7 @@ final class WindowManager implements
         }
     }
 
-    public function create(WindowCreateInfo $info = new WindowCreateInfo()): WindowInterface
+    public function create(WindowCreateInfo $info = new WindowCreateInfo()): Window
     {
         $this->windows->attach($window = new Window(
             api: $this->api,

@@ -6,13 +6,14 @@ namespace Serafim\Boson\WebView\Requests;
 
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
+use Serafim\Boson\Internal\BlockingOperation;
 use Serafim\Boson\Internal\IdGenerator\GeneratorInterface;
 use Serafim\Boson\Internal\IdGenerator\IntGenerator;
 use Serafim\Boson\WebView\Requests\Exception\StalledRequestException;
 use Serafim\Boson\WebView\Requests\Exception\UnprocessableRequestException;
 use Serafim\Boson\WebView\WebView;
 
-final class WebViewRequests implements WebViewRequestsInterface
+final class WebViewRequests
 {
     private const float DEFAULT_REQUEST_TIMEOUT = 0.1;
 
@@ -59,6 +60,19 @@ final class WebViewRequests implements WebViewRequestsInterface
         $this->webview->bind(self::METHOD_NAME, $this->onResponseReceived(...));
     }
 
+    /**
+     * Requests arbitrary data from webview using JavaScript code.
+     *
+     * ```
+     * $requests->send('document.location');
+     *      ->then(function(array $location): void {
+     *          var_dump($location);
+     *      });
+     * ```
+     *
+     * @throws UnprocessableRequestException occurs when a response cannot be received
+     */
+    #[BlockingOperation]
     public function send(#[Language('JavaScript')] string $code): mixed
     {
         if ($code === '') {

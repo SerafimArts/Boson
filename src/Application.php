@@ -17,34 +17,52 @@ use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
 use Serafim\Boson\Internal\Application\QuitHandler\WindowsQuitHandler;
 use Serafim\Boson\Internal\Application\ThreadsCountResolver;
+use Serafim\Boson\Internal\BlockingOperation;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\WebView\WebViewInterface;
+use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
-use Serafim\Boson\Window\Manager\WindowManagerInterface;
-use Serafim\Boson\Window\WindowInterface;
+use Serafim\Boson\Window\Window;
 
-final class Application implements ApplicationInterface
+/**
+ * @api
+ */
+final class Application
 {
+    /**
+     * Unique application identifier.
+     *
+     * It is worth noting that the destruction of this object
+     * from memory (deallocation using PHP GC) means the physical
+     * destruction of all data associated with it, including unmanaged.
+     */
     public readonly ApplicationId $id;
 
+    /**
+     * Gets windows list and methods for working with windows.
+     */
     public readonly WindowManager $windows;
 
+    /**
+     * Gets access to the listener of the window events
+     * and intention subscriptions.
+     */
     public readonly EventListener $events;
 
     /**
      * Facade property.
      *
-     * Provides more convenient and faster access
-     * to the {@see WindowManagerInterface::$default}
-     * subsystem from {@see $windows} property.
+     * Provides more convenient and faster access to the
+     * {@see WindowManager::$default} subsystem from child
+     * {@see $windows} property.
      */
-    public WindowInterface $window {
+    public Window $window {
         /**
          * Gets the default window of the application.
          *
-         * @throws NoDefaultWindowException in case there is not a single window
+         * @throws NoDefaultWindowException in case the default window was
+         *         already closed and removed earlier
          */
         get => $this->windows->default
             ?? throw NoDefaultWindowException::becauseNoDefaultWindow();
@@ -53,23 +71,35 @@ final class Application implements ApplicationInterface
     /**
      * Facade property.
      *
-     * Provides more convenient and faster access
-     * to the {@see WindowInterface::$webview}
+     * Provides more convenient and faster access to the {@see Window::$webview}
      * subsystem from {@see $window} property.
      */
-    public WebViewInterface $webview {
+    public WebView $webview {
         /**
          * Gets the WebView instance associated with the default window.
          *
-         * @throws NoDefaultWindowException in case there is not a single window
+         * @throws NoDefaultWindowException in case the default window was
+         *         already closed and removed earlier
          */
         get => $this->window->webview;
     }
 
+    /**
+     * Gets debug mode of an application.
+     *
+     * Unlike {@see ApplicationCreateInfo::$debug}, it contains
+     * a REAL debug value, including possibly automatically derived.
+     *
+     * Contains {@see true} in case of debug mode
+     * is enabled or {@see false} instead.
+     */
     public readonly bool $isDebug;
 
     /**
-     * Indicates whether the application is currently running.
+     * Gets running state of an application.
+     *
+     * Contains {@see true} in case of application is running
+     * or {@see false} instead.
      */
     public private(set) bool $isRunning = false;
 
@@ -96,6 +126,10 @@ final class Application implements ApplicationInterface
      */
     private bool $deferRunnerIsRegistered = false;
 
+    /**
+     * Gets an internal application placeholder to unlock the
+     * webview process workflow.
+     */
     private readonly ProcessUnlockPlaceholder $placeholder;
 
     /**
@@ -104,7 +138,8 @@ final class Application implements ApplicationInterface
      */
     public function __construct(
         /**
-         * Application configuration DTO.
+         * Gets an information DTO about the application
+         * with which it was created.
          */
         public readonly ApplicationCreateInfo $info = new ApplicationCreateInfo(),
         ?PsrEventDispatcherInterface $dispatcher = null,
@@ -223,16 +258,6 @@ final class Application implements ApplicationInterface
     }
 
     /**
-     * Quits the application, stopping the main
-     * loop and releasing resources.
-     */
-    public function quit(): void
-    {
-        $this->isRunning = false;
-        $this->api->saucer_application_quit($this->id->ptr);
-    }
-
-    /**
      * Returns a list of quit handlers (intercepts alternative
      * application shutdown commands) for the application.
      *
@@ -323,6 +348,7 @@ final class Application implements ApplicationInterface
      * This method blocks main thread until the
      * application is quit.
      */
+    #[BlockingOperation]
     public function run(): void
     {
         if ($this->isRunning) {
@@ -339,6 +365,16 @@ final class Application implements ApplicationInterface
 
             \usleep(1);
         } while ($this->isRunning);
+    }
+
+    /**
+     * Quits the application, stopping the main
+     * loop and releasing resources.
+     */
+    public function quit(): void
+    {
+        $this->isRunning = false;
+        $this->api->saucer_application_quit($this->id->ptr);
     }
 
     /**

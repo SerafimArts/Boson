@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window\Manager;
 
+use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowCreateInfo;
-use Serafim\Boson\Window\WindowInterface;
 
 interface WindowFactoryInterface
 {
     /**
-     * Creates a new application window.
+     * Creates a new application window using passed optional configuration DTO.
      */
-    public function create(WindowCreateInfo $info = new WindowCreateInfo()): WindowInterface;
+    public function create(WindowCreateInfo $info = new WindowCreateInfo()): Window;
 }

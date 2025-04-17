@@ -4,21 +4,13 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window\Manager;
 
-use Serafim\Boson\Window\WindowInterface;
+use Serafim\Boson\Window\Window;
 
 /**
- * @template-extends \Traversable<array-key, WindowInterface>
+ * @template-extends \Traversable<array-key, Window>
  */
 interface WindowCollectionInterface extends \Traversable, \Countable
 {
-    /**
-     * Gets default window instance.
-     *
-     * It may be {@see null} in case of window has
-     * been closed (removed) earlier.
-     */
-    public ?WindowInterface $default { get; }
-
     /**
      * Gets count of available windows.
      *

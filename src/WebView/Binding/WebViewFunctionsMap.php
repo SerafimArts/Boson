@@ -14,7 +14,7 @@ use Serafim\Boson\WebView\Scripts\WebViewScriptsSet;
 /**
  * @template-implements \IteratorAggregate<non-empty-string, \Closure(mixed...):mixed>
  */
-final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \IteratorAggregate
+final class WebViewFunctionsMap implements \IteratorAggregate, \Countable
 {
     private const string BOSON_RPC = <<<'JS'
         const crypto = window.crypto || window.msCrypto;
@@ -190,6 +190,17 @@ final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \Iterat
         return $this->functions[$function](...$params);
     }
 
+    /**
+     * Binds a PHP callback to a new global JavaScript function.
+     *
+     * Internally, JS glue code is injected to create the JS
+     * function by the given name
+     *
+     * @param non-empty-string $function The name of the JS function
+     * @param \Closure(mixed...):mixed $callback Callback function
+     *
+     * @throws FunctionAlreadyDefinedException in case of function binding error
+     */
     public function bind(string $function, \Closure $callback): void
     {
         if (isset($this->functions[$function])) {
@@ -204,6 +215,13 @@ final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \Iterat
         ));
     }
 
+    /**
+     * Removes a binding created with {@see WebViewFunctionsMap::bind()}
+     *
+     * @param non-empty-string $function The name of the JS function
+     *
+     * @throws FunctionNotDefinedException in case of function unbinding error
+     */
     public function unbind(string $function): void
     {
         if (!isset($this->functions[$function])) {
@@ -224,6 +242,11 @@ final class WebViewFunctionsMap implements WebViewFunctionsMapInterface, \Iterat
         return new \ArrayIterator($this->functions);
     }
 
+    /**
+     * The number of registered functions.
+     *
+     * @return int<0, max>
+     */
     public function count(): int
     {
         return \count($this->functions);

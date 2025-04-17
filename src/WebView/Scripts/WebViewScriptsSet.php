@@ -13,7 +13,7 @@ use Serafim\Boson\WebView\WebView;
 /**
  * @template-implements \IteratorAggregate<mixed, WebViewScript>
  */
-final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \IteratorAggregate
+final readonly class WebViewScriptsSet implements \IteratorAggregate, \Countable
 {
     /**
      * List of loaded scripts.
@@ -35,11 +35,27 @@ final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \I
         $this->ptr = $this->webview->window->id->ptr;
     }
 
+    /**
+     * Evaluates arbitrary JavaScript code.
+     *
+     * The specified JavaScript code will be executed ONCE
+     * at the time the {@see exec()} method is called.
+     *
+     * @param string $code A JavaScript code for execution
+     */
     public function eval(#[Language('JavaScript')] string $code): void
     {
         $this->api->saucer_webview_execute($this->ptr, $code);
     }
 
+    /**
+     * Adds JavaScript code to execution.
+     *
+     * The specified JavaScript code will be executed EVERY TIME after
+     * the page loads.
+     *
+     * @param string $code A JavaScript code for execution
+     */
     public function preload(#[Language('JavaScript')] string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_CREATION);
@@ -54,6 +70,14 @@ final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \I
         return $script;
     }
 
+    /**
+     * Adds JavaScript code to execution.
+     *
+     * The specified JavaScript code will be executed EVERY TIME after
+     * the entire DOM is loaded.
+     *
+     * @param string $code A JavaScript code for execution
+     */
     public function add(#[Language('JavaScript')] string $code): WebViewScript
     {
         $handle = $this->api->saucer_script_new($code, SaucerLoadTime::SAUCER_LOAD_TIME_READY);
@@ -80,6 +104,11 @@ final readonly class WebViewScriptsSet implements WebViewScriptsSetInterface, \I
         $this->api->saucer_webview_inject($this->ptr, $script->id->ptr);
     }
 
+    /**
+     * The number of registered scripts
+     *
+     * @return int<0, max>
+     */
     public function count(): int
     {
         return \count($this->scripts);

@@ -330,7 +330,7 @@ $app = new Serafim\Boson\Application();
 $app->window->size->update(640, 480);
 
 // Or set the dimensions explicitly using new Size object
-$app->window->size = new Serafim\Boson\Window\Size\Size(640, 480);
+$app->window->size = new \Serafim\Boson\Window\Size(640, 480);
 ```
 
 In addition, each window size can also be changed separately.
