@@ -8,6 +8,10 @@ on:
     types:
       - created
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
   BUILD_DIR: ./build
   SOURCES_DIR: ./backend
