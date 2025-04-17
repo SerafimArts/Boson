@@ -8,6 +8,9 @@ use Serafim\Boson\Internal\Saucer\SaucerState;
 /**
  * @internal this is an INTERNAL STRUCT for PHPStan only, please do not use it in your code
  * @psalm-internal Serafim\Boson\Internal\WebView
+ *
+ * @seal-properties
+ * @seal-methods
  */
 final class CSaucerWebViewEventsStruct extends CData
 {

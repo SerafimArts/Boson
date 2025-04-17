@@ -10,6 +10,7 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
+use Serafim\Boson\Internal\AsMethodFacade;
 use Serafim\Boson\Internal\BlockingOperation;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\WebView\WebViewEventHandler;
@@ -218,6 +219,7 @@ final class WebView
      *
      * @throws FunctionAlreadyDefinedException in case of function binding error
      */
+    #[AsMethodFacade(of: WebViewFunctionsMap::class, method: 'bind')]
     public function bind(string $function, \Closure $callback): void
     {
         $this->functions->bind($function, $callback);
@@ -235,6 +237,7 @@ final class WebView
      *
      * @param string $code A JavaScript code for execution
      */
+    #[AsMethodFacade(of: WebViewScriptsSet::class, method: 'eval')]
     public function eval(#[Language('JavaScript')] string $code): void
     {
         $this->scripts->eval($code);
@@ -253,6 +256,7 @@ final class WebView
      * @param string $code A JavaScript code for execution
      */
     #[BlockingOperation]
+    #[AsMethodFacade(of: WebViewRequests::class, method: 'send')]
     public function request(#[Language('JavaScript')] string $code): mixed
     {
         return $this->requests->send($code);

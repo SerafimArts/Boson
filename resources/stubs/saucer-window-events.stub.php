@@ -7,6 +7,9 @@ use FFI\CData;
 /**
  * @internal this is an INTERNAL STRUCT for PHPStan only, please do not use it in your code
  * @psalm-internal Serafim\Boson\Internal\Window
+ *
+ * @seal-properties
+ * @seal-methods
  */
 final class CSaucerWindowEventsStruct extends CData
 {

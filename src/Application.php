@@ -17,6 +17,7 @@ use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
 use Serafim\Boson\Internal\Application\QuitHandler\WindowsQuitHandler;
 use Serafim\Boson\Internal\Application\ThreadsCountResolver;
+use Serafim\Boson\Internal\AsPropertyFacade;
 use Serafim\Boson\Internal\BlockingOperation;
 use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
@@ -51,12 +52,13 @@ final class Application
     public readonly EventListener $events;
 
     /**
-     * Facade property.
-     *
      * Provides more convenient and faster access to the
-     * {@see WindowManager::$default} subsystem from child
-     * {@see $windows} property.
+     * {@see WindowManager::$default} subsystem from
+     * child {@see $windows} property.
+     *
+     * @uses WindowManager::$default Default (first) window of the windows list
      */
+    #[AsPropertyFacade(of: WindowManager::class, property: 'default')]
     public Window $window {
         /**
          * Gets the default window of the application.
@@ -69,11 +71,12 @@ final class Application
     }
 
     /**
-     * Facade property.
-     *
      * Provides more convenient and faster access to the {@see Window::$webview}
      * subsystem from {@see $window} property.
+     *
+     * @uses Window::$webview The webview of the default (first) window
      */
+    #[AsPropertyFacade(of: self::class, property: 'webview')]
     public WebView $webview {
         /**
          * Gets the WebView instance associated with the default window.
