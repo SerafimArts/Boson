@@ -11,10 +11,14 @@ env:
   SOURCES_DIR: ./backend
 
 jobs:
-  # Windows
+  #
+  # ----------------------------------------------------------------------------
+  #   Windows
+  # ----------------------------------------------------------------------------
+  #
   build-windows:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         build-type:
           - Release
@@ -45,16 +49,23 @@ jobs:
           name: "Windows-WebView2-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
-  # MacOS
-  build-macos-uni:
-    runs-on: macos-latest
+  #
+  # ----------------------------------------------------------------------------
+  #   MacOS
+  # ----------------------------------------------------------------------------
+  #
+  build-macos-universal:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         backend:
           - WebKit
         build-type:
           - Release
+
+    runs-on: macos-latest
+    name: "MacOS-WebKit-Universal-${{ matrix.build-type }}"
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -73,45 +84,17 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "macOS-WebKit-uni-${{ matrix.build-type }}"
+          name: "MacOS-WebKit-Universal-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
-  build-macos:
+  #
+  # ----------------------------------------------------------------------------
+  #   GNU Linux
+  # ----------------------------------------------------------------------------
+  #
+  build-linux-qt5:
     strategy:
-      fail-fast: false
-      matrix:
-        build-type:
-          - Release
-        platform:
-          - { arch: aarch64, os: macos-14 }
-
-    runs-on: ${{ matrix.platform.os }}
-    name: "macOS-WebKit-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-
-      - name: Compile
-        uses: ./.github/actions/compile
-        with:
-          src-dir: ${{ env.SOURCES_DIR }}
-          build-dir: ${{ env.BUILD_DIR }}
-          backend: WebKit
-          platform: macOS
-          build-type: ${{ matrix.build-type }}
-
-      - name: Upload
-        uses: ./.github/actions/upload
-        with:
-          token: ${{ secrets.ACCESS_TOKEN }}
-          name: "macOS-WebKit-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
-          path: ${{ env.BUILD_DIR }}/bin/
-
-  # Linux
-  build-gnu_linux_qt5:
-    strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         build-type:
           - Release
@@ -126,7 +109,7 @@ jobs:
           #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
 
     runs-on: ubuntu-latest
-    name: "GNU_Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
 
     steps:
       - name: Checkout
@@ -159,12 +142,12 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "GNU_Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-Qt5-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
-  build-gnu_linux_qt6:
+  build-linux-qt6:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         build-type:
           - Release
@@ -174,11 +157,11 @@ jobs:
           # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
           # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
           - { arch: "x86_64", qemuArch: "linux/amd64" }
-          - { arch: "x86", qemuArch: "linux/386" }
+          #- { arch: "x86", qemuArch: "linux/386" }
           - { arch: "aarch64", qemuArch: "linux/arm64/v8" }
 
     runs-on: ubuntu-latest
-    name: "GNU_Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
 
     steps:
       - name: Checkout
@@ -211,12 +194,12 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "GNU_Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-Qt6-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
-  build-gnu_linux_gtk:
+  build-linux-gtk:
     strategy:
-      fail-fast: false
+      fail-fast: true
       matrix:
         build-type:
           - Release
@@ -226,7 +209,7 @@ jobs:
           # https://hub.docker.com/_/debian/tags?page=&page_size=&ordering=&name=sid-slim
           # https://github.com/tonistiigi/binfmt?tab=readme-ov-file#build-test-image
           - { arch: "x86_64", qemuArch: "linux/amd64" }
-          - { arch: "x86", qemuArch: "linux/386" }
+          #- { arch: "x86", qemuArch: "linux/386" }
           - { arch: "aarch64", qemuArch: "linux/arm64" }
           - { arch: "arm", qemuArch: "linux/arm/v5" }
           #- { arch: "ppc64le", qemuArch: "linux/ppc64le" }
@@ -235,7 +218,7 @@ jobs:
           #- { arch: "mips64el", qemuArch: "linux/mips64le" } # el in LLVM, le in qemu/docker.
 
     runs-on: ubuntu-latest
-    name: "GNU_Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+    name: "Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
 
     steps:
       - name: Checkout
@@ -268,6 +251,6 @@ jobs:
         uses: ./.github/actions/upload
         with:
           token: ${{ secrets.ACCESS_TOKEN }}
-          name: "GNU_Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
+          name: "Linux-WebKitGtk-${{ matrix.platform.arch }}-${{ matrix.build-type }}"
           path: ${{ env.BUILD_DIR }}/bin/
 
