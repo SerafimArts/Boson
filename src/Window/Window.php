@@ -15,6 +15,7 @@ use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Window\WindowEventHandler;
 use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\WebView\WebViewCreateInfo\FlagsListFormatter;
+use Serafim\Boson\Window\Manager\WindowFactoryInterface;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowMaxBounds;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowMinBounds;
 use Serafim\Boson\Window\Size\Managed\ManagedWindowSize;
@@ -342,6 +343,17 @@ final class Window
      */
     private readonly WindowEventHandler $handler;
 
+    /**
+     * @internal Please do not use the constructor directly. There is a
+     *           corresponding {@see WindowFactoryInterface::create()} method
+     *           for creating new windows, which ensures safe creation.
+     *           ```
+     *           $app = new Application();
+     *
+     *           // Should be used instead of calling the constructor
+     *           $window = $app->windows->create();
+     *           ```
+     */
     public function __construct(
         /**
          * Contains shared WebView API library.

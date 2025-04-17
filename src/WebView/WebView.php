@@ -211,6 +211,7 @@ final class WebView
      *       that provides by the {@see $functions} field. This means that
      *       calling `$webview->functions->bind(...)` should have the same effect.
      *
+     * @api
      * @uses WebViewFunctionsMap::bind() WebView Functions API
      *
      * @param non-empty-string $function
@@ -229,6 +230,7 @@ final class WebView
      *       that provides by the {@see $scripts} field. This means that
      *       calling `$webview->scripts->eval(...)` should have the same effect.
      *
+     * @api
      * @uses WebViewScriptsSet::eval() WebView Scripts API
      *
      * @param string $code A JavaScript code for execution
@@ -245,6 +247,7 @@ final class WebView
      *       that provides by the {@see $requests} field. This means that
      *       calling `$webview->requests->send(...)` should have the same effect.
      *
+     * @api
      * @uses WebViewRequests::send() WebView Requests API
      *
      * @param string $code A JavaScript code for execution
@@ -257,6 +260,8 @@ final class WebView
 
     /**
      * Go forward using current history.
+     *
+     * @api
      */
     public function forward(): void
     {
@@ -265,6 +270,8 @@ final class WebView
 
     /**
      * Go back using current history.
+     *
+     * @api
      */
     public function back(): void
     {
@@ -273,6 +280,8 @@ final class WebView
 
     /**
      * Reload current layout.
+     *
+     * @api
      */
     public function reload(): void
     {

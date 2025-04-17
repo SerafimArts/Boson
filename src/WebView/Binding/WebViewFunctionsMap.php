@@ -196,6 +196,8 @@ final class WebViewFunctionsMap implements \IteratorAggregate, \Countable
      * Internally, JS glue code is injected to create the JS
      * function by the given name
      *
+     * @api
+     *
      * @param non-empty-string $function The name of the JS function
      * @param \Closure(mixed...):mixed $callback Callback function
      *
@@ -217,6 +219,8 @@ final class WebViewFunctionsMap implements \IteratorAggregate, \Countable
 
     /**
      * Removes a binding created with {@see WebViewFunctionsMap::bind()}
+     *
+     * @api
      *
      * @param non-empty-string $function The name of the JS function
      *

@@ -41,6 +41,8 @@ final readonly class WebViewScriptsSet implements \IteratorAggregate, \Countable
      * The specified JavaScript code will be executed ONCE
      * at the time the {@see exec()} method is called.
      *
+     * @api
+     *
      * @param string $code A JavaScript code for execution
      */
     public function eval(#[Language('JavaScript')] string $code): void
@@ -53,6 +55,8 @@ final readonly class WebViewScriptsSet implements \IteratorAggregate, \Countable
      *
      * The specified JavaScript code will be executed EVERY TIME after
      * the page loads.
+     *
+     * @api
      *
      * @param string $code A JavaScript code for execution
      */
@@ -75,6 +79,8 @@ final readonly class WebViewScriptsSet implements \IteratorAggregate, \Countable
      *
      * The specified JavaScript code will be executed EVERY TIME after
      * the entire DOM is loaded.
+     *
+     * @api
      *
      * @param string $code A JavaScript code for execution
      */

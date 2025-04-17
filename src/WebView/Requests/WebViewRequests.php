@@ -70,6 +70,8 @@ final class WebViewRequests
      *      });
      * ```
      *
+     * @api
+     *
      * @throws UnprocessableRequestException occurs when a response cannot be received
      */
     #[BlockingOperation]

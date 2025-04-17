@@ -347,6 +347,8 @@ final class Application
      *
      * This method blocks main thread until the
      * application is quit.
+     *
+     * @api
      */
     #[BlockingOperation]
     public function run(): void
@@ -370,6 +372,8 @@ final class Application
     /**
      * Quits the application, stopping the main
      * loop and releasing resources.
+     *
+     * @api
      */
     public function quit(): void
     {
