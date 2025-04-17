@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Memory;
+namespace Serafim\Boson\Shared\GarbageCollector;
 
 /**
  * @template TEntry of object
@@ -10,7 +10,7 @@ namespace Serafim\Boson\Internal\Memory;
  * @internal this is an internal library class, please do not use it in your code
  * @psalm-internal Serafim\Boson
  */
-final readonly class OnDestructor
+final readonly class DestructorObserver
 {
     public function __construct(
         /**

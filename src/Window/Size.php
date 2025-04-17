@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window;
 
-use Serafim\Boson\Window\Size\SizeInterface;
 use Serafim\Boson\Window\Size\SizeStringableProvider;
 
 final readonly class Size implements SizeInterface

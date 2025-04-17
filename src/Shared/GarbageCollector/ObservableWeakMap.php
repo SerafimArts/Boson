@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Memory;
+namespace Serafim\Boson\Shared\GarbageCollector;
 
 /**
  * Allows to store a set of objects with referenced values and
  * track their destruction (react to GC cleanup).
  *
  * ```
- * // ReactiveWeakMap<ExampleId, CData>
- * $map = new ReactiveWeakMap();
+ * // ObservableWeakMap<ExampleId, CData>
+ * $map = new ObservableWeakMap();
  *
  * $map->watch($id, $data, function(CData $ref) {
  *     echo vsprintf('ID has been destroyed, something can be done with its reference %s(%d)', [
@@ -24,13 +24,12 @@ namespace Serafim\Boson\Internal\Memory;
  * @template TValue of object = object
  * @template-implements \IteratorAggregate<TKey, TValue>
  *
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Serafim\Boson
+ * @api
  */
-final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
+final readonly class ObservableWeakMap implements \IteratorAggregate, \Countable
 {
     /**
-     * @var \WeakMap<TKey, OnDestructor<TValue>>
+     * @var \WeakMap<TKey, DestructorObserver<TValue>>
      */
     private \WeakMap $memory;
 
@@ -48,7 +47,7 @@ final readonly class ReactiveWeakMap implements \IteratorAggregate, \Countable
      */
     public function watch(object $key, object $value, \Closure $onRelease): object
     {
-        $this->memory[$key] = new OnDestructor($value, $onRelease);
+        $this->memory[$key] = new DestructorObserver($value, $onRelease);
 
         return $key;
     }

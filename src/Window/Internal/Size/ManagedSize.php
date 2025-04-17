@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Window\Size\Managed;
+namespace Serafim\Boson\Window\Internal\Size;
 
 use FFI\CData;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Window\Size\MutableSizeInterface;
+use Serafim\Boson\Window\MutableSizeInterface;
 use Serafim\Boson\Window\Size\SizeStringableProvider;
 
 /**

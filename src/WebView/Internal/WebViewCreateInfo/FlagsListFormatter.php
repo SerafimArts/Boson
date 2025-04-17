@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\WebView\WebViewCreateInfo;
+namespace Serafim\Boson\WebView\Internal\WebViewCreateInfo;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

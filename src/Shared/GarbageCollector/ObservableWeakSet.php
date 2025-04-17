@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Memory;
+namespace Serafim\Boson\Shared\GarbageCollector;
 
 /**
  * Allows to store a set of objects and track their
  * destruction (react to GC cleanup).
  *
  * ```
- * // ReactiveWeakSet<ExampleObject>
- * $set = new ReactiveWeakSet();
+ * // ObservableWeakSet<ExampleObject>
+ * $set = new ObservableWeakSet();
  *
  * $set->watch($object, function(ExampleObject $ref) {
  *      echo vsprintf('ExampleObject(%d) has been destroyed', [
@@ -21,14 +21,11 @@ namespace Serafim\Boson\Internal\Memory;
  *
  * @template TEntry of object = object
  * @template-implements \IteratorAggregate<array-key, TEntry>
- *
- * @internal this is an internal library class, please do not use it in your code
- * @psalm-internal Serafim\Boson
  */
-final readonly class ReactiveWeakSet implements \IteratorAggregate, \Countable
+final readonly class ObservableWeakSet implements \IteratorAggregate, \Countable
 {
     /**
-     * @var \WeakMap<TEntry, OnDestructor<TEntry>>
+     * @var \WeakMap<TEntry, DestructorObserver<TEntry>>
      */
     private \WeakMap $memory;
 
@@ -45,7 +42,7 @@ final readonly class ReactiveWeakSet implements \IteratorAggregate, \Countable
      */
     public function watch(object $entry, \Closure $onRelease): object
     {
-        $this->memory[$entry] = new OnDestructor($entry, $onRelease);
+        $this->memory[$entry] = new DestructorObserver($entry, $onRelease);
 
         return $entry;
     }

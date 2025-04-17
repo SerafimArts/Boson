@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\WebView\Url;
 
+use Serafim\Boson\WebView\Url;
+
 final class MemoizedUrlParser implements UrlParserInterface
 {
     /**

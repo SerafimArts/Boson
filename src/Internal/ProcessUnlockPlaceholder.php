@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Application;
+namespace Serafim\Boson\Internal;
 
 use FFI\CData;
 use Serafim\Boson\Application;

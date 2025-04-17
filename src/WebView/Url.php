@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\WebView\Url;
+namespace Serafim\Boson\WebView;
 
 use JetBrains\PhpStorm\ExpectedValues;
 

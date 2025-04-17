@@ -2,13 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Window;
+namespace Serafim\Boson\Window\Internal;
 
 use FFI\CData;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Saucer\SaucerPolicy;
 use Serafim\Boson\Internal\Saucer\SaucerWindowEvent;
+use Serafim\Boson\Internal\Window\CSaucerWindowEventsStruct;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Event\WindowClosing;
 use Serafim\Boson\Window\Event\WindowDecorated;

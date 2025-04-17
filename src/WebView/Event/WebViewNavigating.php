@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView\Event;
 
 use Serafim\Boson\Shared\Marker\AsWebViewEvent;
-use Serafim\Boson\WebView\Url\Url;
+use Serafim\Boson\WebView\Url;
 use Serafim\Boson\WebView\WebView;
 
 #[AsWebViewEvent]

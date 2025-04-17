@@ -8,9 +8,9 @@ use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\EventListener;
-use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
-use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
+use Serafim\Boson\Internal\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
+use Serafim\Boson\Shared\GarbageCollector\ObservableWeakSet;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Event\WindowCreated;
 use Serafim\Boson\Window\Window;
@@ -42,9 +42,9 @@ final class WindowManager implements
     /**
      * Contains a list of subscriptions for window destruction.
      *
-     * @var ReactiveWeakSet<Window>
+     * @var ObservableWeakSet<Window>
      */
-    private readonly ReactiveWeakSet $memory;
+    private readonly ObservableWeakSet $memory;
 
     /**
      * Gets access to the listener of ANY window events
@@ -60,7 +60,7 @@ final class WindowManager implements
         EventDispatcherInterface $dispatcher,
     ) {
         $this->windows = new \SplObjectStorage();
-        $this->memory = new ReactiveWeakSet();
+        $this->memory = new ObservableWeakSet();
 
         $this->events = new DelegateEventListener($dispatcher);
 

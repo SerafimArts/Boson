@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Application\DeferRunner;
+namespace Serafim\Boson\Internal\DeferRunner;
 
 final class NativeShutdownFunctionRunner implements DeferRunnerInterface
 {

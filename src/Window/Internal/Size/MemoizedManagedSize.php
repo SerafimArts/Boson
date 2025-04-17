@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Window\Size\Managed;
+namespace Serafim\Boson\Window\Internal\Size;
 
 /**
  * @internal this is an internal library class, please do not use it in your code

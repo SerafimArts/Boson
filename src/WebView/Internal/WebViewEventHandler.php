@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\WebView;
+namespace Serafim\Boson\WebView\Internal;
 
 use FFI\CData;
 use Serafim\Boson\Dispatcher\EventDispatcherInterface;
@@ -10,6 +10,7 @@ use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Internal\Saucer\SaucerPolicy;
 use Serafim\Boson\Internal\Saucer\SaucerState;
 use Serafim\Boson\Internal\Saucer\SaucerWebEvent as Event;
+use Serafim\Boson\Internal\WebView\CSaucerWebViewEventsStruct;
 use Serafim\Boson\WebView\Event\WebViewDomReady;
 use Serafim\Boson\WebView\Event\WebViewFaviconChanged;
 use Serafim\Boson\WebView\Event\WebViewFaviconChanging;

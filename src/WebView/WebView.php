@@ -9,17 +9,16 @@ use JetBrains\PhpStorm\Language;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
-use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
+use Serafim\Boson\Internal\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Internal\WebView\WebViewEventHandler;
 use Serafim\Boson\Shared\Marker\BlockingOperation;
 use Serafim\Boson\WebView\Binding\Exception\FunctionAlreadyDefinedException;
 use Serafim\Boson\WebView\Binding\WebViewFunctionsMap;
+use Serafim\Boson\WebView\Internal\WebViewEventHandler;
 use Serafim\Boson\WebView\Requests\WebViewRequests;
 use Serafim\Boson\WebView\Scripts\WebViewScriptsSet;
 use Serafim\Boson\WebView\Url\MemoizedUrlParser;
 use Serafim\Boson\WebView\Url\NativeUrlParser;
-use Serafim\Boson\WebView\Url\Url;
 use Serafim\Boson\WebView\Url\UrlParserInterface;
 use Serafim\Boson\Window\Window;
 
@@ -135,6 +134,21 @@ final class WebView
      */
     private readonly WebViewEventHandler $handler;
 
+    /**
+     * @internal Please do not use the constructor directly. There is a
+     *           corresponding {@see WindowFactoryInterface::create()} method
+     *           for creating new windows with single webview child instance,
+     *           which ensures safe creation.
+     *           ```
+     *           $app = new Application();
+     *
+     *           // Should be used instead of calling the constructor
+     *           $window = $app->windows->create();
+     *
+     *           // Access to webview child instance
+     *           $webview = $window->webview;
+     *           ```
+     */
     public function __construct(
         /**
          * Contains shared WebView API library.

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Window\Size\Managed;
+namespace Serafim\Boson\Window\Internal\Size;
 
 use FFI\CData;
 

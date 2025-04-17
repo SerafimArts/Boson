@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\Application\QuitHandler;
+namespace Serafim\Boson\Internal\QuitHandler;
 
 interface QuitHandlerInterface
 {

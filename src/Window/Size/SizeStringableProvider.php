@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Window\Size;
 
+use Serafim\Boson\Window\SizeInterface;
+
 /**
  * @phpstan-require-implements SizeInterface
  * @mixin SizeInterface
- *
- * @internal This is an internal library trait, please do not use it in your code
- * @psalm-internal Serafim\Boson\Window
  */
 trait SizeStringableProvider
 {

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Serafim\Boson\WebView\Requests;
 
 use JetBrains\PhpStorm\Language;
-use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
+use Serafim\Boson\Internal\ProcessUnlockPlaceholder;
 use Serafim\Boson\Shared\IdValueGenerator\IdValueGeneratorInterface;
 use Serafim\Boson\Shared\IdValueGenerator\IntValueGenerator;
 use Serafim\Boson\Shared\Marker\BlockingOperation;

@@ -9,18 +9,16 @@ use Psr\EventDispatcher\EventDispatcherInterface;
 use Serafim\Boson\Application;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
-use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
+use Serafim\Boson\Internal\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Internal\Window\WindowEventHandler;
 use Serafim\Boson\Shared\Marker\RequiresDealloc;
+use Serafim\Boson\WebView\Internal\WebViewCreateInfo\FlagsListFormatter;
 use Serafim\Boson\WebView\WebView;
-use Serafim\Boson\WebView\WebViewCreateInfo\FlagsListFormatter;
+use Serafim\Boson\Window\Internal\Size\ManagedWindowMaxBounds;
+use Serafim\Boson\Window\Internal\Size\ManagedWindowMinBounds;
+use Serafim\Boson\Window\Internal\Size\ManagedWindowSize;
+use Serafim\Boson\Window\Internal\WindowEventHandler;
 use Serafim\Boson\Window\Manager\WindowFactoryInterface;
-use Serafim\Boson\Window\Size\Managed\ManagedWindowMaxBounds;
-use Serafim\Boson\Window\Size\Managed\ManagedWindowMinBounds;
-use Serafim\Boson\Window\Size\Managed\ManagedWindowSize;
-use Serafim\Boson\Window\Size\MutableSizeInterface;
-use Serafim\Boson\Window\Size\SizeInterface;
 
 /**
  * @api
