@@ -6,9 +6,9 @@ namespace Serafim\Boson\WebView\Requests;
 
 use JetBrains\PhpStorm\Language;
 use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
-use Serafim\Boson\Internal\BlockingOperation;
-use Serafim\Boson\Internal\IdGenerator\GeneratorInterface;
-use Serafim\Boson\Internal\IdGenerator\IntGenerator;
+use Serafim\Boson\Shared\IdValueGenerator\IdValueGeneratorInterface;
+use Serafim\Boson\Shared\IdValueGenerator\IntValueGenerator;
+use Serafim\Boson\Shared\Marker\BlockingOperation;
 use Serafim\Boson\WebView\Requests\Exception\StalledRequestException;
 use Serafim\Boson\WebView\Requests\Exception\UnprocessableRequestException;
 use Serafim\Boson\WebView\WebView;
@@ -29,9 +29,9 @@ final class WebViewRequests
     /**
      * Contains request ID generator
      *
-     * @var GeneratorInterface<array-key>
+     * @var IdValueGeneratorInterface<array-key>
      */
-    private readonly GeneratorInterface $idGenerator;
+    private readonly IdValueGeneratorInterface $idGenerator;
 
     /**
      * @var array<array-key, mixed>
@@ -55,7 +55,7 @@ final class WebViewRequests
         private readonly ProcessUnlockPlaceholder $placeholder,
         private readonly float $timeout = self::DEFAULT_REQUEST_TIMEOUT,
     ) {
-        $this->idGenerator = IntGenerator::createFromEnvironment();
+        $this->idGenerator = IntValueGenerator::createFromEnvironment();
 
         $this->webview->bind(self::METHOD_NAME, $this->onResponseReceived(...));
     }

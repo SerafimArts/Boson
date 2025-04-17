@@ -17,10 +17,9 @@ use Serafim\Boson\Internal\Application\QuitHandler\PcntlQuitHandler;
 use Serafim\Boson\Internal\Application\QuitHandler\QuitHandlerInterface;
 use Serafim\Boson\Internal\Application\QuitHandler\WindowsQuitHandler;
 use Serafim\Boson\Internal\Application\ThreadsCountResolver;
-use Serafim\Boson\Internal\AsPropertyFacade;
-use Serafim\Boson\Internal\BlockingOperation;
-use Serafim\Boson\Internal\RequiresDealloc;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
+use Serafim\Boson\Shared\Marker\BlockingOperation;
+use Serafim\Boson\Shared\Marker\RequiresDealloc;
 use Serafim\Boson\WebView\WebView;
 use Serafim\Boson\Window\Event\WindowClosed;
 use Serafim\Boson\Window\Manager\WindowManager;
@@ -58,7 +57,6 @@ final class Application
      *
      * @uses WindowManager::$default Default (first) window of the windows list
      */
-    #[AsPropertyFacade(of: WindowManager::class, property: 'default')]
     public Window $window {
         /**
          * Gets the default window of the application.
@@ -76,7 +74,6 @@ final class Application
      *
      * @uses Window::$webview The webview of the default (first) window
      */
-    #[AsPropertyFacade(of: self::class, property: 'webview')]
     public WebView $webview {
         /**
          * Gets the WebView instance associated with the default window.

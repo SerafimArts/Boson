@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\ValueObject\Id;
+namespace Serafim\Boson\Shared\Id;
 
 use FFI\CData;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Internal\ValueObject\ValueObjectInterface;
+use Serafim\Boson\Shared\ValueObject\ValueObjectInterface;
 
 /**
  * @template-implements IntIdInterface<int>

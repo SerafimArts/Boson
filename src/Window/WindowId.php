@@ -6,7 +6,7 @@ namespace Serafim\Boson\Window;
 
 use FFI\CData;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Internal\ValueObject\Id\StructPointerId;
+use Serafim\Boson\Shared\Id\StructPointerId;
 
 final readonly class WindowId extends StructPointerId
 {

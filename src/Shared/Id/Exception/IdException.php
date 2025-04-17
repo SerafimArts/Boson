@@ -2,6 +2,6 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\ValueObject\Id\Exception;
+namespace Serafim\Boson\Shared\Id\Exception;
 
 abstract class IdException extends \LogicException {}

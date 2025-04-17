@@ -8,8 +8,8 @@ use Psr\EventDispatcher\StoppableEventInterface;
 use Serafim\Boson\Dispatcher\Subscription\CancellableSubscription;
 use Serafim\Boson\Dispatcher\Subscription\CancellableSubscriptionInterface;
 use Serafim\Boson\Dispatcher\Subscription\SubscriptionInterface;
-use Serafim\Boson\Internal\IdGenerator\GeneratorInterface;
-use Serafim\Boson\Internal\IdGenerator\IntGenerator;
+use Serafim\Boson\Shared\IdValueGenerator\IdValueGeneratorInterface;
+use Serafim\Boson\Shared\IdValueGenerator\IntValueGenerator;
 
 class EventListener implements EventListenerInterface, EventDispatcherInterface
 {
@@ -19,13 +19,13 @@ class EventListener implements EventListenerInterface, EventDispatcherInterface
     protected array $listeners = [];
 
     /**
-     * @var GeneratorInterface<array-key>
+     * @var IdValueGeneratorInterface<array-key>
      */
-    private readonly GeneratorInterface $idGenerator;
+    private readonly IdValueGeneratorInterface $idGenerator;
 
     public function __construct()
     {
-        $this->idGenerator = IntGenerator::createFromEnvironment();
+        $this->idGenerator = IntValueGenerator::createFromEnvironment();
     }
 
     public function getListenersForEvent(object $event): iterable

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\ValueObject;
+namespace Serafim\Boson\Shared\ValueObject;
 
 interface ValueObjectInterface extends \Stringable
 {

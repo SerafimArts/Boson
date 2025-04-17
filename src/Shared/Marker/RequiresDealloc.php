@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal;
+namespace Serafim\Boson\Shared\Marker;
 
 /**
  * Marks methods that return pointers that REQUIRE manual deallocation.

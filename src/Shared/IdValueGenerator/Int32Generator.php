@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator;
+namespace Serafim\Boson\Shared\IdValueGenerator;
 
 /**
  * The most compatible generator with all subsystems and platforms.
  *
- * @template-extends IntGenerator<int<0, 2147483647>>
+ * @template-extends IntValueGenerator<int<0, 2147483647>>
  */
-final class Int32Generator extends IntGenerator
+final class Int32Generator extends IntValueGenerator
 {
     public readonly int $initial;
 

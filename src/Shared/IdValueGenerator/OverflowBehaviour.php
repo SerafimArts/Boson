@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator;
+namespace Serafim\Boson\Shared\IdValueGenerator;
 
 enum OverflowBehaviour
 {

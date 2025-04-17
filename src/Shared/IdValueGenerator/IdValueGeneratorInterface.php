@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator;
+namespace Serafim\Boson\Shared\IdValueGenerator;
 
-use Serafim\Boson\Internal\IdGenerator\Exception\IdOverflowException;
+use Serafim\Boson\Shared\IdValueGenerator\Exception\IdOverflowException;
 
 /**
  * @template-covariant TValue of array-key
  */
-interface GeneratorInterface
+interface IdValueGeneratorInterface
 {
     /**
      * @return TValue

@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator;
+namespace Serafim\Boson\Shared\IdValueGenerator;
 
-use Serafim\Boson\Internal\IdGenerator\Exception\IdOverflowException;
+use Serafim\Boson\Shared\IdValueGenerator\Exception\IdOverflowException;
 
 /**
  * @template TInteger of int<min, max>
- * @template-implements GeneratorInterface<TInteger>
+ * @template-implements IdValueGeneratorInterface<TInteger>
  */
-abstract class IntGenerator implements GeneratorInterface
+abstract class IntValueGenerator implements IdValueGeneratorInterface
 {
     /**
      * @var TInteger
@@ -38,15 +38,16 @@ abstract class IntGenerator implements GeneratorInterface
     }
 
     /**
-     * @return GeneratorInterface<array-key>
+     * @return IdValueGeneratorInterface<array-key>
      */
-    public static function createFromEnvironment(): GeneratorInterface
-    {
+    public static function createFromEnvironment(
+        OverflowBehaviour $onOverflow = OverflowBehaviour::Reset,
+    ): IdValueGeneratorInterface {
         if (\PHP_INT_SIZE >= 8) {
-            return new Int64Generator();
+            return new Int64Generator($onOverflow);
         }
 
-        return new Int32Generator();
+        return new Int32Generator($onOverflow);
     }
 
     /**

@@ -6,7 +6,7 @@ namespace Serafim\Boson;
 
 use FFI\CData;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
-use Serafim\Boson\Internal\ValueObject\Id\StructPointerId;
+use Serafim\Boson\Shared\Id\StructPointerId;
 
 final readonly class ApplicationId extends StructPointerId
 {

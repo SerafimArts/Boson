@@ -2,14 +2,14 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator;
+namespace Serafim\Boson\Shared\IdValueGenerator;
 
-use Serafim\Boson\Internal\IdGenerator\Exception\IdNotSupportedException;
+use Serafim\Boson\Shared\IdValueGenerator\Exception\IdNotSupportedException;
 
 /**
- * @template-extends IntGenerator<int<0, 9223372036854775807>>
+ * @template-extends IntValueGenerator<int<0, 9223372036854775807>>
  */
-final class Int64Generator extends IntGenerator
+final class Int64Generator extends IntValueGenerator
 {
     public readonly int $initial;
 

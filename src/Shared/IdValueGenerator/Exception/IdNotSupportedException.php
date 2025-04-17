@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Serafim\Boson\Internal\IdGenerator\Exception;
+namespace Serafim\Boson\Shared\IdValueGenerator\Exception;
 
 final class IdNotSupportedException extends IdException
 {
