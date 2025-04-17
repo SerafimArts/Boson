@@ -14,7 +14,7 @@ concurrency:
 
 env:
   BUILD_DIR: ./build
-  SOURCES_DIR: ./backend
+  SOURCES_DIR: ./frontend
 
 jobs:
   #
