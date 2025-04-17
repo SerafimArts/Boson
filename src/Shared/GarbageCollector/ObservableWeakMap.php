@@ -20,11 +20,11 @@ namespace Serafim\Boson\Shared\GarbageCollector;
  * ));
  * ```
  *
+ * @api
+ *
  * @template TKey of object = object
  * @template TValue of object = object
  * @template-implements \IteratorAggregate<TKey, TValue>
- *
- * @api
  */
 final readonly class ObservableWeakMap implements \IteratorAggregate, \Countable
 {

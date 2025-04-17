@@ -8,6 +8,10 @@ use FFI\CData;
 use Psr\EventDispatcher\EventDispatcherInterface as PsrEventDispatcherInterface;
 use Serafim\Boson\Dispatcher\DelegateEventListener;
 use Serafim\Boson\Dispatcher\EventListener;
+use Serafim\Boson\Event\ApplicationStarted;
+use Serafim\Boson\Event\ApplicationStarting;
+use Serafim\Boson\Event\ApplicationStopped;
+use Serafim\Boson\Event\ApplicationStopping;
 use Serafim\Boson\Exception\NoDefaultWindowException;
 use Serafim\Boson\Internal\DebugEnvResolver;
 use Serafim\Boson\Internal\DeferRunner\DeferRunnerInterface;
@@ -343,6 +347,17 @@ final class Application
     }
 
     /**
+     * Dispatches an intention to launch an application and returns a {@see bool}
+     * result: whether to start the application or not.
+     */
+    private function shouldNotStart(): bool
+    {
+        $intention = $this->events->dispatch(new ApplicationStarting($this));
+
+        return $intention->isCancelled;
+    }
+
+    /**
      * Runs the application, starting the main event loop.
      *
      * This method blocks main thread until the
@@ -353,7 +368,7 @@ final class Application
     #[BlockingOperation]
     public function run(): void
     {
-        if ($this->isRunning) {
+        if ($this->isRunning || $this->shouldNotStart()) {
             return;
         }
 
@@ -362,11 +377,24 @@ final class Application
 
         $this->registerQuitHandlersIfNotRegistered();
 
+        $this->events->dispatch(new ApplicationStarted($this));
+
         do {
             $this->api->saucer_application_run_once($this->id->ptr);
 
             \usleep(1);
         } while ($this->isRunning);
+    }
+
+    /**
+     * Dispatches an intention to stop an application and returns a {@see bool}
+     * result: whether to stop the application or not.
+     */
+    private function shouldNotStop(): bool
+    {
+        $intention = $this->events->dispatch(new ApplicationStopping($this));
+
+        return $intention->isCancelled;
     }
 
     /**
@@ -377,8 +405,14 @@ final class Application
      */
     public function quit(): void
     {
+        if ($this->shouldNotStop()) {
+            return;
+        }
+
         $this->isRunning = false;
         $this->api->saucer_application_quit($this->id->ptr);
+
+        $this->events->dispatch(new ApplicationStopped($this));
     }
 
     /**

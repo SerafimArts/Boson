@@ -7,36 +7,42 @@
         </classConstructor>
 
         <classMethod class="\Serafim\Boson\Dispatcher\EventListenerInterface" method="addEventListener" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
         </classMethod>
 
         <classMethod class="\Serafim\Boson\Dispatcher\EventListenerInterface" method="removeAllEventListenersForEvent" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
         </classMethod>
 
         <classMethod class="\Serafim\Boson\Dispatcher\EventListener" method="addEventListener" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
         </classMethod>
 
         <classMethod class="\Serafim\Boson\Dispatcher\EventListener" method="removeAllEventListenersForEvent" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
         </classMethod>
 
         <classMethod class="\Serafim\Boson\Dispatcher\DelegateEventListener" method="addEventListener" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
         </classMethod>
 
         <classMethod class="\Serafim\Boson\Dispatcher\DelegateEventListener" method="removeAllEventListenersForEvent" argument="0">
+            <collection name="application-events" />
             <collection name="window-events" />
             <collection name="webview-events" />
             <stopCompletion />
@@ -61,6 +67,7 @@
         </classConstructor>
     </definitions>
     <collections>
+        <attributeClass name="application-events" class="\Serafim\Boson\Internal\AsApplicationEvent" />
         <attributeClass name="window-events" class="\Serafim\Boson\Internal\AsWindowEvent" />
         <attributeClass name="webview-events" class="\Serafim\Boson\Internal\AsWebViewEvent" />
     </collections>
