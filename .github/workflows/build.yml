@@ -2,9 +2,11 @@ name: Build Binaries
 
 on:
   push:
-    branches: [ master ]
+    branches:
+      - master
   release:
-    types: [created]
+    types:
+      - created
 
 env:
   BUILD_DIR: ./build
