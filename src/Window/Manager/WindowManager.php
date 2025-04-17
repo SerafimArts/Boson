@@ -11,6 +11,7 @@ use Serafim\Boson\Internal\Application\ProcessUnlockPlaceholder;
 use Serafim\Boson\Internal\Memory\ReactiveWeakSet;
 use Serafim\Boson\Internal\Saucer\LibSaucer;
 use Serafim\Boson\Window\Event\WindowClosed;
+use Serafim\Boson\Window\Event\WindowCreated;
 use Serafim\Boson\Window\Window;
 use Serafim\Boson\Window\WindowCreateInfo;
 use Serafim\Boson\Window\WindowInterface;
@@ -84,6 +85,8 @@ final class WindowManager implements
             $this->api->saucer_webview_clear_embedded($window->id->ptr);
             $this->api->saucer_free($window->id->ptr);
         });
+
+        $this->events->dispatch(new WindowCreated($window));
 
         return $window;
     }
