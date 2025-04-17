@@ -87,14 +87,17 @@ final class WebViewEventHandler
 
     public function listenEvents(): void
     {
+        /** @phpstan-var CSaucerWebViewEventsStruct $ctx */
+        $ctx = $this->handlers;
+
         $ptr = $this->webview->window->id->ptr;
 
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_DOM_READY, $this->handlers->onDomReady);
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_NAVIGATED, $this->handlers->onNavigated);
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_NAVIGATE, $this->handlers->onNavigating);
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_FAVICON, $this->handlers->onFaviconChanged);
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_TITLE, $this->handlers->onTitleChanged);
-        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_LOAD, $this->handlers->onLoad);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_DOM_READY, $ctx->onDomReady);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_NAVIGATED, $ctx->onNavigated);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_NAVIGATE, $ctx->onNavigating);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_FAVICON, $ctx->onFaviconChanged);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_TITLE, $ctx->onTitleChanged);
+        $this->api->saucer_webview_on($ptr, Event::SAUCER_WEB_EVENT_LOAD, $ctx->onLoad);
 
         $this->api->saucer_webview_on_message($ptr, $this->onMessageReceived(...));
     }
