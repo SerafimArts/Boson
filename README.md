@@ -1,4 +1,8 @@
-## Boson
+<a href="https://github.com/SerafimArts/Boson">
+    <img align="center" src="https://github.com/user-attachments/assets/169b6bf1-4644-4873-ac4e-6448b36dc2a5" />
+</a>
+
+---
 
 <p align="center">
     <a href="https://packagist.org/packages/serafim/boson"><img src="https://poser.pugx.org/serafim/boson/require/php?style=for-the-badge" alt="PHP 8.4+"></a>
