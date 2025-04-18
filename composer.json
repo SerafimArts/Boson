@@ -34,6 +34,26 @@
     },
     "extra": {
         "class": "Serafim\\Boson\\Installer\\BosonComposerPlugin",
+        "boson": {
+            "directory": "bin",
+            "frontend": {
+                "windows": {
+                    "amd64": "Windows-WebView2-x86_64.zip",
+                    "x86": "Windows-WebView2-x86_64.zip"
+                },
+                "macos": {
+                    "aarch64": "MacOS-WebKit-Universal.zip",
+                    "amd64": "MacOS-WebKit-Universal.zip",
+                    "x86": "MacOS-WebKit-Universal.zip"
+                },
+                "linux": {
+                    "arm": "Linux-WebKitGtk-arm.zip",
+                    "aarch64": "Linux-WebKitGtk-aarch64.zip",
+                    "amd64": "Linux-WebKitGtk-x86_64.zip",
+                    "x86": "Linux-WebKitGtk-x86_64.zip"
+                }
+            }
+        },
         "branch-alias": {
             "dev-master": "1.0.x-dev",
             "dev-main": "1.0.x-dev"

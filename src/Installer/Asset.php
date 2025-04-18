@@ -6,11 +6,16 @@ namespace Serafim\Boson\Installer;
 
 use Serafim\Boson\Environment\Architecture;
 use Serafim\Boson\Environment\OperatingSystem;
-use Serafim\Boson\Installer\Frontend\Runtime;
 
-final readonly class Asset
+readonly class Asset
 {
     public function __construct(
+        /**
+         * An asset name string
+         *
+         * @var non-empty-string
+         */
+        public string $name,
         /**
          * Expected architecture for this asset
          */
@@ -19,15 +24,5 @@ final readonly class Asset
          * Expected operating system for this asset
          */
         public OperatingSystem $os,
-        /**
-         * Expected backend for this asset
-         */
-        public Runtime $backend,
-        /**
-         * An asset name string
-         *
-         * @var non-empty-string
-         */
-        public string $name,
     ) {}
 }

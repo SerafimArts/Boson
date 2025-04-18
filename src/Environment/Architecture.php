@@ -19,7 +19,6 @@ enum Architecture: string
     case PowerPc64 = 'ppc64';
     case Sparc = 'sparc';
     case Sparc64 = 'sparc64';
-    case Unknown = 'unknown';
 
     /**
      * @link https://wiki.debian.org/ArchitectureSpecificsMemo
@@ -64,23 +63,19 @@ enum Architecture: string
         'PROCESSOR_ARCHITECTURE',
     ];
 
-    public static function current(): self
+    public static function current(): ?self
     {
         static $current = self::getArchitectureCaseFromEnvironment();
 
-        /** @var self */
+        /** @var self|null */
         return $current;
     }
 
-    private static function getArchitectureCaseFromEnvironment(): self
+    private static function getArchitectureCaseFromEnvironment(): ?self
     {
         $uname = self::getArchitectureStringFromEnvironment();
 
-        if (isset(self::UNAME_MAPPINGS[$uname])) {
-            return self::UNAME_MAPPINGS[$uname];
-        }
-
-        return self::Unknown;
+        return self::UNAME_MAPPINGS[$uname] ?? null;
     }
 
     /**

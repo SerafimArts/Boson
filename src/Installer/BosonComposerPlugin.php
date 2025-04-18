@@ -5,21 +5,25 @@ declare(strict_types=1);
 namespace Serafim\Boson\Installer;
 
 use Composer\Composer;
+use Composer\DependencyResolver\Operation\InstallOperation;
 use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 
-final readonly class BosonComposerPlugin implements PluginInterface
+final class BosonComposerPlugin implements PluginInterface
 {
     public function activate(Composer $composer, IOInterface $io): void
     {
-        $this->addBinaryInstaller($composer, $io);
-    }
+        $installers = $composer->getInstallationManager();
+        $installers->addInstaller(new AssetsInstaller($io, $composer));
 
-    private function addBinaryInstaller(Composer $composer, IOInterface $io): void
-    {
-        $manager = $composer->getInstallationManager();
+        $repositories = $composer->getRepositoryManager();
+        $local = $repositories->getLocalRepository();
 
-        $manager->addInstaller(new BosonInstaller($io, $composer));
+        foreach ($local->getPackages() as $package) {
+            if (!$installers->isPackageInstalled($local, $package)) {
+                $installers->install($local, new InstallOperation($package));
+            }
+        }
     }
 
     public function deactivate(Composer $composer, IOInterface $io): void
