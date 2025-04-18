@@ -27,12 +27,10 @@ final class AssetsCollection implements \IteratorAggregate, \Countable
             new Asset(Arch::Arm64, OS::Linux, Runtime::Qt5, 'Linux-Qt5-aarch64.zip'),
             new Asset(Arch::Amd64, OS::Linux, Runtime::Qt5, 'Linux-Qt5-x86_64.zip'),
             new Asset(Arch::x86, OS::Linux, Runtime::Qt5, 'Linux-Qt5-x86_64.zip'),
-            new Asset(Arch::Arm, OS::Linux, Runtime::Qt5, 'Linux-Qt5-arm.zip'),
             // Linux/QT6
             new Asset(Arch::Arm64, OS::Linux, Runtime::Qt6, 'Linux-Qt6-aarch64.zip'),
             new Asset(Arch::Amd64, OS::Linux, Runtime::Qt6, 'Linux-Qt6-x86_64.zip'),
             new Asset(Arch::x86, OS::Linux, Runtime::Qt6, 'Linux-Qt6-x86_64.zip'),
-            new Asset(Arch::Arm, OS::Linux, Runtime::Qt6, 'Linux-Qt6-arm.zip'),
             // Linux/GTK
             new Asset(Arch::Arm64, OS::Linux, Runtime::Gtk4, 'Linux-WebKitGtk-aarch64.zip'),
             new Asset(Arch::Amd64, OS::Linux, Runtime::Gtk4, 'Linux-WebKitGtk-x86_64.zip'),
