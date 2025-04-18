@@ -1,12 +1,13 @@
 {
     "name": "serafim/boson",
     "description": "Native PHP WebView bridge",
-    "type": "library",
+    "type": "composer-plugin",
     "license": "MIT",
     "bin": ["bin/boson"],
     "require": {
         "php": "^8.4",
         "ext-ffi": "*",
+        "composer-plugin-api": "^2.0",
         "ffi/env": "^1.0",
         "psr/event-dispatcher": "^1.0"
     },
@@ -16,6 +17,7 @@
         }
     },
     "require-dev": {
+        "composer/composer": "^2.8",
         "ffi/var-dumper": "^1.0",
         "friendsofphp/php-cs-fixer": "^3.75",
         "jetbrains/phpstorm-attributes": "^1.2",
@@ -31,6 +33,7 @@
         }
     },
     "extra": {
+        "class": "Serafim\\Boson\\Installer\\BosonComposerPlugin",
         "branch-alias": {
             "dev-master": "1.0.x-dev",
             "dev-main": "1.0.x-dev"

@@ -8,6 +8,7 @@ enum OperatingSystem
 {
     case Windows;
     case Linux;
+    case BSD;
     case MacOS;
     case Unknown;
 
@@ -16,6 +17,7 @@ enum OperatingSystem
         static $current = match (\PHP_OS_FAMILY) {
             'Windows' => self::Windows,
             'Linux' => self::Linux,
+            'BSD' => self::BSD,
             'Darwin' => self::MacOS,
             default => self::Unknown,
         };
