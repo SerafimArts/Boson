@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Serafim\Boson\Installer\Frontend;
 
-use PhpParser\Node\Name;
-use Serafim\Boson\Environment\Architecture;
-use Serafim\Boson\Installer\Asset;
 use Serafim\Boson\Environment\Architecture as Arch;
 use Serafim\Boson\Environment\OperatingSystem as OS;
+use Serafim\Boson\Installer\Asset;
 
 /**
  * @template-implements \IteratorAggregate<array-key, Asset>
@@ -119,7 +117,9 @@ final class AssetsCollection implements \IteratorAggregate, \Countable
 
     /**
      * @template TArgResult of mixed
+     *
      * @param callable(Asset):TArgResult $callback
+     *
      * @return list<TArgResult>
      */
     private function uniq(callable $callback): array
