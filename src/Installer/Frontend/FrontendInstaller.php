@@ -9,9 +9,9 @@ use Composer\IO\IOInterface;
 use Composer\Package\Package;
 use Composer\Package\PackageInterface;
 use React\Promise\PromiseInterface;
-use Serafim\Boson\Installer\Asset;
 use Serafim\Boson\Environment\Architecture;
 use Serafim\Boson\Environment\OperatingSystem;
+use Serafim\Boson\Installer\Asset;
 
 final readonly class FrontendInstaller
 {
@@ -72,13 +72,13 @@ final readonly class FrontendInstaller
             ));
             $this->io->alert(' Please download assets manually from expected release: ');
             $this->io->write(' See: https://github.com/SerafimArts/Boson/releases');
+
             return [];
         }
 
         $assets = $this->selectTargetOperatingSystems($this->assets);
         $assets = $this->selectTargetArch($assets);
         $assets = $this->selectTargetBackend($assets);
-
 
         foreach ($this->downloadSelectedAssets($package, $assets, $directory . '/bin') as $promise) {
             yield $promise;
@@ -90,6 +90,7 @@ final readonly class FrontendInstaller
     /**
      * @param iterable<array-key, Asset> $assets
      * @param non-empty-string $directory
+     *
      * @return iterable<array-key, PromiseInterface<mixed>>
      */
     private function downloadSelectedAssets(PackageInterface $package, iterable $assets, string $directory): iterable
@@ -103,7 +104,7 @@ final readonly class FrontendInstaller
                 continue;
             }
 
-            $assetPackage = new class($package, $asset) extends Package {
+            $assetPackage = new class ($package, $asset) extends Package {
                 /**
                  * Assets URL template
                  */
@@ -151,6 +152,7 @@ final readonly class FrontendInstaller
                 {
                     /**
                      * @var non-empty-string
+                     *
                      * @phpstan-ignore-next-line
                      */
                     return \sprintf(self::ASSETS_URL, $this->getPrettyVersion(), $this->asset->name);
@@ -259,8 +261,10 @@ final readonly class FrontendInstaller
 
     /**
      * @template TArgOption of \UnitEnum
+     *
      * @param list<TArgOption> $options
      * @param TArgOption|null $default
+     *
      * @return TArgOption|null
      */
     private function select(string $message, array $options, ?\UnitEnum $default = null): mixed
